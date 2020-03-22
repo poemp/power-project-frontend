@@ -1,0 +1,18 @@
+/node_modules
+
+# production
+/build
+/dist
+/bigdata
+
+# misc
+.idea/
+.happypack
+.DS_Store
+.vscode/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.scannerwork
+package-lock.json
+yarn.lock
