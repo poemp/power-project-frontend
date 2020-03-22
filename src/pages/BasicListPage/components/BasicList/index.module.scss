@@ -10,8 +10,9 @@
 .total {
   color: #4A5B6D;
   font-size: 12px;
+
   span {
-    padding:0 3px;
+    padding: 0 3px;
     color: #5584FF;
   }
 }
@@ -49,6 +50,7 @@
 
 .ListItem {
   box-sizing: border-box;
+
   .main {
     display: flex;
     align-items: center;
@@ -58,35 +60,43 @@
     background: #fff;
     border-bottom: 1px solid #eee;
   }
+
   .left {
     display: flex;
     align-items: center;
   }
+
   .right {
     width: 100px;
     margin-right: 10px;
     margin-left: 10px;
+
     button {
       margin-right: 5px;
     }
   }
+
   img {
     width: 160px;
     margin-right: 20px;
   }
-  .title{
+
+  .title {
     color: #000;
     font-size: 16px;
   }
-  .content{
+
+  .content {
     margin: 12px 0;
     color: #999;
     font-size: 12px;
   }
-  .subContent{
+
+  .subContent {
     color: #999;
     font-size: 12px;
   }
+
   .add {
     display: flex;
     align-items: center;
@@ -97,10 +107,12 @@
     background: #fff;
     border: 1px dashed #eee;
     border-radius: 5px;
+
     .icon {
       color: #999;
     }
   }
+
   .addText {
     margin-left: 5px;
     color: #999;

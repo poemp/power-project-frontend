@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card } from '@alifd/next';
-import { Chart, Geom, Coord, Axis, Legend } from 'bizcharts';
+import {Card} from '@alifd/next';
+import {Chart, Geom, Coord, Axis, Legend} from 'bizcharts';
 import styles from './index.module.scss';
 
 const DEFAULT_DATA = {
@@ -37,16 +37,16 @@ const DEFAULT_DATA = {
 };
 
 const FusionCardLineChart = props => {
-  const { cardConfig = DEFAULT_DATA } = props;
-  const { title, chartData, chartHeight } = cardConfig;
+  const {cardConfig = DEFAULT_DATA} = props;
+  const {title, chartData, chartHeight} = cardConfig;
   return (
     <Card free>
-      <Card.Header title={<span className={styles.title}>{title}</span>} />
-      <Card.Divider />
+      <Card.Header title={<span className={styles.title}>{title}</span>}/>
+      <Card.Divider/>
       <Card.Content>
         <Chart width={10} height={chartHeight} forceFit data={chartData} padding={['auto', 'auto']}>
-          <Coord type="theta" radius={0.75} innerRadius={0.6} />
-          <Axis name="percent" />
+          <Coord type="theta" radius={0.75} innerRadius={0.6}/>
+          <Axis name="percent"/>
           <Legend
             position="right-center"
             textStyle={{

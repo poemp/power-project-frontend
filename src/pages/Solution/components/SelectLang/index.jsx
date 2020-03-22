@@ -1,9 +1,9 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
-import { Select, Card } from '@alifd/next';
-import { getLocale, setLocale } from '@/utils/locale';
+import {FormattedMessage} from 'react-intl';
+import {Select, Card} from '@alifd/next';
+import {getLocale, setLocale} from '@/utils/locale';
 
-const { Option } = Select;
+const {Option} = Select;
 const LANG_CONFIG = {
   'zh-CN': {
     text: '简体中文',
@@ -24,7 +24,7 @@ export default function SelectLang() {
   return (
     <Card free>
       <Card.Header
-        title={<FormattedMessage id="app.i18n.demo" />}
+        title={<FormattedMessage id="app.i18n.demo"/>}
         extra={
           <Select
             onChange={changeLang}
@@ -43,9 +43,9 @@ export default function SelectLang() {
           </Select>
         }
       />
-      <Card.Divider />
+      <Card.Divider/>
       <Card.Content>
-        <FormattedMessage id="app.i18n.content" />
+        <FormattedMessage id="app.i18n.content"/>
       </Card.Content>
     </Card>
   );

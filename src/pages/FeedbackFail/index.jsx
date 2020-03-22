@@ -1,9 +1,9 @@
 import React from 'react';
-import { ResponsiveGrid } from '@alifd/next';
+import {ResponsiveGrid} from '@alifd/next';
 import PageHeader from '@/components/PageHeader';
 import FailDetail from './components/FailDetail';
 
-const { Cell } = ResponsiveGrid;
+const {Cell} = ResponsiveGrid;
 
 const FeedbackFail = () => (
   <ResponsiveGrid gap={20}>
@@ -26,7 +26,7 @@ const FeedbackFail = () => (
     </Cell>
 
     <Cell colSpan={12}>
-      <FailDetail />
+      <FailDetail/>
     </Cell>
   </ResponsiveGrid>
 );

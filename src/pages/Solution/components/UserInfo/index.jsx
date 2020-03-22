@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import { Avatar, Card } from '@alifd/next';
-import { store as appStore } from 'ice';
+import React, {useEffect} from 'react';
+import {Avatar, Card} from '@alifd/next';
+import {store as appStore} from 'ice';
 
 const UserInfo = () => {
   const [userInfo, userActions] = appStore.useModel('user');
@@ -9,10 +9,10 @@ const UserInfo = () => {
   }, []);
   return (
     <Card free>
-      <Card.Header title="状态管理 - 全局状态" />
-      <Card.Divider />
+      <Card.Header title="状态管理 - 全局状态"/>
+      <Card.Divider/>
       <Card.Content>
-        <Avatar size="small" src={userInfo.avatar} />
+        <Avatar size="small" src={userInfo.avatar}/>
         <span
           style={{
             marginLeft: 10,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   Box,
   ResponsiveGrid,
@@ -13,7 +13,7 @@ import {
 } from '@alifd/next';
 import styles from './index.module.scss';
 
-const { Cell } = ResponsiveGrid;
+const {Cell} = ResponsiveGrid;
 const FormItem = Form.Item;
 const DEFAULT_DATA = {
   name: '阿里-Amy',
@@ -30,7 +30,7 @@ const DEFAULT_ON_SUBMIT = (values, errors) => {
 };
 
 const SettingPersonBlock = props => {
-  const { dataSource = DEFAULT_DATA, onSubmit = DEFAULT_ON_SUBMIT } = props;
+  const {dataSource = DEFAULT_DATA, onSubmit = DEFAULT_ON_SUBMIT} = props;
   const [postData, setValue] = useState(dataSource);
   const [buttonText, setButtonText] = useState('发送验证码');
   const [buttonDisabled, setButtonDisabled] = useState(false);
@@ -65,7 +65,7 @@ const SettingPersonBlock = props => {
           <FormItem label="" colSpan={12}>
             <ResponsiveGrid gap={10}>
               <Cell colSpan={2}>
-                <Avatar shape="circle" size={64} icon="account" />
+                <Avatar shape="circle" size={64} icon="account"/>
               </Cell>
               <Cell colSpan={10} className={styles.changeLogo}>
                 <Box spacing={12}>
@@ -85,16 +85,16 @@ const SettingPersonBlock = props => {
             </ResponsiveGrid>
           </FormItem>
           <FormItem colSpan={12}>
-            <Divider />
+            <Divider/>
           </FormItem>
           <FormItem label="昵称" required requiredMessage="必填" colSpan={12}>
-            <Input placeholder="请输入昵称" name="name" />
+            <Input placeholder="请输入昵称" name="name"/>
           </FormItem>
 
           <FormItem label="手机：" colSpan={12}>
             <ResponsiveGrid gap={10} device="desktop">
               <Cell colSpan={8}>
-                <Input className={styles.validateCodeInput} placeholder="请输入手机" name="phone" />
+                <Input className={styles.validateCodeInput} placeholder="请输入手机" name="phone"/>
               </Cell>
               <Cell colSpan={4}>
                 <Button
@@ -110,7 +110,7 @@ const SettingPersonBlock = props => {
           </FormItem>
 
           <FormItem label="验证码" colSpan={12}>
-            <Input placeholder="请输入验证码" name="vcode" />
+            <Input placeholder="请输入验证码" name="vcode"/>
           </FormItem>
 
           <FormItem colSpan={12}>

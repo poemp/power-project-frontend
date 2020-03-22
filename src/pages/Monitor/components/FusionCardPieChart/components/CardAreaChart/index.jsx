@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card } from '@alifd/next';
-import { Chart, Geom } from 'bizcharts';
+import {Card} from '@alifd/next';
+import {Chart, Geom} from 'bizcharts';
 import mock from './mock.js';
 import styles from './index.module.scss';
 
@@ -14,13 +14,13 @@ const DEFAULT_DATA = {
 };
 
 const FusionCardAreaChart = props => {
-  const { title, subTitle, value, chartData, chartHeight } = { ...DEFAULT_DATA, ...props };
+  const {title, subTitle, value, chartData, chartHeight} = {...DEFAULT_DATA, ...props};
   return (
     <Card free className={styles.areaChart}>
       {title ? (
         <React.Fragment>
-          <Card.Header title={<span className={styles.title}>{title}</span>} />
-          <Card.Divider />
+          <Card.Header title={<span className={styles.title}>{title}</span>}/>
+          <Card.Divider/>
         </React.Fragment>
       ) : null}
       <Card.Content>
@@ -39,7 +39,7 @@ const FusionCardAreaChart = props => {
           forceFit
           padding={['auto', '0']}
         >
-          <Geom type="area" position="date*value" color="#2B7FFB" shape="smooth" opacity={1} />
+          <Geom type="area" position="date*value" color="#2B7FFB" shape="smooth" opacity={1}/>
         </Chart>
       </Card.Content>
     </Card>

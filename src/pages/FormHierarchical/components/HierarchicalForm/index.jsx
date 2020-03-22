@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Form, ResponsiveGrid, Field, Input, Radio, Select, Button, Box } from '@alifd/next';
+import {Card, Form, ResponsiveGrid, Field, Input, Radio, Select, Button, Box} from '@alifd/next';
 import styles from './index.module.scss';
 
 const HierarchicalForm = props => {
@@ -7,8 +7,10 @@ const HierarchicalForm = props => {
     dataSource = {
       authType: 1,
     },
-    onSubmit = () => {},
-    onCancel = () => {},
+    onSubmit = () => {
+    },
+    onCancel = () => {
+    },
   } = props;
   const field = Field.useField({
     values: dataSource,
@@ -18,7 +20,7 @@ const HierarchicalForm = props => {
       <Card.Content>
         <Form fullWidth field={field} className={styles.HierarchicalForm}>
           <Form.Item label="项目名称" required requiredMessage="请输入项目名称">
-            <Input name="name" placeholder="给项目起个名字" />
+            <Input name="name" placeholder="给项目起个名字"/>
           </Form.Item>
           <Form.Item label="项目所属分类" required requiredMessage="请选择项目所属分类">
             <Select name="categoryId" placeholder="请选择项目所属分类">
@@ -85,7 +87,7 @@ const HierarchicalForm = props => {
                       }}
                     >
                       <Form.Item label="私密ID">
-                        <Input name="authId" placeholder="输入私密 ID" />
+                        <Input name="authId" placeholder="输入私密 ID"/>
                       </Form.Item>
                     </ResponsiveGrid.Cell>
                     ,
@@ -98,7 +100,7 @@ const HierarchicalForm = props => {
                       }}
                     >
                       <Form.Item label="项目通行码">
-                        <Input name="authCode" placeholder="请输入项目通行码" />
+                        <Input name="authCode" placeholder="请输入项目通行码"/>
                       </Form.Item>
                     </ResponsiveGrid.Cell>
                   </>
@@ -107,7 +109,7 @@ const HierarchicalForm = props => {
             )}
           </Form.Item>
           <Form.Item label="项目描述">
-            <Input.TextArea name="description" placeholder="请输入项目详细信息" rows={4} />
+            <Input.TextArea name="description" placeholder="请输入项目详细信息" rows={4}/>
           </Form.Item>
           <Form.Item>
             <Box direction="row" spacing={8}>

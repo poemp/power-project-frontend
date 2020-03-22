@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Button, Message, Card } from '@alifd/next';
-import { useInterval } from './utils';
+import React, {useState} from 'react';
+import {Button, Message, Card} from '@alifd/next';
+import {useInterval} from './utils';
 import styles from './index.module.scss';
 
 export default function SuccessDetail(props) {
@@ -46,7 +46,7 @@ export default function SuccessDetail(props) {
   return (
     <Card free className={styles.SuccessDetail}>
       <div>
-        <img src={image} className={styles.exceptionImage} alt="img" />
+        <img src={image} className={styles.exceptionImage} alt="img"/>
         <h1 className={styles.statuscode}>{statusCode}</h1>
         <div className={styles.description}>{`${second > 0 ? second : 0}${description}`}</div>
         <div className={styles.operationWrap}>

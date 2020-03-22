@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Avatar,
   Card,
@@ -18,7 +18,7 @@ import {
 } from '@alifd/next';
 import styles from './index.module.scss';
 
-const { Cell } = ResponsiveGrid;
+const {Cell} = ResponsiveGrid;
 const FormItem = Form.Item;
 const MockData = [
   {
@@ -80,7 +80,7 @@ const DEFAULT_ON_SUBMIT = (values, errors) => {
 };
 
 const SettingSystemBlock = props => {
-  const { dataSource = DEFAULT_DATA, onSubmit = DEFAULT_ON_SUBMIT } = props;
+  const {dataSource = DEFAULT_DATA, onSubmit = DEFAULT_ON_SUBMIT} = props;
   const [priList, setPriList] = useState([]);
   const [inited, setInited] = useState(false);
   const [postData, setValue] = useState(dataSource);
@@ -122,7 +122,7 @@ const SettingSystemBlock = props => {
                   <FormItem label="项目封面" colSpan={12}>
                     <ResponsiveGrid gap={10}>
                       <Cell colSpan={2}>
-                        <Avatar shape="circle" size={64} icon="account" />
+                        <Avatar shape="circle" size={64} icon="account"/>
                       </Cell>
                       <Cell colSpan={10} className={styles.changeLogo}>
                         <Box spacing={12}>
@@ -142,11 +142,11 @@ const SettingSystemBlock = props => {
                     </ResponsiveGrid>
                   </FormItem>
                   <FormItem label="项目名称" required requiredMessage="必填" colSpan={12}>
-                    <Input placeholder="请输入项目名称" name="name" />
+                    <Input placeholder="请输入项目名称" name="name"/>
                   </FormItem>
 
                   <FormItem label="项目所属分类" required requiredMessage="必填" colSpan={12}>
-                    <Input placeholder="请输入你的分类" name="category" />
+                    <Input placeholder="请输入你的分类" name="category"/>
                   </FormItem>
 
                   <FormItem colSpan={12} label="项目权限">
@@ -163,7 +163,7 @@ const SettingSystemBlock = props => {
                     </Radio.Group>
                   </FormItem>
                   <FormItem label="项目描述" colSpan={12}>
-                    <Input.TextArea placeholder="请输入项目描述" name="description" />
+                    <Input.TextArea placeholder="请输入项目描述" name="description"/>
                   </FormItem>
 
                   <FormItem colSpan={12}>
@@ -192,10 +192,10 @@ const SettingSystemBlock = props => {
             />
             <Card.Content>
               <Table dataSource={priList} hasHeader={false} hasBorder={false}>
-                <Table.Column dataIndex="logo" cell={url => <Avatar src={url} />} width={50} />
-                <Table.Column dataIndex="name" />
-                <Table.Column dataIndex="privilege" />
-                <Table.Column cell={() => <Icon type="ellipsis" />} />
+                <Table.Column dataIndex="logo" cell={url => <Avatar src={url}/>} width={50}/>
+                <Table.Column dataIndex="name"/>
+                <Table.Column dataIndex="privilege"/>
+                <Table.Column cell={() => <Icon type="ellipsis"/>}/>
               </Table>
             </Card.Content>
           </Card>

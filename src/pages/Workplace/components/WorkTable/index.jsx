@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   Avatar,
   Box,
@@ -16,7 +16,7 @@ import {
 import mock from './mock';
 import styles from './index.module.scss';
 
-const { Cell } = ResponsiveGrid;
+const {Cell} = ResponsiveGrid;
 const TimelineItem = Timeline.Item;
 
 const DEFAULT_DATA = {
@@ -39,8 +39,8 @@ const colorMap = {
 };
 
 const WorkTable = props => {
-  const { dataSource = DEFAULT_DATA } = props;
-  const { person, orderList, projectList, timeLineList, updateList, entranceList } = dataSource;
+  const {dataSource = DEFAULT_DATA} = props;
+  const {person, orderList, projectList, timeLineList, updateList, entranceList} = dataSource;
   const [tab, setTab] = useState('1');
 
   const changeTab = val => setTab(val);
@@ -58,7 +58,7 @@ const WorkTable = props => {
       <div className={styles.workerContainor}>
         <Box flex={1}>
           <Box direction="row" spacing={28}>
-            <Avatar size={80} src={person.avatar} className={styles.avatar} />
+            <Avatar size={80} src={person.avatar} className={styles.avatar}/>
             <Box>
               <Typography.Text className={styles.TitleName}>
                 {person.surname}
@@ -68,9 +68,9 @@ const WorkTable = props => {
             </Box>
           </Box>
           <Tab activeKey={tab} className={styles.tab} onChange={changeTab}>
-            <Tab.Item title="选项卡一" key="1" />
-            <Tab.Item title="选项卡二" key="2" />
-            <Tab.Item title="选项卡三" key="3" />
+            <Tab.Item title="选项卡一" key="1"/>
+            <Tab.Item title="选项卡二" key="2"/>
+            <Tab.Item title="选项卡三" key="3"/>
           </Tab>
         </Box>
       </div>
@@ -83,8 +83,8 @@ const WorkTable = props => {
                 height: '100%',
               }}
             >
-              <Card.Header title="我的任务" />
-              <Card.Divider />
+              <Card.Header title="我的任务"/>
+              <Card.Divider/>
               <Card.Content>
                 <Table
                   dataSource={orderList}
@@ -103,19 +103,19 @@ const WorkTable = props => {
                     titleAddons: () => <span className="next-table-cell-wrapper">任务名称</span>,
                   }}
                 >
-                  <Table.Column title="所属阶段" dataIndex="state" width={230} />
-                  <Table.Column title="优先级" dataIndex="level" cell={renderLevel} width={150} />
+                  <Table.Column title="所属阶段" dataIndex="state" width={230}/>
+                  <Table.Column title="优先级" dataIndex="level" cell={renderLevel} width={150}/>
                 </Table>
               </Card.Content>
             </Card>
           </Cell>
           <Cell colSpan={4}>
             <Card free>
-              <Card.Header title="我的日程" />
-              <Card.Divider />
+              <Card.Header title="我的日程"/>
+              <Card.Divider/>
               <Card.Content>
                 <Box spacing={10}>
-                  <Calendar shape="panel" />
+                  <Calendar shape="panel"/>
                   <Typography.Text className={styles.planNumber}>
                     共 <span className={styles.strong}>{timeLineList.length}</span>个日程
                   </Typography.Text>
@@ -140,12 +140,12 @@ const WorkTable = props => {
           </Cell>
           <Cell colSpan={8}>
             <Card free>
-              <Card.Header title="近期项目" />
-              <Card.Divider />
+              <Card.Header title="近期项目"/>
+              <Card.Divider/>
               <Card.Content>
                 <List>
                   {projectList.map(project => (
-                    <List.Item title={project.projectName} media={<Avatar src={project.img} />}>
+                    <List.Item title={project.projectName} media={<Avatar src={project.img}/>}>
                       {project.projectDesc}
                     </List.Item>
                   ))}
@@ -161,45 +161,45 @@ const WorkTable = props => {
                 height: '100%',
               }}
             >
-              <Card.Header title="我的项目" />
-              <Card.Divider />
+              <Card.Header title="我的项目"/>
+              <Card.Divider/>
               <Card.Content>
                 <List>
                   <List.Item
                     title="Fusion Design"
                     media={
-                      <Avatar src="https://img.alicdn.com/tfs/TB1SFZAvQL0gK0jSZFAXXcA9pXa-200-200.png" />
+                      <Avatar src="https://img.alicdn.com/tfs/TB1SFZAvQL0gK0jSZFAXXcA9pXa-200-200.png"/>
                     }
                   />
                   <List.Item
                     title="Alibaba ICS"
                     media={
-                      <Avatar src="https://img.alicdn.com/tfs/TB1QwMzvHr1gK0jSZR0XXbP8XXa-200-200.png" />
+                      <Avatar src="https://img.alicdn.com/tfs/TB1QwMzvHr1gK0jSZR0XXbP8XXa-200-200.png"/>
                     }
                   />
                   {/* <List.Item title="Alibaba Piecework" media={<Avatar src="https://img.alicdn.com/tfs/TB1.7cxvUz1gK0jSZLeXXb9kVXa-200-200.png"/>}></List.Item> */}
                   <List.Item
                     title="Retcode 前端监控"
                     media={
-                      <Avatar src="https://img.alicdn.com/tfs/TB1qxgDvG61gK0jSZFlXXXDKFXa-200-200.png" />
+                      <Avatar src="https://img.alicdn.com/tfs/TB1qxgDvG61gK0jSZFlXXXDKFXa-200-200.png"/>
                     }
                   />
                   <List.Item
                     title="新零售事业部"
                     media={
-                      <Avatar src="https://img.alicdn.com/tfs/TB1TfwDvQT2gK0jSZFkXXcIQFXa-200-200.png" />
+                      <Avatar src="https://img.alicdn.com/tfs/TB1TfwDvQT2gK0jSZFkXXcIQFXa-200-200.png"/>
                     }
                   />
                   <List.Item
                     title="前端物料中心"
                     media={
-                      <Avatar src="https://img.alicdn.com/tfs/TB1GgMzvHr1gK0jSZR0XXbP8XXa-200-200.png" />
+                      <Avatar src="https://img.alicdn.com/tfs/TB1GgMzvHr1gK0jSZR0XXbP8XXa-200-200.png"/>
                     }
                   />
                   <List.Item
                     title="大财鲸"
                     media={
-                      <Avatar src="https://img.alicdn.com/tfs/TB1tHozvQP2gK0jSZPxXXacQpXa-200-200.png" />
+                      <Avatar src="https://img.alicdn.com/tfs/TB1tHozvQP2gK0jSZPxXXacQpXa-200-200.png"/>
                     }
                   />
                 </List>
@@ -208,8 +208,8 @@ const WorkTable = props => {
           </Cell>
           <Cell colSpan={8}>
             <Card free>
-              <Card.Header title="动态" />
-              <Card.Divider />
+              <Card.Header title="动态"/>
+              <Card.Divider/>
               <Card.Content>
                 <List>
                   {updateList.map(one => {
@@ -247,7 +247,7 @@ const WorkTable = props => {
                     }
 
                     return (
-                      <List.Item title={title} media={<Avatar src={one.avatar} />}>
+                      <List.Item title={title} media={<Avatar src={one.avatar}/>}>
                         {one.time}
                       </List.Item>
                     );
@@ -266,7 +266,7 @@ const WorkTable = props => {
                   </Button>
                 }
               />
-              <Card.Divider />
+              <Card.Divider/>
               <Card.Content>
                 <Box spacing={[20, 50]} direction="row" wrap>
                   {entranceList.map(item => (

@@ -1,9 +1,9 @@
 import React from 'react';
-import { ResponsiveGrid } from '@alifd/next';
+import {ResponsiveGrid} from '@alifd/next';
 import PageHeader from '@/components/PageHeader';
 import SettingSystemBlock from './components/SettingSystemBlock';
 
-const { Cell } = ResponsiveGrid;
+const {Cell} = ResponsiveGrid;
 
 const Settings = () => (
   <ResponsiveGrid>
@@ -23,7 +23,7 @@ const Settings = () => (
     </Cell>
 
     <Cell colSpan={12}>
-      <SettingSystemBlock />
+      <SettingSystemBlock/>
     </Cell>
   </ResponsiveGrid>
 );

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Card, Form, Input, Icon, Radio, Field, Step, Button, Box, Typography } from '@alifd/next';
+import React, {useState} from 'react';
+import {Card, Form, Input, Icon, Radio, Field, Step, Button, Box, Typography} from '@alifd/next';
 import styles from './index.module.scss';
 
 const DEFAULT_DATA = {
@@ -10,13 +10,16 @@ const DEFAULT_DATA = {
 };
 
 const StepForm = props => {
-  const { dataSource = DEFAULT_DATA, onSubmit = () => {} } = props;
+  const {
+    dataSource = DEFAULT_DATA, onSubmit = () => {
+    }
+  } = props;
   const projectField = Field.useField({
     values: dataSource,
   });
   const [currentStep, setStep] = useState(0);
   const steps = ['填写信息', '确认信息', '完成'].map((item, index) => (
-    <Step.Item aria-current={index === currentStep ? 'step' : null} key={index} title={item} />
+    <Step.Item aria-current={index === currentStep ? 'step' : null} key={index} title={item}/>
   ));
 
   const submit = () => {
@@ -27,7 +30,7 @@ const StepForm = props => {
   };
 
   const goNext = async () => {
-    const { errors } = await projectField.validatePromise();
+    const {errors} = await projectField.validatePromise();
 
     if (errors) {
       console.log('errors', errors);
@@ -79,7 +82,7 @@ const StepForm = props => {
       mainbody = (
         <>
           <Box align="center">
-            <Icon type="success-filling" size={72} className={styles.succesIcon} />
+            <Icon type="success-filling" size={72} className={styles.succesIcon}/>
             <Typography.H1>提交成功</Typography.H1>
             <Typography.Text>5s 后自动跳转至工单页</Typography.Text>
             <Box margin={20} direction="row">
@@ -115,11 +118,11 @@ const StepForm = props => {
           labelAlign="top"
         >
           <Form.Item colSpan={12} label="项目名称" required requiredMessage="必填">
-            <Input placeholder="给项目起个名字" name="name" />
+            <Input placeholder="给项目起个名字" name="name"/>
           </Form.Item>
 
           <Form.Item colSpan={12} label="项目所属分类" required>
-            <Input placeholder="请输入你的分类" name="category" />
+            <Input placeholder="请输入你的分类" name="category"/>
           </Form.Item>
 
           <Form.Item colSpan={12} label="项目权限">
@@ -137,7 +140,7 @@ const StepForm = props => {
           </Form.Item>
 
           <Form.Item colSpan={12} label="项目描述">
-            <Input.TextArea placeholder="请输入项目详细信息" name="desc" />
+            <Input.TextArea placeholder="请输入项目详细信息" name="desc"/>
           </Form.Item>
 
           <Form.Item colSpan={12}>{actions}</Form.Item>

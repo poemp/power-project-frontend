@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Icon, Badge, Overlay, Avatar, Message, List } from '@alifd/next';
+import React, {useState} from 'react';
+import {Icon, Badge, Overlay, Avatar, Message, List} from '@alifd/next';
 import styles from './index.module.scss';
 
-const { Popup } = Overlay;
+const {Popup} = Overlay;
 const defaultNoticeList = [
   {
     id: 1,
@@ -18,7 +18,7 @@ const defaultNoticeList = [
   },
 ];
 
-const Notice = ({ noticeList }) => {
+const Notice = ({noticeList}) => {
   const [badgeCount, setBageCount] = useState(2);
   const [readList, setReadList] = useState([]);
 
@@ -43,7 +43,7 @@ const Notice = ({ noticeList }) => {
       trigger={
         <div className={styles.noticeIcon}>
           <Badge count={badgeCount}>
-            <Icon type="email" />
+            <Icon type="email"/>
           </Badge>
         </div>
       }
@@ -68,16 +68,16 @@ const Notice = ({ noticeList }) => {
         }
       >
         {renderList.map(noticeItem => {
-          const { id, name, avatar, message } = noticeItem;
+          const {id, name, avatar, message} = noticeItem;
           return (
             <List.Item
               className={styles.noticeItem}
               key={id}
               title={name}
-              media={<Avatar size={32} src={avatar} alt="avatar" />}
+              media={<Avatar size={32} src={avatar} alt="avatar"/>}
               extra={
                 <span className={styles.close} onClick={() => markAsRead(id)}>
-                  <Icon type="close" size="xs" />
+                  <Icon type="close" size="xs"/>
                 </span>
               }
             >

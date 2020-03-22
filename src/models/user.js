@@ -1,4 +1,4 @@
-import { request } from 'ice';
+import {request} from 'ice';
 
 export default {
   state: {
@@ -18,7 +18,7 @@ export default {
   },
   reducers: {
     update(prevState, payload) {
-      return { ...prevState, ...payload };
+      return {...prevState, ...payload};
     },
   },
 };

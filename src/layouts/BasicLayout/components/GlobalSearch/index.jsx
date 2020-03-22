@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Search } from '@alifd/next';
+import React, {useState} from 'react';
+import {Search} from '@alifd/next';
 
 const mockData = [
   {
@@ -27,5 +27,5 @@ export default function GlobalSearch() {
     setDataSource(mockData);
   }
 
-  return <Search dataSource={dataSource} shape="simple" type="dark" onChange={onChange} />;
+  return <Search dataSource={dataSource} shape="simple" type="dark" onChange={onChange}/>;
 }

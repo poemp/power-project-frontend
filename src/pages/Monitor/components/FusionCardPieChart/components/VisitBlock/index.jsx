@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, Box } from '@alifd/next';
-import { Chart, Geom, Axis, Tooltip } from 'bizcharts';
+import {Card, Box} from '@alifd/next';
+import {Chart, Geom, Axis, Tooltip} from 'bizcharts';
 import classNames from 'classnames';
 import styles from './index.module.scss';
 
@@ -55,11 +55,11 @@ const DEFAULT_DATA = {
 };
 
 const InfoBlock = props => {
-  const { name, value, des, rate } = props;
+  const {name, value, des, rate} = props;
   return (
     <Box className={styles.header} direction="column">
       <div>
-        <i className={classNames(styles.rateIcon)} />
+        <i className={classNames(styles.rateIcon)}/>
         <span className={styles.totle_font}>{name}</span>
       </div>
       <Box align="baseline" direction="row">
@@ -82,7 +82,7 @@ const InfoBlock = props => {
 }; // 两条线pv/uv
 
 const RenderPvChart = props => {
-  const { chartData, chartHeight } = props;
+  const {chartData, chartHeight} = props;
   const cols = {
     date: {
       type: 'timeCat',
@@ -109,18 +109,18 @@ const RenderPvChart = props => {
       scale={cols}
       padding={[20, 55, 30, 30]}
     >
-      <Axis title={null} name="date" />
-      <Axis title={null} name="value" />
-      <Tooltip />
-      <Geom type="area" position="date*value" color={['type', areaColors]} shape="smooth" />
-      <Geom type="line" position="date*value" color={['type', lineColors]} shape="smooth" />
+      <Axis title={null} name="date"/>
+      <Axis title={null} name="value"/>
+      <Tooltip/>
+      <Geom type="area" position="date*value" color={['type', areaColors]} shape="smooth"/>
+      <Geom type="line" position="date*value" color={['type', lineColors]} shape="smooth"/>
     </Chart>
   );
 };
 
 const VisitBlock = props => {
-  const { cardConfig = DEFAULT_DATA } = props;
-  const { titleItem, chartData, chartHeight } = cardConfig;
+  const {cardConfig = DEFAULT_DATA} = props;
+  const {titleItem, chartData, chartHeight} = cardConfig;
   return (
     <Card
       free
@@ -139,7 +139,7 @@ const VisitBlock = props => {
         />
       </React.Fragment>
       <Card.Content>
-        <RenderPvChart chartData={chartData} chartHeight={chartHeight} />
+        <RenderPvChart chartData={chartData} chartHeight={chartHeight}/>
       </Card.Content>
     </Card>
   );

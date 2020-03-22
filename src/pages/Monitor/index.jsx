@@ -1,9 +1,9 @@
 import React from 'react';
-import { ResponsiveGrid } from '@alifd/next';
+import {ResponsiveGrid} from '@alifd/next';
 import PageHeader from '@/components/PageHeader';
 import FusionCardPieChart from './components/FusionCardPieChart';
 
-const { Cell } = ResponsiveGrid;
+const {Cell} = ResponsiveGrid;
 
 const Monitor = () => (
   <ResponsiveGrid gap={20}>
@@ -22,7 +22,7 @@ const Monitor = () => (
     </Cell>
 
     <Cell colSpan={12}>
-      <FusionCardPieChart />
+      <FusionCardPieChart/>
     </Cell>
   </ResponsiveGrid>
 );

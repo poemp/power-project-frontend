@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card } from '@alifd/next';
-import { Chart, Geom } from 'bizcharts';
+import {Card} from '@alifd/next';
+import {Chart, Geom} from 'bizcharts';
 import mock from './mock.js';
 import styles from './index.module.scss';
 
@@ -14,14 +14,14 @@ const DEFAULT_DATA = {
 };
 
 const FusionCardBarChart = props => {
-  const { cardConfig = DEFAULT_DATA } = props;
-  const { title, subTitle, value, chartData, des, rate, chartHeight } = cardConfig;
+  const {cardConfig = DEFAULT_DATA} = props;
+  const {title, subTitle, value, chartData, des, rate, chartHeight} = cardConfig;
   return (
     <Card free>
       {title ? (
         <>
-          <Card.Header title={title} />
-          <Card.Divider />
+          <Card.Header title={title}/>
+          <Card.Divider/>
         </>
       ) : null}
       <Card.Content>
@@ -43,7 +43,7 @@ const FusionCardBarChart = props => {
           forceFit
           padding={['auto', '16']}
         >
-          <Geom type="interval" position="date*value" color="#29A5FF" />
+          <Geom type="interval" position="date*value" color="#29A5FF"/>
         </Chart>
       </Card.Content>
     </Card>

@@ -1,9 +1,9 @@
 import React from 'react';
-import { ResponsiveGrid } from '@alifd/next';
+import {ResponsiveGrid} from '@alifd/next';
 import PageHeader from '@/components/PageHeader';
 import SettingPersonBlock from './components/SettingPersonBlock';
 
-const { Cell } = ResponsiveGrid;
+const {Cell} = ResponsiveGrid;
 
 const Person = () => (
   <ResponsiveGrid gap={20}>
@@ -22,7 +22,7 @@ const Person = () => (
     </Cell>
 
     <Cell colSpan={12}>
-      <SettingPersonBlock />
+      <SettingPersonBlock/>
     </Cell>
   </ResponsiveGrid>
 );

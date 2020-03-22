@@ -58,7 +58,11 @@ const DEFAULT_DATA = {
 };
 
 const AdvancedDetail = props => {
-  const { dataSource = DEFAULT_DATA, onTabChange = () => {}, onTableTabChange = () => {} } = props;
+  const {
+    dataSource = DEFAULT_DATA, onTabChange = () => {
+    }, onTableTabChange = () => {
+    }
+  } = props;
 
   const renderTab = () => (
     <Tab navClassName={styles.TabBar} onChange={onTableTabChange}>
@@ -72,7 +76,7 @@ const AdvancedDetail = props => {
         key="2"
         className={styles.TabItem}
       />
-      <Tab.Item title={<span className={styles.TabItemTitle}>操作日志三</span>} key="3" />
+      <Tab.Item title={<span className={styles.TabItemTitle}>操作日志三</span>} key="3"/>
     </Tab>
   );
 
@@ -81,7 +85,7 @@ const AdvancedDetail = props => {
       <Card free className={styles.AdvancedDetailHead}>
         <Box spacing={10}>
           <Box direction="row" spacing={10}>
-            <Avatar size="large" src={dataSource.person.avatar} />
+            <Avatar size="large" src={dataSource.person.avatar}/>
             <Box flex={1} spacing={15}>
               <Box direction="row" justify="space-between">
                 <Box>
@@ -137,7 +141,7 @@ const AdvancedDetail = props => {
               key="2"
               className={styles.TabItem}
             />
-            <Tab.Item title={<span className={styles.TabItemTitle}>选项卡三</span>} key="3" />
+            <Tab.Item title={<span className={styles.TabItemTitle}>选项卡三</span>} key="3"/>
           </Tab>
         </Box>
       </Card>
@@ -156,17 +160,17 @@ const AdvancedDetail = props => {
                 </div>
               }
             />
-            <Step.Item title="审批" content={<a className={styles.a}>张三</a>} />
-            <Step.Item title="接受" />
-            <Step.Item title="合同发送" />
-            <Step.Item title="合同接受" />
-            <Step.Item title="入职准备" />
-            <Step.Item title="完成" />
+            <Step.Item title="审批" content={<a className={styles.a}>张三</a>}/>
+            <Step.Item title="接受"/>
+            <Step.Item title="合同发送"/>
+            <Step.Item title="合同接受"/>
+            <Step.Item title="入职准备"/>
+            <Step.Item title="完成"/>
           </Step>
         </Card>
         <Card free>
-          <Card.Header title="基础信息" />
-          <Card.Divider />
+          <Card.Header title="基础信息"/>
+          <Card.Divider/>
           <Card.Content>
             <div className={styles.Content}>
               <Form labelAlign="top" responsive>
@@ -193,8 +197,8 @@ const AdvancedDetail = props => {
           </Card.Content>
         </Card>
         <Card free showHeadDivider={false}>
-          <Card.Header title="工作经历" />
-          <Card.Divider />
+          <Card.Header title="工作经历"/>
+          <Card.Divider/>
           <Card.Content>
             <Box>
               <Typography.Text className={styles.SubTitle}>分类标题</Typography.Text>
@@ -213,7 +217,7 @@ const AdvancedDetail = props => {
                 </Form.Item>
               </Form>
             </Box>
-            <Divider dashed />
+            <Divider dashed/>
             <Typography.Text className={styles.SubTitle}>分类标题</Typography.Text>
             <Box>
               <Form labelAlign="top" responsive>
@@ -241,15 +245,15 @@ const AdvancedDetail = props => {
           </Card.Content>
         </Card>
         <Card free>
-          <Card.Header title={renderTab()} className={styles.TableCardHeader} />
-          <Card.Divider />
+          <Card.Header title={renderTab()} className={styles.TableCardHeader}/>
+          <Card.Divider/>
           <Card.Content>
             <div className={styles.Content}>
               <Table dataSource={dataSource.logs} hasBorder={false} className={styles.Table}>
-                <Table.Column title="操作进程" dataIndex="opStatus" />
-                <Table.Column title="操作人" dataIndex="operator" />
-                <Table.Column title="执行结果" dataIndex="opResult" />
-                <Table.Column title="操作时间" dataIndex="opTime" />
+                <Table.Column title="操作进程" dataIndex="opStatus"/>
+                <Table.Column title="操作人" dataIndex="operator"/>
+                <Table.Column title="执行结果" dataIndex="opResult"/>
+                <Table.Column title="操作时间" dataIndex="opTime"/>
               </Table>
             </div>
           </Card.Content>

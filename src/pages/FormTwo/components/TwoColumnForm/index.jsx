@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Input, Box, Button, Form, Card, DatePicker, Message, Radio, Upload } from '@alifd/next';
+import React, {useState} from 'react';
+import {Input, Box, Button, Form, Card, DatePicker, Message, Radio, Upload} from '@alifd/next';
 import styles from './index.module.scss';
 
 const FormItem = Form.Item;
@@ -21,7 +21,10 @@ const DEFAULT_ON_SUBMIT = (values, errors) => {
 };
 
 const TwoColumnForm = props => {
-  const { dataSource = DEFAULT_DATA, onSubmit = DEFAULT_ON_SUBMIT, onCancel = () => {} } = props;
+  const {
+    dataSource = DEFAULT_DATA, onSubmit = DEFAULT_ON_SUBMIT, onCancel = () => {
+    }
+  } = props;
   const [postData, setValue] = useState(dataSource);
 
   const formChange = value => {
@@ -33,15 +36,15 @@ const TwoColumnForm = props => {
       <Card.Content>
         <Form responsive fullWidth value={postData} labelAlign="top" onChange={formChange}>
           <FormItem {...formItemLayout} label="项目名称：" required>
-            <Input placeholder="请输入项目名称" name="name" />
+            <Input placeholder="请输入项目名称" name="name"/>
           </FormItem>
 
           <FormItem {...formItemLayout} label="项目所属分类：" required>
-            <Input placeholder="请输入你的分类" name="category" />
+            <Input placeholder="请输入你的分类" name="category"/>
           </FormItem>
 
           <FormItem {...formItemLayout} label="可访问日期：" required>
-            <DatePicker.RangePicker name="date" />
+            <DatePicker.RangePicker name="date"/>
           </FormItem>
 
           <FormItem {...formItemLayout} label="项目权限：">
@@ -59,7 +62,7 @@ const TwoColumnForm = props => {
           </FormItem>
 
           <FormItem {...formItemLayout} colSpan={12} label="项目描述：">
-            <Input.TextArea placeholder="请输入项目详细信息" name="desc" />
+            <Input.TextArea placeholder="请输入项目详细信息" name="desc"/>
           </FormItem>
 
           <FormItem

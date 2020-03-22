@@ -1,8 +1,8 @@
 import React from 'react';
-import { Card, ResponsiveGrid, Box, Divider } from '@alifd/next';
+import {Card, ResponsiveGrid, Box, Divider} from '@alifd/next';
 import styles from './index.module.scss';
 
-const { Cell } = ResponsiveGrid;
+const {Cell} = ResponsiveGrid;
 const DEFAULT_DATA = {
   title: '区域销售',
   dataSource: [
@@ -30,12 +30,12 @@ const DEFAULT_DATA = {
 };
 
 const FusionCardRankChart = props => {
-  const { cardConfig = DEFAULT_DATA } = props;
-  const { title, dataSource } = cardConfig;
+  const {cardConfig = DEFAULT_DATA} = props;
+  const {title, dataSource} = cardConfig;
   return (
     <Card free>
-      <Card.Header title={title} />
-      <Card.Divider />
+      <Card.Header title={title}/>
+      <Card.Divider/>
       <Card.Content
         style={{
           margin: 0,
@@ -44,33 +44,33 @@ const FusionCardRankChart = props => {
       >
         <ResponsiveGrid>
           <Cell colSpan={6}>
-            <div className={styles.hisMap} />
+            <div className={styles.hisMap}/>
           </Cell>
           <Cell colSpan={3}>
             <Box justify="flex-start" spacing={20} className={styles.histogram}>
               {dataSource &&
-                dataSource.map(item => (
-                  <Box justify="flex-start" spacing={5}>
-                    <div className={styles.hisTitle}>{item.name}</div>
-                    <Box direction="row">
-                      <div
-                        style={{
-                          backgroundColor: item.color,
-                          width: item.rate,
-                        }}
-                      />
-                      <div className={styles.hisRate}>{item.rate}</div>
-                    </Box>
+              dataSource.map(item => (
+                <Box justify="flex-start" spacing={5}>
+                  <div className={styles.hisTitle}>{item.name}</div>
+                  <Box direction="row">
+                    <div
+                      style={{
+                        backgroundColor: item.color,
+                        width: item.rate,
+                      }}
+                    />
+                    <div className={styles.hisRate}>{item.rate}</div>
                   </Box>
-                ))}
+                </Box>
+              ))}
             </Box>
           </Cell>
           <Cell colSpan={3}>
             <Box direction="row" className={styles.subCard}>
-              <Divider direction="ver" className={styles.subDiv} />
+              <Divider direction="ver" className={styles.subDiv}/>
               <div className={styles.subBody}>
                 <div className={styles.subName}>亚洲</div>
-                <Divider direction="hoz" />
+                <Divider direction="hoz"/>
                 <Box
                   className={styles.subMain}
                   spacing={20}
@@ -82,7 +82,7 @@ const FusionCardRankChart = props => {
                     <div className={styles.subTypeName}>商品类目1</div>
                     <div className={styles.subTypeValue}>6,123</div>
                   </Box>
-                  <Divider direction="ver" className={styles.subMainDiv} />
+                  <Divider direction="ver" className={styles.subMainDiv}/>
                   <Box>
                     <div className={styles.subTypeName}>商品类目2</div>
                     <div className={styles.subTypeValue}>132,4</div>

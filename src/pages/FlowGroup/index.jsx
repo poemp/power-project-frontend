@@ -1,9 +1,9 @@
 import React from 'react';
-import { ResponsiveGrid } from '@alifd/next';
+import {ResponsiveGrid} from '@alifd/next';
 import PageHeader from '@/components/PageHeader';
 import FlowForm from './components/FlowForm';
 
-const { Cell } = ResponsiveGrid;
+const {Cell} = ResponsiveGrid;
 
 const FlowGroup = () => (
   <ResponsiveGrid gap={20}>
@@ -23,7 +23,7 @@ const FlowGroup = () => (
     </Cell>
 
     <Cell colSpan={12}>
-      <FlowForm />
+      <FlowForm/>
     </Cell>
   </ResponsiveGrid>
 );

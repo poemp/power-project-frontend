@@ -31,40 +31,49 @@
     background: #fff;
     border-radius: 5px;
   }
+
   img {
     width: 100%;
   }
+
   .content {
     padding: 14px;
   }
-  .title{
+
+  .title {
     color: #333;
     font-size: 14px;
   }
-  .info{
+
+  .info {
     margin-top: 13px;
     color: #999;
     font-size: 12px;
     line-height: 20px;
   }
+
   .link {
     margin-top: 13px;
+
     a {
       margin-right: 20px;
       color: #999;
       font-size: 12px;
     }
   }
+
   .add {
     height: 100%;
     overflow: hidden;
     background: #fff;
     border: 1px dashed #eee;
     border-radius: 5px;
+
     .icon {
       color: #999;
     }
   }
+
   .addText {
     margin-top: 20px;
     color: #999;

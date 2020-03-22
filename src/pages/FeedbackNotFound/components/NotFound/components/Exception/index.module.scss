@@ -3,22 +3,24 @@
   align-items: center;
   justify-content: center;
   min-height: 504px;
+
   & > div {
     text-align: center;
   }
 
-  .exceptionImage{
+  .exceptionImage {
     margin-bottom: 22px;
   }
 
-  .statuscode{
+  .statuscode {
     margin-bottom: 6px;
     color: #000;
     font-size: 28px;
     line-height: 52px;
     text-align: center;
   }
-  .description{
+
+  .description {
     color: #666;
     font-size: 14px;
     line-height: 1.5;

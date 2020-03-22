@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Input, Message, Form, Divider, Checkbox, Icon } from '@alifd/next';
-import { useInterval } from './utils';
+import React, {useState} from 'react';
+import {Input, Message, Form, Divider, Checkbox, Icon} from '@alifd/next';
+import {useInterval} from './utils';
 import styles from './index.module.scss';
 
-const { Item } = Form;
+const {Item} = Form;
 const DEFAULT_DATA = {
   name: '',
   password: '',
@@ -13,7 +13,7 @@ const DEFAULT_DATA = {
 };
 
 const LoginBlock = props => {
-  const { dataSource = DEFAULT_DATA } = props;
+  const {dataSource = DEFAULT_DATA} = props;
   const [postData, setValue] = useState(dataSource);
   const [isRunning, checkRunning] = useState(false);
   const [isPhone, checkPhone] = useState(false);
@@ -60,7 +60,7 @@ const LoginBlock = props => {
           innerBefore={
             <span className={styles.innerBeforeInput}>
               +86
-              <span className={styles.line} />
+              <span className={styles.line}/>
             </span>
           }
           maxLength={20}
@@ -78,7 +78,7 @@ const LoginBlock = props => {
           name="code"
           innerAfter={
             <span className={styles.innerAfterInput}>
-              <span className={styles.line} />
+              <span className={styles.line}/>
               <Form.Submit
                 text
                 type="primary"
@@ -103,7 +103,7 @@ const LoginBlock = props => {
   const accountForm = (
     <>
       <Item required requiredMessage="必填">
-        <Input name="name" maxLength={20} placeholder="用户名" />
+        <Input name="name" maxLength={20} placeholder="用户名"/>
       </Item>
       <Item
         required
@@ -112,7 +112,7 @@ const LoginBlock = props => {
           marginBottom: 0,
         }}
       >
-        <Input.Password name="password" htmlType="password" placeholder="密码" />
+        <Input.Password name="password" htmlType="password" placeholder="密码"/>
       </Item>
     </>
   );
@@ -139,7 +139,7 @@ const LoginBlock = props => {
           <span onClick={byAccount} className={isPhone || styles.active}>
             账户密码登录
           </span>
-          <Divider direction="ver" />
+          <Divider direction="ver"/>
           <span onClick={byForm} className={isPhone && styles.active}>
             手机号登录
           </span>
@@ -181,8 +181,8 @@ const LoginBlock = props => {
           </Item>
           <p className={styles.infoLine}>
             <div className={styles.infoLeft}>
-              其他登录方式 <Icon type="atm" size="s" /> <Icon type="atm" size="s" />{' '}
-              <Icon type="atm" size="s" />
+              其他登录方式 <Icon type="atm" size="s"/> <Icon type="atm" size="s"/>{' '}
+              <Icon type="atm" size="s"/>
             </div>
             <a href="/" className={styles.link}>
               注册账号

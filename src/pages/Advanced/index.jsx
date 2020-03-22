@@ -1,9 +1,9 @@
 import React from 'react';
-import { ResponsiveGrid } from '@alifd/next';
+import {ResponsiveGrid} from '@alifd/next';
 import PageHeader from '@/components/PageHeader';
 import AdvancedDetailHead from './components/AdvancedDetailHead';
 
-const { Cell } = ResponsiveGrid;
+const {Cell} = ResponsiveGrid;
 
 const Advanced = () => (
   <ResponsiveGrid>
@@ -21,7 +21,7 @@ const Advanced = () => (
     </Cell>
 
     <Cell colSpan={12}>
-      <AdvancedDetailHead />
+      <AdvancedDetailHead/>
     </Cell>
   </ResponsiveGrid>
 );

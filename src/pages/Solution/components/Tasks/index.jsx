@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Form, Card, Input, Message, Button, List, Divider } from '@alifd/next';
-import { store as pageStore } from 'ice/Solution';
+import {Form, Card, Input, Message, Button, List, Divider} from '@alifd/next';
+import {store as pageStore} from 'ice/Solution';
 
 const formItemLayout = {
   colSpan: 6,
@@ -22,14 +22,14 @@ const Tasks = () => {
 
   return (
     <Card free>
-      <Card.Header title="状态管理 - 页面状态" />
+      <Card.Header title="状态管理 - 页面状态"/>
       <Card.Content>
         <Form responsive labelAlign="top">
           <FormItem {...formItemLayout} label="任务名称：" required requiredMessage="必填">
-            <Input placeholder="请输入任务名称" name="title" />
+            <Input placeholder="请输入任务名称" name="title"/>
           </FormItem>
           <FormItem {...formItemLayout} label="任务描述：" required requiredMessage="必填">
-            <Input placeholder="请输入任务名称" name="description" />
+            <Input placeholder="请输入任务名称" name="description"/>
           </FormItem>
           <FormItem colSpan={12}>
             <Form.Submit type="primary" onClick={handleSubmit} validate>
@@ -37,10 +37,10 @@ const Tasks = () => {
             </Form.Submit>
           </FormItem>
         </Form>
-        <Divider />
+        <Divider/>
         {taskList.length ? (
           <List>
-            {taskList.map(({ title, description }, index) => (
+            {taskList.map(({title, description}, index) => (
               <List.Item
                 key={index}
                 extra={

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Shell, ConfigProvider } from '@alifd/next';
+import React, {useState} from 'react';
+import {Shell, ConfigProvider} from '@alifd/next';
 import PageNav from './components/PageNav';
 import GlobalSearch from './components/GlobalSearch';
 import Notice from './components/Notice';
@@ -8,8 +8,8 @@ import HeaderAvatar from './components/HeaderAvatar';
 import Logo from './components/Logo';
 import Footer from './components/Footer';
 
-(function() {
-  const throttle = function(type, name, obj = window) {
+(function () {
+  const throttle = function (type, name, obj = window) {
     let running = false;
 
     const func = () => {
@@ -30,7 +30,7 @@ import Footer from './components/Footer';
   throttle('resize', 'optimizedResize');
 })();
 
-export default function BasicLayout({ children }) {
+export default function BasicLayout({children}) {
   const getDevice = width => {
     const isPhone =
       typeof navigator !== 'undefined' && navigator && navigator.userAgent.match(/phone/gi);
@@ -68,20 +68,20 @@ export default function BasicLayout({ children }) {
             marginRight: 10,
           }}
         >
-          <GlobalSearch />
+          <GlobalSearch/>
         </Shell.Navigation>
         <Shell.Action>
-          <Notice />
-          <SolutionLink />
-          <HeaderAvatar />
+          <Notice/>
+          <SolutionLink/>
+          <HeaderAvatar/>
         </Shell.Action>
         <Shell.Navigation>
-          <PageNav />
+          <PageNav/>
         </Shell.Navigation>
 
         <Shell.Content>{children}</Shell.Content>
         <Shell.Footer>
-          <Footer />
+          <Footer/>
         </Shell.Footer>
       </Shell>
     </ConfigProvider>

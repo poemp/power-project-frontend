@@ -1,9 +1,9 @@
 import React from 'react';
-import { ResponsiveGrid } from '@alifd/next';
+import {ResponsiveGrid} from '@alifd/next';
 import PageHeader from '@/components/PageHeader';
-import CardList from './components/CardList';
+import ProjectList from '@/pages/CardListPage/components/ProjectList';
 
-const { Cell } = ResponsiveGrid;
+const {Cell} = ResponsiveGrid;
 
 const CardListPage = () => (
   <ResponsiveGrid gap={20}>
@@ -23,7 +23,7 @@ const CardListPage = () => (
     </Cell>
 
     <Cell colSpan={12}>
-      <CardList />
+      <ProjectList/>
     </Cell>
   </ResponsiveGrid>
 );

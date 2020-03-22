@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   Input,
   Box,
@@ -32,7 +32,10 @@ const DEFAULT_ON_SUBMIT = (values, errors) => {
 };
 
 const ThreeColumnForm = props => {
-  const { dataSource = DEFAULT_DATA, onSubmit = DEFAULT_ON_SUBMIT, onCancel = () => {} } = props;
+  const {
+    dataSource = DEFAULT_DATA, onSubmit = DEFAULT_ON_SUBMIT, onCancel = () => {
+    }
+  } = props;
   const [postData, setValue] = useState(dataSource);
 
   const formChange = value => {
@@ -44,19 +47,19 @@ const ThreeColumnForm = props => {
       <Card.Content>
         <Form responsive fullWidth value={postData} labelAlign="top" onChange={formChange}>
           <FormItem {...formItemLayout} label="项目名称：" required>
-            <Input placeholder="请输入项目名称" name="name" />
+            <Input placeholder="请输入项目名称" name="name"/>
           </FormItem>
 
           <FormItem {...formItemLayout} label="项目所属分类：" required>
-            <Input placeholder="请输入你的分类" name="category" />
+            <Input placeholder="请输入你的分类" name="category"/>
           </FormItem>
 
           <FormItem {...formItemLayout} label="申请日期：" required>
-            <DatePicker.RangePicker name="date" />
+            <DatePicker.RangePicker name="date"/>
           </FormItem>
 
           <FormItem {...formItemLayout} label="申请人：" required>
-            <Input placeholder="申请人" name="person" />
+            <Input placeholder="申请人" name="person"/>
           </FormItem>
 
           <FormItem {...formItemLayout} label="状态：" required>
@@ -88,7 +91,7 @@ const ThreeColumnForm = props => {
           </FormItem>
 
           <FormItem {...formItemLayout} colSpan={8} label="项目描述：">
-            <Input.TextArea placeholder="请输入项目详细信息" name="desc" />
+            <Input.TextArea placeholder="请输入项目详细信息" name="desc"/>
           </FormItem>
 
           <FormItem

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card } from '@alifd/next';
-import { Chart, Geom, Axis, Tooltip, Legend } from 'bizcharts';
+import {Card} from '@alifd/next';
+import {Chart, Geom, Axis, Tooltip, Legend} from 'bizcharts';
 import classNames from 'classnames';
 import styles from './index.module.scss';
 
@@ -216,8 +216,8 @@ const DEFAULT_DATA = {
 };
 
 const JSErrorChart = props => {
-  const { cardConfig = DEFAULT_DATA } = props;
-  const { title, chartData, chartHeight } = cardConfig;
+  const {cardConfig = DEFAULT_DATA} = props;
+  const {title, chartData, chartHeight} = cardConfig;
   const scale = {
     name: {
       ticks: ['rate', 'success', 'fail'],
@@ -232,8 +232,8 @@ const JSErrorChart = props => {
   return (
     <Card free>
       <React.Fragment>
-        <Card.Header title={<span className={styles.title}>{title}</span>} />
-        <Card.Divider />
+        <Card.Header title={<span className={styles.title}>{title}</span>}/>
+        <Card.Divider/>
       </React.Fragment>
       <Card.Content>
         <Chart
@@ -244,7 +244,7 @@ const JSErrorChart = props => {
           forceFit
           padding={[30, 55, 30, 65]}
         >
-          <Tooltip />
+          <Tooltip/>
           <Legend
             position="top"
             useHtml
@@ -279,10 +279,10 @@ const JSErrorChart = props => {
             adjust={['fail', 'success']}
             color={['name', ['#2B7FFB', '#00D6CB']]}
           />
-          <Axis name="date" title={null} />
-          <Axis name="value" title={null} />
-          <Axis name="count" title={null} visible={false} />
-          <Geom type="line" position="date*count" color="#4492E0" shape="smooth" tooltip={false} />
+          <Axis name="date" title={null}/>
+          <Axis name="value" title={null}/>
+          <Axis name="count" title={null} visible={false}/>
+          <Geom type="line" position="date*count" color="#4492E0" shape="smooth" tooltip={false}/>
           <Geom
             type="area"
             position="date*count"

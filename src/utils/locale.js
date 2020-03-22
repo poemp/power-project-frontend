@@ -17,4 +17,4 @@ function getLocale() {
   return localStorage.getItem('lang');
 }
 
-export { setLocale, getLocale };
+export {setLocale, getLocale};

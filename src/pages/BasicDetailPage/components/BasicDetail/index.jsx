@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Card, Table, Form } from '@alifd/next';
+import {Box, Card, Table, Form} from '@alifd/next';
 import styles from './index.module.scss';
 
 const DEFAULT_DATA = {
@@ -27,13 +27,13 @@ const DEFAULT_DATA = {
 };
 
 const BasicDetail = props => {
-  const { dataSource = DEFAULT_DATA } = props;
+  const {dataSource = DEFAULT_DATA} = props;
   return (
     <div>
       <Box spacing={20}>
         <Card free>
-          <Card.Header title="基础信息" />
-          <Card.Divider />
+          <Card.Header title="基础信息"/>
+          <Card.Divider/>
           <Card.Content>
             <div className={styles.Content}>
               <Form labelAlign="top" responsive>
@@ -57,8 +57,8 @@ const BasicDetail = props => {
           </Card.Content>
         </Card>
         <Card free>
-          <Card.Header title="项目成员信息" />
-          <Card.Divider />
+          <Card.Header title="项目成员信息"/>
+          <Card.Divider/>
           <Card.Content>
             <div className={styles.Content}>
               <Form labelAlign="top">
@@ -76,8 +76,8 @@ const BasicDetail = props => {
           </Card.Content>
         </Card>
         <Card free>
-          <Card.Header title="目标公司" />
-          <Card.Divider />
+          <Card.Header title="目标公司"/>
+          <Card.Divider/>
           <Card.Content>
             <div className={styles.Content}>
               <Table
@@ -85,10 +85,10 @@ const BasicDetail = props => {
                 hasBorder={false}
                 className={styles.Table}
               >
-                <Table.Column title="目标公司" dataIndex="targetCompany" />
-                <Table.Column title="主营业务" dataIndex="business" />
-                <Table.Column title="注册地" dataIndex="address" />
-                <Table.Column title="创始人" dataIndex="creator" />
+                <Table.Column title="目标公司" dataIndex="targetCompany"/>
+                <Table.Column title="主营业务" dataIndex="business"/>
+                <Table.Column title="注册地" dataIndex="address"/>
+                <Table.Column title="创始人" dataIndex="creator"/>
               </Table>
             </div>
           </Card.Content>

@@ -1,11 +1,11 @@
 import React from 'react';
-import { ResponsiveGrid } from '@alifd/next';
+import {ResponsiveGrid} from '@alifd/next';
 import PageHeader from '@/components/PageHeader';
 import Tasks from './components/Tasks';
 import UserInfo from './components/UserInfo';
 import SelectLang from './components/SelectLang';
 
-const { Cell } = ResponsiveGrid;
+const {Cell} = ResponsiveGrid;
 
 const Solution = () => (
   <ResponsiveGrid gap={20}>
@@ -18,15 +18,15 @@ const Solution = () => (
     </Cell>
 
     <Cell colSpan={12}>
-      <Tasks />
+      <Tasks/>
     </Cell>
 
     <Cell colSpan={12}>
-      <UserInfo />
+      <UserInfo/>
     </Cell>
 
     <Cell colSpan={12}>
-      <SelectLang />
+      <SelectLang/>
     </Cell>
   </ResponsiveGrid>
 );

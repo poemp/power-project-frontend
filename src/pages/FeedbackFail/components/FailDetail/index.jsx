@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Message, Card } from '@alifd/next';
+import {Button, Message, Card} from '@alifd/next';
 import styles from './index.module.scss';
 
 export default function FailDetail(props) {
@@ -22,7 +22,7 @@ export default function FailDetail(props) {
   return (
     <Card free className={styles.FailDetail}>
       <div>
-        <img src={image} className={styles.exceptionImage} alt="img" />
+        <img src={image} className={styles.exceptionImage} alt="img"/>
         <h1 className={styles.statuscode}>{statusCode}</h1>
         <div className={styles.description}>{description}</div>
         <div className={styles.operationWrap}>

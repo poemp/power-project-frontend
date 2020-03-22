@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Box,
   Search,
@@ -13,7 +13,7 @@ import {
 } from '@alifd/next';
 import styles from './index.module.scss';
 
-const { Group: TagGroup, Selectable: SelectableTag } = Tag;
+const {Group: TagGroup, Selectable: SelectableTag} = Tag;
 
 const DEFAULT_DATA = {
   tagsA: [
@@ -40,7 +40,10 @@ const DEFAULT_DATA = {
 };
 
 const BasicList = props => {
-  const { dataSource = DEFAULT_DATA, onSearch = () => {} } = props;
+  const {
+    dataSource = DEFAULT_DATA, onSearch = () => {
+    }
+  } = props;
   const [tagAValue, setTagAValue] = useState(dataSource.tagA);
   const [tagBValue, setTagBValue] = useState(dataSource.tagB);
   const [loading, setLoading] = useState(true);
@@ -127,7 +130,7 @@ const BasicList = props => {
     <>
       <Card free className={styles.BasicList}>
         <Box align="center">
-          <Search type="primary" hasIcon={false} searchText="搜索" onSearch={onSearchClick} />
+          <Search type="primary" hasIcon={false} searchText="搜索" onSearch={onSearchClick}/>
         </Box>
         <Divider
           dashed
@@ -150,7 +153,7 @@ const BasicList = props => {
           <Box className={styles.MainContent} spacing={10}>
             <div className={styles.ListItem}>
               <div className={styles.add}>
-                <Icon type="add" className={styles.icon} size="xs" />
+                <Icon type="add" className={styles.icon} size="xs"/>
                 <div className={styles.addText}>添加内容</div>
               </div>
             </div>
@@ -159,7 +162,7 @@ const BasicList = props => {
               <div className={styles.total}>
                 共<span>200</span>条需求
               </div>
-              <Pagination onChange={onPaginationChange} />
+              <Pagination onChange={onPaginationChange}/>
             </Box>
           </Box>
         </Loading>

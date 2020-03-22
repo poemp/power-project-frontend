@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card } from '@alifd/next';
-import { Chart, Geom, Axis, Legend } from 'bizcharts';
+import {Card} from '@alifd/next';
+import {Chart, Geom, Axis, Legend} from 'bizcharts';
 import styles from './index.module.scss';
 
 const DEFAULT_DATA = {
@@ -86,12 +86,12 @@ const DEFAULT_DATA = {
 };
 
 const FusionCardGroupBarChart = props => {
-  const { cardConfig = DEFAULT_DATA } = props;
-  const { title, chartData, chartHeight } = cardConfig;
+  const {cardConfig = DEFAULT_DATA} = props;
+  const {title, chartData, chartHeight} = cardConfig;
   return (
     <Card free className={styles.FusionCardGroupBarChart}>
-      <Card.Header title={title} />
-      <Card.Divider />
+      <Card.Header title={title}/>
+      <Card.Divider/>
       <Card.Content>
         <Chart
           renderer="canvas"
@@ -101,8 +101,8 @@ const FusionCardGroupBarChart = props => {
           data={chartData}
           padding={['80', 'auto']}
         >
-          <Axis name="category" />
-          <Axis name="value" />
+          <Axis name="category"/>
+          <Axis name="value"/>
           <Legend
             textStyle={{
               fill: '#666',

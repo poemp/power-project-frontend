@@ -1,9 +1,9 @@
 import React from 'react';
-import { ResponsiveGrid } from '@alifd/next';
+import {ResponsiveGrid} from '@alifd/next';
 import PageHeader from '@/components/PageHeader';
 import FourColumnForm from './components/FourColumnForm';
 
-const { Cell } = ResponsiveGrid;
+const {Cell} = ResponsiveGrid;
 
 const FormFour = () => (
   <ResponsiveGrid gap={20}>
@@ -23,7 +23,7 @@ const FormFour = () => (
     </Cell>
 
     <Cell colSpan={12}>
-      <FourColumnForm />
+      <FourColumnForm/>
     </Cell>
   </ResponsiveGrid>
 );

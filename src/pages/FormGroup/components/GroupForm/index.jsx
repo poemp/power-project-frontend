@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { findDOMNode } from 'react-dom';
+import React, {useState, useEffect, useRef} from 'react';
+import {findDOMNode} from 'react-dom';
 import {
   Card,
   Form,
@@ -81,8 +81,10 @@ const DEFAULT_DATA = {
 const GroupForm = props => {
   const {
     dataSource: defaultDataSource = DEFAULT_DATA,
-    onSubmit = () => {},
-    onCancel = () => {},
+    onSubmit = () => {
+    },
+    onCancel = () => {
+    },
   } = props;
   const [dataSource, setDataSouce] = useState(defaultDataSource);
   const basicField = Field.useField({
@@ -105,7 +107,7 @@ const GroupForm = props => {
   const changeRowData = (index, key, value) => {
     const company = [...dataSource.company];
     company[index][key] = value;
-    setDataSouce({ ...dataSource, company });
+    setDataSouce({...dataSource, company});
   };
 
   const deleteRow = index => {
@@ -113,7 +115,7 @@ const GroupForm = props => {
 
     if (!company[index].id) {
       company.splice(index, 1);
-      setDataSouce({ ...dataSource, company });
+      setDataSouce({...dataSource, company});
       return;
     }
 
@@ -121,7 +123,7 @@ const GroupForm = props => {
       content: `确定要删除公司：${company[index].name} ?`,
       onOk: () => {
         company.splice(index, 1);
-        setDataSouce({ ...dataSource, company });
+        setDataSouce({...dataSource, company});
       },
     });
   };
@@ -165,21 +167,21 @@ const GroupForm = props => {
   return (
     <div className={styles.GroupForm}>
       <Card ref={containerRef} free className={styles.Card}>
-        <Card.Header title="项目成员信息" />
-        <Card.Divider />
+        <Card.Header title="项目成员信息"/>
+        <Card.Divider/>
         <Card.Content>
           <Form field={basicField} responsive fullWidth labelAlign="top">
             <Form.Item colSpan={4} label="公司简称" required>
-              <Input name="companyName" placeholder="请输入公司简称" />
+              <Input name="companyName" placeholder="请输入公司简称"/>
             </Form.Item>
             <Form.Item colSpan={4} label="项目代号" required>
-              <Input name="projectNo" placeholder="请输入项目代号" />
+              <Input name="projectNo" placeholder="请输入项目代号"/>
             </Form.Item>
             <Form.Item colSpan={4} label="投资委员会" required>
-              <Input name="investmentsCommittee" placeholder="请输入投资委员会" />
+              <Input name="investmentsCommittee" placeholder="请输入投资委员会"/>
             </Form.Item>
             <Form.Item colSpan={4} label="项目类型" required>
-              <Input name="projectType" placeholder="请输入项目类型" />
+              <Input name="projectType" placeholder="请输入项目类型"/>
             </Form.Item>
             <Form.Item colSpan={4} label="关联项目" required>
               <Select name="projectId" id="relativeId" placeholder="请选择关联项目">
@@ -192,8 +194,8 @@ const GroupForm = props => {
         </Card.Content>
       </Card>
       <Card free className={styles.Card}>
-        <Card.Header title="基础信息" />
-        <Card.Divider />
+        <Card.Header title="基础信息"/>
+        <Card.Divider/>
         <Card.Content>
           <Form field={memberField} responsive fullWidth labelAlign="top">
             <Form.Item colSpan={4} label="合同类型" required>
@@ -235,8 +237,8 @@ const GroupForm = props => {
         </Card.Content>
       </Card>
       <Card free className={styles.Card}>
-        <Card.Header title="基础信息" />
-        <Card.Divider />
+        <Card.Header title="基础信息"/>
+        <Card.Divider/>
         <Card.Content>
           <Box direction="row" margin={[0, 0, 16, 0]}>
             <Button onClick={addRow} className={styles.Button} type="primary">
@@ -274,7 +276,7 @@ const GroupForm = props => {
                       <Button text type="primary" onClick={() => changeRowData(i, 'edited', false)}>
                         保存
                       </Button>
-                      <Divider direction="ver" />
+                      <Divider direction="ver"/>
                       <Button text type="primary" onClick={() => deleteRow(i)}>
                         删除
                       </Button>
@@ -287,11 +289,11 @@ const GroupForm = props => {
                     <Button type="primary" onClick={() => changeRowData(i, 'edited', true)} text>
                       编辑
                     </Button>
-                    <Divider direction="ver" />
+                    <Divider direction="ver"/>
                     <Button type="primary" text onClick={() => deleteRow(i)}>
                       删除
                     </Button>
-                    <Divider direction="ver" />
+                    <Divider direction="ver"/>
                     <MenuButton type="primary" popupTriggerType="hover" label="更多" text>
                       <MenuButton.Item>操作一</MenuButton.Item>
                       <MenuButton.Item>操作二</MenuButton.Item>

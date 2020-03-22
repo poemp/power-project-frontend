@@ -1,5 +1,5 @@
 import React from 'react';
-import { ResponsiveGrid } from '@alifd/next';
+import {ResponsiveGrid} from '@alifd/next';
 import PageHeader from '@/components/PageHeader';
 import FusionCardBarChart from './components/FusionCardBarChart';
 import FusionCardAreaChart from './components/FusionCardAreaChart';
@@ -9,7 +9,7 @@ import FusionCardRankChart from './components/FusionCardRankChart';
 import FusionCardPieChart from './components/FusionCardPieChart';
 import FusionCardGroupBarChart from './components/FusionCardGroupBarChart';
 
-const { Cell } = ResponsiveGrid;
+const {Cell} = ResponsiveGrid;
 
 const Analysis = () => (
   <ResponsiveGrid gap={20}>
@@ -28,31 +28,31 @@ const Analysis = () => (
     </Cell>
 
     <Cell colSpan={3}>
-      <FusionCardBarChart />
+      <FusionCardBarChart/>
     </Cell>
 
     <Cell colSpan={3}>
-      <FusionCardAreaChart />
+      <FusionCardAreaChart/>
     </Cell>
 
     <Cell colSpan={3}>
-      <FusionCardTypebarChart />
+      <FusionCardTypebarChart/>
     </Cell>
 
     <Cell colSpan={3}>
-      <FusionCardLineChart />
+      <FusionCardLineChart/>
     </Cell>
 
     <Cell colSpan={12}>
-      <FusionCardRankChart />
+      <FusionCardRankChart/>
     </Cell>
 
     <Cell colSpan={4}>
-      <FusionCardPieChart />
+      <FusionCardPieChart/>
     </Cell>
 
     <Cell colSpan={8}>
-      <FusionCardGroupBarChart />
+      <FusionCardGroupBarChart/>
     </Cell>
   </ResponsiveGrid>
 );

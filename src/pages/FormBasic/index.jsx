@@ -1,9 +1,9 @@
 import React from 'react';
-import { ResponsiveGrid } from '@alifd/next';
+import {ResponsiveGrid} from '@alifd/next';
 import PageHeader from '@/components/PageHeader';
 import BasicForm from './components/BasicForm';
 
-const { Cell } = ResponsiveGrid;
+const {Cell} = ResponsiveGrid;
 
 const FormBasic = () => (
   <ResponsiveGrid gap={20}>
@@ -23,7 +23,7 @@ const FormBasic = () => (
     </Cell>
 
     <Cell colSpan={12}>
-      <BasicForm />
+      <BasicForm/>
     </Cell>
   </ResponsiveGrid>
 );

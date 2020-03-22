@@ -1,9 +1,9 @@
 import React from 'react';
-import { ResponsiveGrid } from '@alifd/next';
+import {ResponsiveGrid} from '@alifd/next';
 import PageHeader from '@/components/PageHeader';
 import Forbidden from './components/Forbidden';
 
-const { Cell } = ResponsiveGrid;
+const {Cell} = ResponsiveGrid;
 
 const FeedbackForbidden = () => (
   <ResponsiveGrid gap={20}>
@@ -26,7 +26,7 @@ const FeedbackForbidden = () => (
     </Cell>
 
     <Cell colSpan={12}>
-      <Forbidden />
+      <Forbidden/>
     </Cell>
   </ResponsiveGrid>
 );

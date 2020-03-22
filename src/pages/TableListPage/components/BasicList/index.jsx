@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Card,
   Table,
@@ -15,8 +15,8 @@ import {
 } from '@alifd/next';
 import styles from './index.module.scss';
 
-const { Cell } = ResponsiveGrid;
-const { Option } = Select;
+const {Cell} = ResponsiveGrid;
+const {Option} = Select;
 const FormItem = Form.Item;
 
 const mockTableData = [];
@@ -45,7 +45,7 @@ const DEFAULT_DATA = {
 };
 
 const TableList = props => {
-  const { dataSource = DEFAULT_DATA } = props;
+  const {dataSource = DEFAULT_DATA} = props;
   const [loading, setLoading] = useState(true);
   const [expand, setExpand] = useState(false);
   useEffect(() => {
@@ -75,11 +75,11 @@ const TableList = props => {
               <FormItem colSpan={3} label="需求名称/编号">
                 <Input
                   placeholder="输入需求名称/编号进行搜索"
-                  innerAfter={<Icon type="search" size="xs" className={styles.searchIcon} />}
+                  innerAfter={<Icon type="search" size="xs" className={styles.searchIcon}/>}
                 />
               </FormItem>
               <FormItem colSpan={3} label="需求方">
-                <Input placeholder="输入需求方进行搜索" />
+                <Input placeholder="输入需求方进行搜索"/>
               </FormItem>
               <FormItem colSpan={3} label="标签">
                 <Select placeholder="选择标签">
@@ -92,11 +92,11 @@ const TableList = props => {
                   <FormItem colSpan={3} label="需求名称/编号">
                     <Input
                       placeholder="输入需求名称/编号进行搜索"
-                      innerAfter={<Icon type="search" size="xs" className={styles.searchIcon} />}
+                      innerAfter={<Icon type="search" size="xs" className={styles.searchIcon}/>}
                     />
                   </FormItem>
                   <FormItem colSpan={3} label="需求方">
-                    <Input placeholder="输入需求方进行搜索" />
+                    <Input placeholder="输入需求方进行搜索"/>
                   </FormItem>
                   <FormItem colSpan={3} label="标签">
                     <Select placeholder="选择标签">
@@ -129,11 +129,11 @@ const TableList = props => {
                   <Button onClick={toggleSeachList}>
                     {expand ? (
                       <>
-                        收起 <Icon className={styles.icon} type="arrow-up" size="xs" />
+                        收起 <Icon className={styles.icon} type="arrow-up" size="xs"/>
                       </>
                     ) : (
                       <>
-                        展开 <Icon className={styles.icon} type="arrow-down" size="xs" />
+                        展开 <Icon className={styles.icon} type="arrow-down" size="xs"/>
                       </>
                     )}
                   </Button>
@@ -141,7 +141,7 @@ const TableList = props => {
               </Cell>
             </Form>
           </Box>
-          <Divider dashed />
+          <Divider dashed/>
           <div className={styles.Main}>
             <Loading visible={loading}>
               <div className={styles.add}>
@@ -149,7 +149,7 @@ const TableList = props => {
                 <Button type="normal">下载</Button>
                 <Button type="normal">
                   更多操作
-                  <Icon className={styles.icon} type="arrow-down" />
+                  <Icon className={styles.icon} type="arrow-down"/>
                 </Button>
               </div>
               <Table
@@ -163,7 +163,7 @@ const TableList = props => {
                 }}
               >
                 {Object.keys(dataSource.tableColumn).map(col => (
-                  <Table.Column title={dataSource.tableColumn[col]} dataIndex={col} key={col} />
+                  <Table.Column title={dataSource.tableColumn[col]} dataIndex={col} key={col}/>
                 ))}
                 <Table.Column
                   title="操作"
@@ -172,11 +172,11 @@ const TableList = props => {
                       <Button type="primary" text>
                         编辑
                       </Button>
-                      <Divider direction="ver" />
+                      <Divider direction="ver"/>
                       <Button type="primary" text>
                         订阅
                       </Button>
-                      <Divider direction="ver" />
+                      <Divider direction="ver"/>
                       <Button type="primary" text>
                         删除
                       </Button>
@@ -188,7 +188,7 @@ const TableList = props => {
                 <div className={styles.total}>
                   共<span>200</span>条需求
                 </div>
-                <Pagination onChange={onPaginationChange} />
+                <Pagination onChange={onPaginationChange}/>
               </Box>
             </Loading>
           </div>

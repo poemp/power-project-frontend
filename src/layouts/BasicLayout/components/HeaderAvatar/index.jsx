@@ -1,14 +1,14 @@
 import React from 'react';
-import { Avatar, Overlay, Menu, Icon } from '@alifd/next';
+import {Avatar, Overlay, Menu, Icon} from '@alifd/next';
 import styles from './index.module.scss';
 
-const { Item } = Menu;
-const { Popup } = Overlay;
+const {Item} = Menu;
+const {Popup} = Overlay;
 
-const UserProfile = ({ name, avatar, mail }) => (
+const UserProfile = ({name, avatar, mail}) => (
   <div className={styles.profile}>
     <div className={styles.avatar}>
-      <Avatar src={avatar} alt="用户头像" />
+      <Avatar src={avatar} alt="用户头像"/>
     </div>
     <div className={styles.content}>
       <h4>{name}</h4>
@@ -18,12 +18,12 @@ const UserProfile = ({ name, avatar, mail }) => (
 );
 
 const HeaderAvatar = props => {
-  const { name, avatar } = props;
+  const {name, avatar} = props;
   return (
     <Popup
       trigger={
         <div className={styles.headerAvatar}>
-          <Avatar size="small" src={avatar} alt="用户头像" />
+          <Avatar size="small" src={avatar} alt="用户头像"/>
           <span
             style={{
               marginLeft: 10,
@@ -39,15 +39,15 @@ const HeaderAvatar = props => {
         <UserProfile {...props} />
         <Menu className={styles.menu}>
           <Item>
-            <Icon size="small" type="account" />
+            <Icon size="small" type="account"/>
             个人设置
           </Item>
           <Item>
-            <Icon size="small" type="set" />
+            <Icon size="small" type="set"/>
             系统设置
           </Item>
           <Item>
-            <Icon size="small" type="exit" />
+            <Icon size="small" type="exit"/>
             退出
           </Item>
         </Menu>

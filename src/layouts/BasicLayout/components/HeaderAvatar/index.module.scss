@@ -20,9 +20,11 @@
     .next-menu-item {
       color: $color-text1-3;
     }
+
     .next-menu-item-inner {
       height: 40px;
     }
+
     .next-icon {
       margin-right: 8px;
     }
@@ -44,12 +46,14 @@
 
 .content {
   flex: 1 0 auto;
+
   h4 {
     margin: 0;
     font-weight: bold;
     font-size: 14px;
     line-height: 22px;
   }
+
   span {
     color: $color-text1-3;
     font-size: 12px;

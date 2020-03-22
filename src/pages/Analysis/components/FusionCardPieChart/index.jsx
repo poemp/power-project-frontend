@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Radio, Card, Box } from '@alifd/next';
-import { Chart, Geom, Coord, Axis, Legend, Guide } from 'bizcharts';
+import React, {useState} from 'react';
+import {Radio, Card, Box} from '@alifd/next';
+import {Chart, Geom, Coord, Axis, Legend, Guide} from 'bizcharts';
 import styles from './index.module.scss';
 
-const { Html } = Guide;
+const {Html} = Guide;
 const DEFAULT_DATA = {
   title: '销售额类别占比',
   value: 183112,
@@ -38,16 +38,16 @@ const DEFAULT_DATA = {
 };
 
 const FusionCardLineChart = props => {
-  const { cardConfig = DEFAULT_DATA } = props;
-  const { title, value, chartData, chartHeight } = cardConfig;
+  const {cardConfig = DEFAULT_DATA} = props;
+  const {title, value, chartData, chartHeight} = cardConfig;
   const [type, setType] = useState('one');
 
   const changeType = key => setType(key);
 
   return (
     <Card free>
-      <Card.Header title={title} />
-      <Card.Divider />
+      <Card.Header title={title}/>
+      <Card.Divider/>
       <Card.Content>
         <Box align="center">
           <Radio.Group
@@ -68,8 +68,8 @@ const FusionCardLineChart = props => {
           </Radio.Group>
         </Box>
         <Chart width={10} height={chartHeight} forceFit data={chartData} padding={['auto', 'auto']}>
-          <Coord type="theta" radius={0.75} innerRadius={0.6} />
-          <Axis name="percent" />
+          <Coord type="theta" radius={0.75} innerRadius={0.6}/>
+          <Axis name="percent"/>
           <Legend
             position="bottom"
             layout="vertical"

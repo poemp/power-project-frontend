@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import { Input, Message, Form } from '@alifd/next';
-import { useInterval } from './utils';
+import {Input, Message, Form} from '@alifd/next';
+import {useInterval} from './utils';
 import styles from './index.module.scss';
 
-const { Item } = Form;
+const {Item} = Form;
 export default function RegisterBlock() {
   const [postData, setValue] = useState({
     email: '',
@@ -70,7 +70,7 @@ export default function RegisterBlock() {
 
         <Form value={postData} onChange={formChange} size="large">
           <Item format="email" required requiredMessage="必填">
-            <Input name="email" size="large" maxLength={20} placeholder="邮箱" />
+            <Input name="email" size="large" maxLength={20} placeholder="邮箱"/>
           </Item>
           <Item required requiredMessage="必填">
             <Input.Password
@@ -95,7 +95,7 @@ export default function RegisterBlock() {
               innerBefore={
                 <span className={styles.innerBeforeInput}>
                   +86
-                  <span className={styles.line} />
+                  <span className={styles.line}/>
                 </span>
               }
               maxLength={20}
@@ -108,7 +108,7 @@ export default function RegisterBlock() {
               size="large"
               innerAfter={
                 <span className={styles.innerAfterInput}>
-                  <span className={styles.line} />
+                  <span className={styles.line}/>
                   <Form.Submit
                     text
                     type="primary"

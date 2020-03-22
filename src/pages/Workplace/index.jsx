@@ -1,9 +1,9 @@
 import React from 'react';
-import { ResponsiveGrid } from '@alifd/next';
+import {ResponsiveGrid} from '@alifd/next';
 import PageHeader from '@/components/PageHeader';
 import WorkTable from './components/WorkTable';
 
-const { Cell } = ResponsiveGrid;
+const {Cell} = ResponsiveGrid;
 
 const Workplace = () => (
   <ResponsiveGrid gap={0}>
@@ -21,7 +21,7 @@ const Workplace = () => (
     </Cell>
 
     <Cell colSpan={12}>
-      <WorkTable />
+      <WorkTable/>
     </Cell>
   </ResponsiveGrid>
 );

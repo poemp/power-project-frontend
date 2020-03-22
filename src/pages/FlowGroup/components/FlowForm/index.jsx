@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { findDOMNode } from 'react-dom';
+import React, {useEffect, useState, useRef} from 'react';
+import {findDOMNode} from 'react-dom';
 import {
   Box,
   Card,
@@ -57,10 +57,14 @@ const DEFAULT_DATA = {
 const FlowForm = props => {
   const {
     dataSource = DEFAULT_DATA,
-    onAgree = () => {},
-    onRefuse = () => {},
-    onTransfer = () => {},
-    onSignature = () => {},
+    onAgree = () => {
+    },
+    onRefuse = () => {
+    },
+    onTransfer = () => {
+    },
+    onSignature = () => {
+    },
   } = props;
   const field = Field.useField({
     values: dataSource.approval,
@@ -80,19 +84,19 @@ const FlowForm = props => {
       <Card free>
         <Card.Content>
           <Step shape="dot" current={1}>
-            <Step.Item key={0} title="申请" />
-            <Step.Item key={1} title="审批" content="李强" />
-            <Step.Item key={2} title="接受" />
-            <Step.Item key={3} title="合同发送" />
-            <Step.Item key={4} title="合同接受" />
-            <Step.Item key={5} title="入职准备" />
-            <Step.Item key={6} title="完成" />
+            <Step.Item key={0} title="申请"/>
+            <Step.Item key={1} title="审批" content="李强"/>
+            <Step.Item key={2} title="接受"/>
+            <Step.Item key={3} title="合同发送"/>
+            <Step.Item key={4} title="合同接受"/>
+            <Step.Item key={5} title="入职准备"/>
+            <Step.Item key={6} title="完成"/>
           </Step>
         </Card.Content>
       </Card>
       <Card free>
-        <Card.Header title="审批信息" />
-        <Card.Divider />
+        <Card.Header title="审批信息"/>
+        <Card.Divider/>
         <Card.Content>
           <Form labelAlign="top" fullWidth field={field} responsive>
             <Form.Item label="审批人" colSpan={4} required>
@@ -120,20 +124,20 @@ const FlowForm = props => {
               </Radio.Group>
             </Form.Item>
             <Form.Item label="意见&反馈" colSpan={8}>
-              <Input.TextArea maxLength={500} hasLimitHint placeholder="请输入描述" />
+              <Input.TextArea maxLength={500} hasLimitHint placeholder="请输入描述"/>
             </Form.Item>
           </Form>
         </Card.Content>
       </Card>
       <Card free>
-        <Card.Header title="候选人信息" />
-        <Card.Divider />
+        <Card.Header title="候选人信息"/>
+        <Card.Divider/>
         <Card.Content>
           <ResponsiveGrid>
             <ResponsiveGrid.Cell colSpan={6}>
               <Box spacing={16} direction="row" align="top">
                 <Box padding={[9, 0, 0, 0]}>
-                  <Avatar src={dataSource.person.avatar} />
+                  <Avatar src={dataSource.person.avatar}/>
                 </Box>
                 <Box spacing={10}>
                   <Form labelAlign="top" responsive>
@@ -164,7 +168,7 @@ const FlowForm = props => {
                 position: 'relative',
               }}
             >
-              <Divider className={styles.Divider} direction="ver" />
+              <Divider className={styles.Divider} direction="ver"/>
               <Form labelAlign="top" responsive>
                 <Form.Item label="职级" colSpan={6}>
                   <span className="next-form-preview">{dataSource.person.rank}</span>
@@ -189,8 +193,8 @@ const FlowForm = props => {
         </Card.Content>
       </Card>
       <Card free>
-        <Card.Header title="基础信息" />
-        <Card.Divider />
+        <Card.Header title="基础信息"/>
+        <Card.Divider/>
         <Card.Content>
           <Form labelAlign="top" responsive>
             <Form.Item label="姓氏" required colSpan={4}>
@@ -215,8 +219,8 @@ const FlowForm = props => {
         </Card.Content>
       </Card>
       <Card free>
-        <Card.Header title="工作经历" />
-        <Card.Divider />
+        <Card.Header title="工作经历"/>
+        <Card.Divider/>
         {dataSource.person.experiences.map(experience => (
           <Card.Content>
             <Box>
@@ -236,7 +240,7 @@ const FlowForm = props => {
                 </Form.Item>
               </Form>
             </Box>
-            <Divider dashed />
+            <Divider dashed/>
             <Box>
               <Typography.Text className={styles.SubTitle}>待遇信息</Typography.Text>
               <Form labelAlign="top" responsive>

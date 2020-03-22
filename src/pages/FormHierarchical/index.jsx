@@ -1,9 +1,9 @@
 import React from 'react';
-import { ResponsiveGrid } from '@alifd/next';
+import {ResponsiveGrid} from '@alifd/next';
 import PageHeader from '@/components/PageHeader';
 import HierarchicalForm from './components/HierarchicalForm';
 
-const { Cell } = ResponsiveGrid;
+const {Cell} = ResponsiveGrid;
 
 const FormHierarchical = () => (
   <ResponsiveGrid gap={20}>
@@ -23,7 +23,7 @@ const FormHierarchical = () => (
     </Cell>
 
     <Cell colSpan={12}>
-      <HierarchicalForm />
+      <HierarchicalForm/>
     </Cell>
   </ResponsiveGrid>
 );

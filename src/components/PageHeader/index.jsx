@@ -1,9 +1,9 @@
 import React from 'react';
-import { Breadcrumb, Box, Typography } from '@alifd/next';
+import {Breadcrumb, Box, Typography} from '@alifd/next';
 import styles from './index.module.scss';
 
 const PageHeader = props => {
-  const { breadcrumbs, title, description } = props;
+  const {breadcrumbs, title, description} = props;
   return (
     <Box spacing={8} className={styles.PageHeader}>
       {breadcrumbs && breadcrumbs.length > 0 ? (

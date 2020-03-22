@@ -1,5 +1,5 @@
 import React from 'react';
-import { ResponsiveGrid } from '@alifd/next';
+import {ResponsiveGrid} from '@alifd/next';
 import FusionCardAreaChart from './components/CardAreaChart';
 import FusionCardPieChart from './components/CardPieChart';
 import WebInfoBlock from './components/WebInfoBlock';
@@ -7,36 +7,36 @@ import VisitBlock from './components/VisitBlock';
 import TrendChart from './components/TrendChart';
 import mock from './mock.js';
 
-const { Cell } = ResponsiveGrid;
+const {Cell} = ResponsiveGrid;
 
 const MonitorBlock = () => (
   <ResponsiveGrid gap={20}>
     <Cell colSpan={3}>
-      <WebInfoBlock cardConfig={mock.JSErrorRate} />
+      <WebInfoBlock cardConfig={mock.JSErrorRate}/>
     </Cell>
     <Cell colSpan={6} rowSpan={2}>
-      <VisitBlock />
+      <VisitBlock/>
     </Cell>
     <Cell colSpan={3}>
-      <WebInfoBlock cardConfig={mock.APISuccessRate} />
+      <WebInfoBlock cardConfig={mock.APISuccessRate}/>
     </Cell>
     <Cell colSpan={3}>
-      <WebInfoBlock cardConfig={mock.FirstRenderTime} />
+      <WebInfoBlock cardConfig={mock.FirstRenderTime}/>
     </Cell>
     <Cell colSpan={3}>
-      <WebInfoBlock cardConfig={mock.ResourceError} />
+      <WebInfoBlock cardConfig={mock.ResourceError}/>
     </Cell>
 
     <Cell colSpan={12}>
-      <TrendChart />
+      <TrendChart/>
     </Cell>
 
     <Cell colSpan={8}>
-      <FusionCardPieChart />
+      <FusionCardPieChart/>
     </Cell>
 
     <Cell colSpan={4}>
-      <FusionCardAreaChart />
+      <FusionCardAreaChart/>
     </Cell>
   </ResponsiveGrid>
 );
