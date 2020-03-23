@@ -10,7 +10,7 @@ const {Group: TagGroup, Selectable: SelectableTag} = Tag;
 const {Cell} = ResponsiveGrid;
 
 
-class ProjectList extends React.Component {
+class ProjectTaskList extends React.Component {
   // eslint-disable-next-line no-useless-constructor
   constructor(props) {
     super(props);
@@ -34,22 +34,26 @@ class ProjectList extends React.Component {
 
   // eslint-disable-next-line react/no-deprecated
   componentWillMount = () => {
-    this.getProviderClassifyList();
+    const params = new URLSearchParams(this.props.location.search);
+    const id = params.get("id");
+    this.setState({
+      id: id
+    },()=>{
+      this.getProviderClassifyList();
+    });
+
   };
 
   /**
    * 获取数据
    */
   getProviderClassifyList = (pageNum) => {
-    const _this = this;
     const that = this;
-    that.pageNum = typeof (pageNum) == "number" ? pageNum : that.pageNum;
-    let address = url.url + '/v1/project/queryProject/' + that.pageSize + '/' + that.pageNum ;
+    let address = url.url + '/v1/projectTask/queryByProjectId/' + this.state.id ;
     this.$http.get(address)
       .then(function (response) {
         const {data} = response;
-        const mockData = data.data.dataList;
-        that.totalNum = data.data.total;
+        const mockData = data.data;
         mockData.forEach(
           (o, index) => {
             o["number"] = index + 1;
@@ -57,7 +61,6 @@ class ProjectList extends React.Component {
         );
         that.setState({
           mockData: mockData,
-          current: data.data.current
         });
       })
       .catch(function (error) {
@@ -66,9 +69,6 @@ class ProjectList extends React.Component {
 
   };
 
-  deleteTenantRole = () => {
-
-  };
 
 
   /**
@@ -115,23 +115,13 @@ class ProjectList extends React.Component {
       <div>
         <div className='container-table'>
           <Table dataSource={mockData} primaryKey="id" className={styles.table}>
-            <Table.Column align="center" title="序号" dataIndex="number"/>
-            <Table.Column align="center" title="项目名称" dataIndex="name"/>
-            <Table.Column align="center" title="开始时间" dataIndex="startTime"/>
-            <Table.Column align="center" title="结束时间" dataIndex="endTime"/>
-            <Table.Column align="center" title="状态" dataIndex="status" cell={
-              (value, index, record) => {
-                if (record.status == 0){
-                  return (
-                    <span>不可用</span>
-                  )
-                }else{
-                  return (
-                    <span>可用</span>
-                  )
-                }
-              }
-            }/>
+            <Table.Column align="center" title="任务的执行人" dataIndex="number"/>
+            <Table.Column align="center" title="交办时间" dataIndex="name"/>
+            <Table.Column align="center" title="计划开始时间" dataIndex="startTime"/>
+            <Table.Column align="center" title="计划结束时间" dataIndex="endTime"/>
+            <Table.Column align="center" title="实际开始时间" dataIndex="endTime"/>
+            <Table.Column align="center" title="实际结束时间" dataIndex="endTime"/>
+            <Table.Column align="center" title="进度" dataIndex="endTime"/>
             <Table.Column align="center" title="操作" cell={
               (value, index, record) => {
                 return (
@@ -139,7 +129,7 @@ class ProjectList extends React.Component {
 
                     <Button type="normal" size="small" text className='zgph-btn-edit'>
                       <Link
-                        to={'project-task-list?id=' + record.id}>编辑</Link>
+                        to={'add-goods-type?id=' + record.id}>编辑</Link>
                     </Button>
 
                     <Button type="normal" size="small" text className='zgph-btn-delete'
@@ -159,4 +149,4 @@ class ProjectList extends React.Component {
   }
 }
 
-export default ProjectList;
+export default ProjectTaskList;

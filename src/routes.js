@@ -7,6 +7,7 @@ import Analysis from '@/pages/Analysis';
 import Monitor from '@/pages/Monitor';
 import Workplace from '@/pages/Workplace';
 import TableListPage from '@/pages/TableListPage';
+import ProjectTaskList from '@/pages/ProjectTaskManage/ProjectTaskList';
 
 const routerConfig = [
   {
@@ -50,6 +51,10 @@ const routerConfig = [
       {
         path: '/list/table',
         component: TableListPage,
+      } ,
+      {
+        path: '/list/project-task-list',
+        component: ProjectTaskList,
       } ,
       {
         path: '/',
