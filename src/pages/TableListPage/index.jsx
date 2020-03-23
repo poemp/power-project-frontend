@@ -1,7 +1,7 @@
 import React from 'react';
 import {ResponsiveGrid} from '@alifd/next';
 import PageHeader from '@/components/PageHeader';
-import BasicList from './components/BasicList';
+import ProjectList from '@/pages/TableListPage/components/ProjectList';
 
 const {Cell} = ResponsiveGrid;
 
@@ -9,13 +9,13 @@ const TableListPage = () => (
   <ResponsiveGrid gap={20}>
     <Cell colSpan={12}>
       <PageHeader
-        title="表格列表"
+        title="项目管理"
         breadcrumbs={[
           {
-            name: '列表页面',
+            name: '项目管理',
           },
           {
-            name: '表格列表',
+            name: '项目列表',
           },
         ]}
         description="表格列表描述表格列表描述表格列表描述表格列表描述表格列表描述表格列表描述表格列表描述"
@@ -23,7 +23,7 @@ const TableListPage = () => (
     </Cell>
 
     <Cell colSpan={12}>
-      <BasicList/>
+      <ProjectList/>
     </Cell>
   </ResponsiveGrid>
 );
