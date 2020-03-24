@@ -10,7 +10,10 @@
 .TagBox {
   padding: 0 $shell-dark-content-paddingLeft $s-8;
 }
-
+.pagination {
+  margin-bottom: 20px;
+  text-align: center;
+}
 .TagBoxItem {
   display: flex;
   align-items: center;
