@@ -6,7 +6,7 @@ import Solution from '@/pages/Solution';
 import Analysis from '@/pages/Analysis';
 import Monitor from '@/pages/Monitor';
 import Workplace from '@/pages/Workplace';
-import TableListPage from '@/pages/TableListPage';
+import TableListPage from '@/pages/ProjectListPage';
 import ProjectTaskList from '@/pages/ProjectTaskManage/ProjectTaskList';
 
 const routerConfig = [
