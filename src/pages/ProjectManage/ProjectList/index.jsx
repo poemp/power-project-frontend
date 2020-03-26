@@ -1,10 +1,9 @@
 import React from 'react';
-import {Button, Message, ResponsiveGrid, Table, Tag,} from '@alifd/next';
+import {Button, Dialog, Message, ResponsiveGrid, Table, Tag} from '@alifd/next';
 import styles from './index.module.scss';
 import PageHeader from '@/components/PageHeader';
 import {Link} from 'react-router-dom';
 import $http from '@/service/Services';
-import PowerDialog from '@/components/PowerDialog';
 import url from '@/request';
 
 const {Group: TagGroup, Selectable: SelectableTag} = Tag;
@@ -19,12 +18,7 @@ class ProjectListPage extends React.Component {
     this.state = {
       current: 0,
       mockData: [],
-      config: {
-        data: null,
-        visible: false,
-        title: '',
-        content: ''
-      }
+      visible: false,
     };
     this.pageNum = 0;
     // 分页每页显示数据条数
@@ -59,6 +53,7 @@ class ProjectListPage extends React.Component {
         );
         that.setState({
           mockData: mockData,
+          visible: false,
           current: data.data.current
         });
       })
@@ -68,35 +63,35 @@ class ProjectListPage extends React.Component {
 
   };
 
-  deleteTenantRole = () => {
-
-  };
-
 
   /**
-   * 取消按钮的操作
+   * 删除
    */
-  cancelCall = () => {
+  deleteTenantRole = (value) => {
     this.setState({
-      config: {
-        visible: false
-      }
+      visible: true,
+      value: value
     });
-    console.log('点击取消按钮 .');
+  };
+  /**
+   * 取消提示弹框
+   */
+  onCloseDialog = reason => {
+    this.setState({
+      visible: false
+    });
   };
 
 
   /**
    * 删除
    */
-  okCall = (data) => {
+  onOkDialog = () => {
     this.setState({
-      config: {
-        visible: false
-      }
+      visible: false
     });
     const _this = this;
-    this.$http.post(url.url + '/v1/project/deleteRole?roleId=' + data.id, {})
+    this.$http.post(url.url + '/v1/project/deleteProject?id=' + this.state.value.id, {})
       .then(function (response) {
         const {data} = response;
         if (data.code === 1) {
@@ -113,6 +108,7 @@ class ProjectListPage extends React.Component {
 
   render() {
     const {mockData} = this.state;
+    console.log(this.state.visible);
     return (
       <ResponsiveGrid gap={20}>
         <Cell colSpan={12}>
@@ -131,7 +127,7 @@ class ProjectListPage extends React.Component {
         </Cell>
 
         <Cell colSpan={12}>
-          <Button style={{marginBottom: 10}} type="primary">添加</Button>
+          <Button style={{marginBottom: 10}}> <Link to={'/list/project-add-update?id='}>添加</Link></Button>
           <div>
             <div className='container-table'>
               <Table dataSource={mockData} primaryKey="id" className={styles.table}>
@@ -156,10 +152,9 @@ class ProjectListPage extends React.Component {
                   (value, index, record) => {
                     return (
                       <div>
-
-                        <Button type="primary">
+                        <Button style={{marginRight: 10}}>
                           <Link
-                            to={'project-task-list?id=' + record.id}>编辑</Link>
+                            to={'/list/project-add-update?id=' + record.id}>编辑</Link>
                         </Button>
                         &nbsp;&nbsp;
                         <Button type="normal" onClick={this.deleteTenantRole.bind(this, record)} warning>
@@ -171,10 +166,18 @@ class ProjectListPage extends React.Component {
                   }
                 }/>
               </Table>
-              <PowerDialog config={this.state.config} cancelCall={this.cancelCall} okCall={this.okCall}/>
             </div>
           </div>
         </Cell>
+        <Dialog
+          className='zgph-dialog'
+          title="提示信息"
+          visible={this.state.visible}
+          onOk={this.onOkDialog}
+          onCancel={this.onCloseDialog.bind(this, 'cancelClick')}
+          onClose={this.onCloseDialog}>
+          删除后不能恢复，确认要删除？
+        </Dialog>
       </ResponsiveGrid>
     );
 

@@ -8,6 +8,7 @@ import Monitor from '@/pages/Monitor';
 import Workplace from '@/pages/Workplace';
 import TableListPage from '@/pages/ProjectManage/ProjectList';
 import ProjectTaskList from '@/pages/ProjectTaskManage/ProjectTaskList';
+import ProjectAdd from '@/pages/ProjectManage/ProjectAdd';
 
 const routerConfig = [
   {
@@ -55,6 +56,10 @@ const routerConfig = [
       {
         path: '/list/project-task-list',
         component: ProjectTaskList,
+      } ,
+      {
+        path: '/list/project-add-update',
+        component: ProjectAdd,
       } ,
       {
         path: '/',
