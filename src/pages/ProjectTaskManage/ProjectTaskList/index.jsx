@@ -1,11 +1,11 @@
 import React from 'react';
-import {Button, Dialog, Icon, Message, ResponsiveGrid, Table, Tag, Radio} from '@alifd/next';
+import {Balloon, Button, Dialog, Icon, Message, ResponsiveGrid, Table} from '@alifd/next';
 import $http from '@/service/Services';
 import url from '@/request';
 import styles from './index.module.scss';
 import PageHeader from '@/components/PageHeader';
 
-const {Group: TagGroup, Selectable: SelectableTag} = Tag;
+const Tooltip = Balloon.Tooltip;
 const {Cell} = ResponsiveGrid;
 
 class ProjectTaskList extends React.Component {
@@ -59,6 +59,7 @@ class ProjectTaskList extends React.Component {
           }
         );
         that.forEachRow(mockData, {});
+        that.forEachSetKey(mockData);
         that.setState({
           mockData: mockData,
           visible: false,
@@ -120,11 +121,26 @@ class ProjectTaskList extends React.Component {
    * @param index
    * @returns {{className: string}}
    */
-  rowProps = (record, index)=> {
-    if (record.selected){
+  rowProps = (record, index) => {
+    if (record.selected) {
       return {className: styles.rowSelect};
     }
   };
+
+  /**
+   * 循环
+   * @param arr
+   * @param record
+   */
+  forEachSetKey(arr) {
+    for (let i = 0; i < arr.length; i++) {
+      arr[i]._key = arr[i].key;
+      if (arr[i].children && Array.isArray(arr[i].children)) {
+        this.forEachSetKey(arr[i].children);
+      }
+    }
+  }
+
   /**
    * 循环
    * @param arr
@@ -133,6 +149,7 @@ class ProjectTaskList extends React.Component {
   forEachRow(arr, record) {
     for (let i = 0; i < arr.length; i++) {
       arr[i].selected = record.id === arr[i].id;
+      arr[i].sequence = i + 1;
       if (arr[i].children && Array.isArray(arr[i].children)) {
         this.forEachRow(arr[i].children, record);
       }
@@ -146,14 +163,66 @@ class ProjectTaskList extends React.Component {
    * @param e  {Event} DOM事件对象
    */
   onRowClick = (record, index, e) => {
-    const r = record.selected ? {}:record;
+    const r = record.selected ? {id: -1} : record;
     const {mockData} = this.state;
-    this.forEachRow(mockData,r);
+    this.forEachRow(mockData, r);
     this.setState({
-      selectRow: record,
-      mockData:mockData
+      selectRow: r,
+      mockData: mockData
     });
   };
+
+  /**
+   * 选中的验证
+   */
+  checkSelect = () => {
+    const {selectRow} = this.state;
+    if (selectRow.id && selectRow.id !== -1) {
+      return true;
+    }
+    Message.warning('请选择需要操作列');
+    return false;
+  };
+
+
+  /**
+   * 循环
+   * @param arr
+   * @param record
+   */
+  checkArr(arr, record) {
+    for (let i = 0; i < arr.length; i++) {
+      if (record.id === arr[i].id) {
+        arr.push({
+          sequence: arr.length,
+          _id: new Date().getTime()
+        });
+        return arr;
+      } else {
+        if (arr[i].children && Array.isArray(arr[i].children)) {
+          const children = this.checkArr(arr[i].children, record);
+          arr[i].children = children;
+          return arr;
+        }
+      }
+    }
+  }
+
+  /**
+   * 添加任务
+   */
+  addProjectTask = () => {
+    const h = this.checkSelect();
+    if (!h) {
+      return;
+    }
+    const {selectRow, mockData} = this.state;
+    const data = this.checkArr(mockData, selectRow);
+    this.setState({
+      mockData: data
+    })
+  };
+
 
   render() {
     const {mockData} = this.state;
@@ -178,7 +247,7 @@ class ProjectTaskList extends React.Component {
           <div>
             <div style={{marginTop: 5, marginBottom: 5}}>
               <Button.Group>
-                <Button size={'small'}><Icon type="add"/>新建</Button>
+                <Button size={'small'} onClick={this.addProjectTask.bind(this)}><Icon type="add"/>新建</Button>
                 <Button size={'small'}><Icon type="close"/>删除</Button>
               </Button.Group>
               &nbsp;&nbsp;
@@ -197,7 +266,7 @@ class ProjectTaskList extends React.Component {
                      size={'small'}
                      isZebra={true}
                      onRowClick={this.onRowClick}
-                     primaryKey="id"
+                     primaryKey="_key"
                      isTree={true}
                      rowProps={this.rowProps.bind(this)}
               >
