@@ -1,10 +1,8 @@
 import React from 'react';
-import {Button, Dialog, Message, ResponsiveGrid, Table, Tag,} from '@alifd/next';
-import styles from './index.module.scss';
-import {Link} from 'react-router-dom';
+import {Button, Dialog, Icon, Message, ResponsiveGrid, Table, Tag, Radio} from '@alifd/next';
 import $http from '@/service/Services';
-import PowerDialog from '@/components/PowerDialog';
 import url from '@/request';
+import styles from './index.module.scss';
 import PageHeader from '@/components/PageHeader';
 
 const {Group: TagGroup, Selectable: SelectableTag} = Tag;
@@ -19,6 +17,7 @@ class ProjectTaskList extends React.Component {
     this.state = {
       id: '1',
       current: 0,
+      selectRow: {},
       mockData: [],
       visible: false,
     };
@@ -59,6 +58,7 @@ class ProjectTaskList extends React.Component {
             o['number'] = index + 1;
           }
         );
+        that.forEachRow(mockData, {});
         that.setState({
           mockData: mockData,
           visible: false,
@@ -114,9 +114,49 @@ class ProjectTaskList extends React.Component {
       })
   };
 
+  /**
+   *
+   * @param record
+   * @param index
+   * @returns {{className: string}}
+   */
+  rowProps = (record, index)=> {
+    if (record.selected){
+      return {className: styles.rowSelect};
+    }
+  };
+  /**
+   * 循环
+   * @param arr
+   * @param record
+   */
+  forEachRow(arr, record) {
+    for (let i = 0; i < arr.length; i++) {
+      arr[i].selected = record.id === arr[i].id;
+      if (arr[i].children && Array.isArray(arr[i].children)) {
+        this.forEachRow(arr[i].children, record);
+      }
+    }
+  }
+
+  /**
+   *
+   * @param record  {Object} 该行所对应的数据
+   * @param index {Number} 该行所对应的序列
+   * @param e  {Event} DOM事件对象
+   */
+  onRowClick = (record, index, e) => {
+    const r = record.selected ? {}:record;
+    const {mockData} = this.state;
+    this.forEachRow(mockData,r);
+    this.setState({
+      selectRow: record,
+      mockData:mockData
+    });
+  };
+
   render() {
     const {mockData} = this.state;
-    console.log(this.state.visible);
     return (
       <ResponsiveGrid gap={20}>
         <Cell colSpan={12}>
@@ -136,18 +176,42 @@ class ProjectTaskList extends React.Component {
 
         <Cell colSpan={12}>
           <div>
+            <div style={{marginTop: 5, marginBottom: 5}}>
+              <Button.Group>
+                <Button size={'small'}><Icon type="add"/>新建</Button>
+                <Button size={'small'}><Icon type="close"/>删除</Button>
+              </Button.Group>
+              &nbsp;&nbsp;
+              <Button.Group>
+                <Button size={'small'}><Icon type="arrow-double-left"/>前进</Button>
+                <Button size={'small'}>后退<Icon type="arrow-double-right"/></Button>
+              </Button.Group>
+              &nbsp;&nbsp;
+              <Button.Group>
+                <Button size={'small'}><Icon type="arrow-up"/>上移</Button>
+                <Button size={'small'}>下移<Icon type="arrow-down"/></Button>
+              </Button.Group>
+            </div>
             <div className='container-table'>
-              <Table dataSource={mockData} primaryKey="key" isTree rowSelection={{
-                onChange: () => {
-                }
-              }}>
+              <Table dataSource={mockData}
+                     size={'small'}
+                     isZebra={true}
+                     onRowClick={this.onRowClick}
+                     primaryKey="id"
+                     isTree={true}
+                     rowProps={this.rowProps.bind(this)}
+              >
                 <Table.Column title="任务" dataIndex="taskName"/>
-                <Table.Column title="执行人" dataIndex="userName"/>
-                <Table.Column title="交办时间" dataIndex="assignedTime"/>
-                <Table.Column title="计划开始时间" dataIndex="planStartTime"/>
-                <Table.Column title="计划结束时间" dataIndex="planEndTime"/>
-                <Table.Column title="实际开始时间" dataIndex="realityStartTime"/>
-                <Table.Column title="实际结束时间" dataIndex="realityEndTime"/>
+                <Table.Column title="执行人" dataIndex="userName" align={'center'}/>
+                <Table.Column title="交办时间" dataIndex="assignedTime" align={'center'}/>
+                <Table.ColumnGroup title="计划" align={'center'}>
+                  <Table.Column title="计划开始时间" dataIndex="planStartTime" align={'center'}/>
+                  <Table.Column title="计划结束时间" dataIndex="planEndTime" align={'center'}/>
+                </Table.ColumnGroup>
+                <Table.ColumnGroup title="实际" align={'center'}>
+                  <Table.Column title="实际开始时间" dataIndex="realityStartTime" align={'center'}/>
+                  <Table.Column title="实际结束时间" dataIndex="realityEndTime" align={'center'}/>
+                </Table.ColumnGroup>
               </Table>
             </div>
           </div>
