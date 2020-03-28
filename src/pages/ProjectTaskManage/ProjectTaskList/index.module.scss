@@ -1,4 +1,4 @@
-@import "~@alifd/next/variables.scss";
+@import "../../../../node_modules/@alifd/next/variables";
 
 .CardList {
   margin-top: -$shell-dark-content-paddingTop;
@@ -10,10 +10,7 @@
 .TagBox {
   padding: 0 $shell-dark-content-paddingLeft $s-8;
 }
-.pagination {
-  margin-bottom: 20px;
-  text-align: center;
-}
+
 .TagBoxItem {
   display: flex;
   align-items: center;

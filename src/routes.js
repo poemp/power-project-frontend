@@ -54,12 +54,12 @@ const routerConfig = [
         component: TableListPage,
       } ,
       {
-        path: '/list/project-task-list',
-        component: ProjectTaskList,
-      } ,
-      {
         path: '/list/project-add-update',
         component: ProjectAdd,
+      } ,
+      {
+        path: '/list/task',
+        component: ProjectTaskList,
       } ,
       {
         path: '/',

@@ -31,6 +31,17 @@ const asideMenuConfig = [
     ],
   },
   {
+    name: '计划管理',
+    path: '/',
+    icon: 'calendar',
+    children: [
+      {
+        name: '项目计划',
+        path: '/list/task',
+      },
+    ],
+  },
+  {
     name: '设置页面',
     path: '/',
     icon: 'set',
