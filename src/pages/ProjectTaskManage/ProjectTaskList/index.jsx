@@ -269,7 +269,7 @@ class ProjectTaskList extends React.Component {
   insertIntoDataList = (arr, parent, data) => {
     if (parent.id === undefined) {
       arr.push({
-        sequence: arr.length + 1,
+        sequence: arr.sequence,
         assignedTime: data.assignedTime,
         id: data.id,
         _key: data.id + '_' + (arr.length + 1),
@@ -285,7 +285,7 @@ class ProjectTaskList extends React.Component {
           children = [];
         }
         children.push({
-          sequence: arr.length,
+          sequence: arr.sequence,
           assignedTime: data.assignedTime,
           id: data.id,
           children: [],
