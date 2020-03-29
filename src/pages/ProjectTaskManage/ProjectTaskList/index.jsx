@@ -176,6 +176,9 @@ class ProjectTaskList extends React.Component {
    */
   onRowClick = (record, index, e) => {
     e.stopPropagation();
+    if (e.target.tagName === 'DIV') {
+      this.selectRowInput(record, 'taskName', e)
+    }
     if (e.target.tagName === 'INPUT') {
       return;
     }
@@ -246,8 +249,11 @@ class ProjectTaskList extends React.Component {
    * @param value 输入的返回值
    */
   selectRowInput = (record, properties, event, value) => {
-    event.stopPropagation();
-    if (event.target === event.currentTarget && record.selected) {
+    //如果没有选中，则向上传输事件
+    if (true === record['selected']) {
+      event.stopPropagation();
+    }
+    if ((event.target === event.currentTarget && record.selected) || event.target.tagName === 'DIV') {
       if (record[properties + '_selected']) {
         console.log(value);
       }
@@ -305,7 +311,7 @@ class ProjectTaskList extends React.Component {
               >
                 <Table.Column title="任务" dataIndex="taskName" cell={
                   (value, index, record) => {
-                    const pro = "taskName";
+                    const pro = 'taskName';
                     if (record[pro + '_selected']) {
                       return (
                         <Input
