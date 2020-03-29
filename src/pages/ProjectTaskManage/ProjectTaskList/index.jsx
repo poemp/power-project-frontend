@@ -103,7 +103,7 @@ class ProjectTaskList extends React.Component {
       visible: false
     });
     const _this = this;
-    this.$http.post(url.url + '/v1/project/deleteProject?id=' + this.state.value.id, {})
+    this.$http.post(url.url + '/v1/projectTask/deleteProject?id=' + this.state.value.id, {})
       .then(function (response) {
         const {data} = response;
         if (data.code === 1) {
@@ -127,6 +127,20 @@ class ProjectTaskList extends React.Component {
   rowProps = (record, index) => {
     if (record.selected) {
       return {className: styles.rowSelect};
+    }
+  };
+
+  /**
+   * 单元格的属性
+   * @param rowIndex {Number} 该行所对应的序列
+   * @param colIndex  {Number} 该列所对应的序列
+   * @param dataIndex {String} 该列所对应的字段名称
+   * @param record {Object} 该行对应的记录
+   * @returns {{colSpan: number}|{rowSpan: number}}
+   */
+  cellProps = (rowIndex, colIndex, dataIndex, record) => {
+    return {
+      id: rowIndex + '@' + colIndex + '@' + dataIndex
     }
   };
 
@@ -179,8 +193,12 @@ class ProjectTaskList extends React.Component {
    */
   onRowClick = (record, index, e) => {
     e.stopPropagation();
+    //点击的单元格
     if (e.target.tagName === 'DIV') {
-      this.selectRowInput(record, 'taskName', e)
+      const parentId = e.target.parentNode.id;
+      let ids = parentId.split('@');
+      let pro = ids[ids.length - 1];
+      this.selectRowInput(record, pro, e)
     }
     if (e.target.tagName === 'INPUT') {
       return;
@@ -205,6 +223,7 @@ class ProjectTaskList extends React.Component {
     Message.warning('请选择需要操作列');
     return false;
   };
+
 
 
   /**
@@ -252,6 +271,11 @@ class ProjectTaskList extends React.Component {
    * @param value 输入的返回值
    */
   selectRowInput = (record, properties, event, value) => {
+    for (let p in record) {
+      if (p !== properties) {
+        record[p + '_selected'] = false;
+      }
+    }
     if (event) {
       //如果没有选中，则向上传输事件
       if (true === record['selected']) {
@@ -259,16 +283,52 @@ class ProjectTaskList extends React.Component {
       }
       if ((event.target === event.currentTarget && record.selected) || event.target.tagName === 'DIV') {
         if (record[properties + '_selected']) {
-          console.log(value);
+          this.changePostChangeDate(record, properties, value, () => {
+            record[properties + '_selected'] = false;
+            record[properties] = value;
+            this.setState({});
+          })
         }
         record[properties + '_selected'] = !record[properties + '_selected'];
         this.setState({});
       }
     } else {
-      console.log(value);
+      //时间控件
+      this.changePostChangeDate(record, properties, value, () => {
+        record[properties + '_selected'] = !record[properties + '_selected'];
+        record[properties] = value;
+        this.setState({});
+      })
     }
   };
 
+  /**
+   * 发送数据到后台
+   * @param record 记录值
+   * @param properties 属性
+   * @param value 新的值
+   * @param call 回调函数
+   */
+  changePostChangeDate = (record, properties, value, call) => {
+    const obj2 = JSON.parse(JSON.stringify(record));
+    obj2[properties] = value;
+    const that = this;
+    this.$http.post(url.url + '/v1/projectTask/updateProjectTask', obj2)
+      .then(function (response) {
+        const {data} = response;
+        if (data.code === 1) {
+          Message.warning(data.message ? data.message : data.data);
+        } else {
+          Message.success('操作成功.');
+          if (call && typeof call === 'function') {
+            call();
+          }
+        }
+      })
+      .catch(function (error) {
+        Message.error(error.message);
+      })
+  };
 
   render() {
     const {mockData} = this.state;
@@ -313,6 +373,7 @@ class ProjectTaskList extends React.Component {
                      isZebra={true}
                      onRowClick={this.onRowClick}
                      primaryKey="_key"
+                     cellProps={this.cellProps}
                      isTree={true}
                      rowProps={this.rowProps.bind(this)}
               >
@@ -359,12 +420,92 @@ class ProjectTaskList extends React.Component {
                   }
                 }/>
                 <Table.ColumnGroup title="计划" align={'center'}>
-                  <Table.Column title="计划开始时间" dataIndex="planStartTime" align={'center'}/>
-                  <Table.Column title="计划结束时间" dataIndex="planEndTime" align={'center'}/>
+                  <Table.Column title="计划开始时间" dataIndex="planStartTime" align={'center'} cell={
+                    (value, index, record) => {
+                      const pro = 'planStartTime';
+                      if (record[pro + '_selected']) {
+                        return (
+                          <DatePicker size={'small'}
+                                      value={record[pro]}
+                                      onChange={(val) => {
+                                        const v = moment(val).format('YYYY-MM-DD');
+                                        this.selectRowInput(record, pro, null, v)
+                                      }}/>
+                        )
+                      } else {
+                        return (
+                          <span onClick={(e) => {
+                            this.selectRowInput(record, pro, e)
+                          }}>{record[pro]}</span>
+                        )
+                      }
+                    }
+                  }/>
+                  <Table.Column title="计划结束时间" dataIndex="planEndTime" align={'center'} cell={
+                    (value, index, record) => {
+                      const pro = 'planEndTime';
+                      if (record[pro + '_selected']) {
+                        return (
+                          <DatePicker size={'small'}
+                                      value={record[pro]}
+                                      onChange={(val) => {
+                                        const v = moment(val).format('YYYY-MM-DD');
+                                        this.selectRowInput(record, pro, null, v)
+                                      }}/>
+                        )
+                      } else {
+                        return (
+                          <span onClick={(e) => {
+                            this.selectRowInput(record, pro, e)
+                          }}>{record[pro]}</span>
+                        )
+                      }
+                    }
+                  }/>
                 </Table.ColumnGroup>
                 <Table.ColumnGroup title="实际" align={'center'}>
-                  <Table.Column title="实际开始时间" dataIndex="realityStartTime" align={'center'}/>
-                  <Table.Column title="实际结束时间" dataIndex="realityEndTime" align={'center'}/>
+                  <Table.Column title="实际开始时间" dataIndex="realityStartTime" align={'center'} cell={
+                    (value, index, record) => {
+                      const pro = 'realityStartTime';
+                      if (record[pro + '_selected']) {
+                        return (
+                          <DatePicker size={'small'}
+                                      value={record[pro]}
+                                      onChange={(val) => {
+                                        const v = moment(val).format('YYYY-MM-DD');
+                                        this.selectRowInput(record, pro, null, v)
+                                      }}/>
+                        )
+                      } else {
+                        return (
+                          <span onClick={(e) => {
+                            this.selectRowInput(record, pro, e)
+                          }}>{record[pro]}</span>
+                        )
+                      }
+                    }
+                  }/>
+                  <Table.Column title="实际结束时间" dataIndex="realityEndTime" align={'center'} cell={
+                    (value, index, record) => {
+                      const pro = 'realityEndTime';
+                      if (record[pro + '_selected']) {
+                        return (
+                          <DatePicker size={'small'}
+                                      value={record[pro]}
+                                      onChange={(val) => {
+                                        const v = moment(val).format('YYYY-MM-DD');
+                                        this.selectRowInput(record, pro, null, v)
+                                      }}/>
+                        )
+                      } else {
+                        return (
+                          <span onClick={(e) => {
+                            this.selectRowInput(record, pro, e)
+                          }}>{record[pro]}</span>
+                        )
+                      }
+                    }
+                  }/>
                 </Table.ColumnGroup>
               </Table>
             </div>

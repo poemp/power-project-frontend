@@ -119,7 +119,6 @@ class ProjectAdd extends React.Component {
     value["startTime"] = startValueFormat;
     value["endTime"] = endTimeFormat;
     value["status"] = value["status1"] ?1:0;
-    console.log(value);
     const that = this;
     this.$http.post(url.url + '/v1/project/saveOrUpdateProject', value)
       .then(function (response) {
