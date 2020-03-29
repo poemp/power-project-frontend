@@ -79,7 +79,11 @@ class ProjectTaskList extends React.Component {
   /**
    * 删除
    */
-  deleteTenantRole = (value) => {
+  deleteProjectTask = (value) => {
+    const h = this.checkSelect();
+    if (!h) {
+      return;
+    }
     this.setState({
       visible: true,
       value: value
@@ -94,23 +98,54 @@ class ProjectTaskList extends React.Component {
     });
   };
 
+  /**
+   * 删除，删除成功后，删除界面的数据
+   * @param arr
+   * @param record
+   * @param parent
+   * @returns {*}
+   */
+  deleteForEach(arr, id, parent) {
+    if (parent.id === undefined) {
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i].id === id) {
+          arr.splice(i, 1);
+          return arr;
+        }
+      }
+    }
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].id === id) {
+        arr.splice(i, 1);
+        return arr;
+      } else {
+        if (arr[i].children && Array.isArray(arr[i].children)) {
+          arr[i].children = this.deleteForEach(arr[i].children, id, arr[i]);
+          return arr;
+        }
+      }
+    }
+  }
 
   /**
    * 删除
    */
   onOkDialog = () => {
-    this.setState({
-      visible: false
-    });
     const _this = this;
-    this.$http.post(url.url + '/v1/projectTask/deleteProject?id=' + this.state.value.id, {})
+    const {selectRow} = this.state;
+    this.$http.post(url.url + '/v1/projectTask/deleteProjectTaskById?projectTaskId=' + selectRow.id, {})
       .then(function (response) {
         const {data} = response;
         if (data.code === 1) {
           Message.warning(data.message ? data.message : data.data);
         } else {
           Message.success('操作成功.');
-          _this.getProviderClassifyList();
+          const {mockData} = _this.state;
+          const _mockData = _this.deleteForEach(mockData, selectRow.id, {});
+          _this.setState({
+            visible: false,
+            mockData: _mockData
+          });
         }
       })
       .catch(function (error) {
@@ -281,7 +316,6 @@ class ProjectTaskList extends React.Component {
           const {mockData} = _this.state;
           const d = data.data;
           const _mockData = _this.insertIntoDataList(mockData, parent, d);
-          console.log(_mockData);
           _this.setState({
             mockData: _mockData
           });
@@ -411,13 +445,12 @@ class ProjectTaskList extends React.Component {
             description="表格列表描述表格列表描述表格列表描述表格列表描述表格列表描述表格列表描述表格列表描述"
           />
         </Cell>
-
         <Cell colSpan={12}>
           <div>
             <div style={{marginTop: 5, marginBottom: 5}}>
               <Button.Group>
                 <Button size={'small'} onClick={this.addProjectTask.bind(this)}><Icon type="add"/>新建</Button>
-                <Button size={'small'}><Icon type="close"/>删除</Button>
+                <Button size={'small'} onClick={this.deleteProjectTask.bind(this)}><Icon type="close"/>删除</Button>
               </Button.Group>
               &nbsp;&nbsp;
               <Button.Group>
