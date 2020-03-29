@@ -1,5 +1,5 @@
 import React from 'react';
-import {Balloon, Button, Dialog, Icon, Message, ResponsiveGrid, Table} from '@alifd/next';
+import {Balloon, Button, Dialog, Icon, Message, ResponsiveGrid, Table, Input} from '@alifd/next';
 import $http from '@/service/Services';
 import url from '@/request';
 import styles from './index.module.scss';
@@ -134,10 +134,20 @@ class ProjectTaskList extends React.Component {
    */
   forEachSetKey(arr) {
     for (let i = 0; i < arr.length; i++) {
-      arr[i]._key = arr[i].key;
       if (arr[i].children && Array.isArray(arr[i].children)) {
         this.forEachSetKey(arr[i].children);
       }
+    }
+  }
+
+  /**
+   * 某一列的选中
+   * @param row
+   * @param selected true 选中 falese 没有选中
+   */
+  propertiesChecked(row, selected) {
+    for (let r in row) {
+      row[r + '_selected'] = selected;
     }
   }
 
@@ -149,7 +159,9 @@ class ProjectTaskList extends React.Component {
   forEachRow(arr, record) {
     for (let i = 0; i < arr.length; i++) {
       arr[i].selected = record.id === arr[i].id;
+      this.propertiesChecked(arr[i], arr[i].selected);
       arr[i].sequence = i + 1;
+      arr[i]['_key'] = arr[i].id + '_' + arr[i].sequence;
       if (arr[i].children && Array.isArray(arr[i].children)) {
         this.forEachRow(arr[i].children, record);
       }
@@ -270,7 +282,23 @@ class ProjectTaskList extends React.Component {
                      isTree={true}
                      rowProps={this.rowProps.bind(this)}
               >
-                <Table.Column title="任务" dataIndex="taskName"/>
+                <Table.Column title="任务" dataIndex="taskName" cell={
+                  (value, index, record) => {
+                    if (record['taskName_selected']) {
+                      return (
+                        <Input trim placeholder="输入任务名称" aria-label="不能输入空"/>
+                      )
+                    } else {
+                      return (
+                        <span onClick={(e) => {
+                          console.log(e);
+                          e.stopPropagation();
+                          record['taskName__selected'] = true
+                        }}>{record.taskName + record["_key"]}</span>
+                      )
+                    }
+                  }
+                }/>
                 <Table.Column title="执行人" dataIndex="userName" align={'center'}/>
                 <Table.Column title="交办时间" dataIndex="assignedTime" align={'center'}/>
                 <Table.ColumnGroup title="计划" align={'center'}>
