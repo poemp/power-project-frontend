@@ -224,24 +224,88 @@ class ProjectTaskList extends React.Component {
     return false;
   };
 
-
-
   /**
-   * 循环
+   * 插入数据中，页面渲染
    * @param arr
-   * @param record
+   * @param parent
+   * @param data
+   * @returns {*}
    */
-  checkArr(arr, record) {
+  insertIntoDataList = (arr, parent, data) => {
+    if (parent.id === undefined) {
+      arr.push({
+        sequence: arr.length + 1,
+        assignedTime: data.assignedTime,
+        id: data.id,
+        _key: data.id + '_' + (arr.length + 1),
+        _id: new Date().getTime()
+      });
+      return arr;
+    }
     for (let i = 0; i < arr.length; i++) {
-      if (record.id === arr[i].id) {
+      if (parent.id === arr[i].id) {
         arr.push({
           sequence: arr.length,
+          assignedTime: data.assignedTime,
+          id: data.id,
+          children: [],
           _id: new Date().getTime()
         });
         return arr;
       } else {
         if (arr[i].children && Array.isArray(arr[i].children)) {
-          arr[i].children = this.checkArr(arr[i].children, record);
+          arr[i].children = this.checkArr(arr[i].children, record, arr[i]);
+          return arr;
+        }
+      }
+    }
+  };
+
+  /**
+   * 发送请求
+   * @param parent
+   * @param call
+   */
+  insertProjectTask = (parent) => {
+    const _this = this;
+    this.$http.post(url.url + '/v1/projectTask/insertProjectTask', {
+      projectId: this.state.id,
+      parentId: parent.id
+    })
+      .then(function (response) {
+        const {data} = response;
+        if (data.code === 1) {
+          Message.warning(data.message ? data.message : data.data);
+        } else {
+          Message.success('操作成功.');
+          const {mockData} = _this.state;
+          const d = data.data;
+          const _mockData = _this.insertIntoDataList(mockData, parent, d);
+          console.log(_mockData);
+          _this.setState({
+            mockData: _mockData
+          });
+        }
+      })
+      .catch(function (error) {
+        Message.error(error.message);
+      })
+  };
+
+  /**
+   * 查询循环查询，找到插入的位置
+   * @param arr
+   * @param record
+   * @param parent
+   * @returns {*}
+   */
+  checkArr(arr, record, parent) {
+    for (let i = 0; i < arr.length; i++) {
+      if (record.id === arr[i].id) {
+        this.insertProjectTask(parent);
+      } else {
+        if (arr[i].children && Array.isArray(arr[i].children)) {
+          arr[i].children = this.checkArr(arr[i].children, record, arr[i]);
           return arr;
         }
       }
@@ -257,7 +321,7 @@ class ProjectTaskList extends React.Component {
       return;
     }
     const {selectRow, mockData} = this.state;
-    const data = this.checkArr(mockData, selectRow);
+    const data = this.checkArr(mockData, selectRow, {});
     this.setState({
       mockData: data
     })
@@ -312,7 +376,6 @@ class ProjectTaskList extends React.Component {
   changePostChangeDate = (record, properties, value, call) => {
     const obj2 = JSON.parse(JSON.stringify(record));
     obj2[properties] = value;
-    const that = this;
     this.$http.post(url.url + '/v1/projectTask/updateProjectTask', obj2)
       .then(function (response) {
         const {data} = response;
