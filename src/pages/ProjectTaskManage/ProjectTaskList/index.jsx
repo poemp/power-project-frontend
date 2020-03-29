@@ -1,12 +1,15 @@
 import React from 'react';
-import {Balloon, Button, Dialog, Icon, Input, Message, ResponsiveGrid, Table} from '@alifd/next';
+import {Balloon, Button, DatePicker, Dialog, Icon, Input, Message, ResponsiveGrid, Table} from '@alifd/next';
 import $http from '@/service/Services';
 import url from '@/request';
 import styles from './index.module.scss';
 import PageHeader from '@/components/PageHeader';
+import moment from 'moment';
 
 const Tooltip = Balloon.Tooltip;
 const {Cell} = ResponsiveGrid;
+
+moment.locale('zh-cn');
 
 class ProjectTaskList extends React.Component {
 
@@ -249,16 +252,20 @@ class ProjectTaskList extends React.Component {
    * @param value 输入的返回值
    */
   selectRowInput = (record, properties, event, value) => {
-    //如果没有选中，则向上传输事件
-    if (true === record['selected']) {
-      event.stopPropagation();
-    }
-    if ((event.target === event.currentTarget && record.selected) || event.target.tagName === 'DIV') {
-      if (record[properties + '_selected']) {
-        console.log(value);
+    if (event) {
+      //如果没有选中，则向上传输事件
+      if (true === record['selected']) {
+        event.stopPropagation();
       }
-      record[properties + '_selected'] = !record[properties + '_selected'];
-      this.setState({});
+      if ((event.target === event.currentTarget && record.selected) || event.target.tagName === 'DIV') {
+        if (record[properties + '_selected']) {
+          console.log(value);
+        }
+        record[properties + '_selected'] = !record[properties + '_selected'];
+        this.setState({});
+      }
+    } else {
+      console.log(value);
     }
   };
 
@@ -330,7 +337,27 @@ class ProjectTaskList extends React.Component {
                   }
                 }/>
                 <Table.Column title="执行人" dataIndex="userName" align={'center'}/>
-                <Table.Column title="交办时间" dataIndex="assignedTime" align={'center'}/>
+                <Table.Column title="交办时间" dataIndex="assignedTime" align={'center'} cell={
+                  (value, index, record) => {
+                    const pro = 'assignedTime';
+                    if (record[pro + '_selected']) {
+                      return (
+                        <DatePicker size={'small'}
+                                    value={record[pro]}
+                                    onChange={(val) => {
+                                      const v = moment(val).format('YYYY-MM-DD');
+                                      this.selectRowInput(record, pro, null, v)
+                                    }}/>
+                      )
+                    } else {
+                      return (
+                        <span onClick={(e) => {
+                          this.selectRowInput(record, pro, e)
+                        }}>{record[pro]}</span>
+                      )
+                    }
+                  }
+                }/>
                 <Table.ColumnGroup title="计划" align={'center'}>
                   <Table.Column title="计划开始时间" dataIndex="planStartTime" align={'center'}/>
                   <Table.Column title="计划结束时间" dataIndex="planEndTime" align={'center'}/>
