@@ -1,5 +1,5 @@
 import React from 'react';
-import {Balloon, Button, Dialog, Icon, Message, ResponsiveGrid, Table, Input} from '@alifd/next';
+import {Balloon, Button, Dialog, Icon, Input, Message, ResponsiveGrid, Table} from '@alifd/next';
 import $http from '@/service/Services';
 import url from '@/request';
 import styles from './index.module.scss';
@@ -159,7 +159,7 @@ class ProjectTaskList extends React.Component {
   forEachRow(arr, record) {
     for (let i = 0; i < arr.length; i++) {
       arr[i].selected = record.id === arr[i].id;
-      this.propertiesChecked(arr[i], arr[i].selected);
+      this.propertiesChecked(arr[i], false);
       arr[i].sequence = i + 1;
       arr[i]['_key'] = arr[i].id + '_' + arr[i].sequence;
       if (arr[i].children && Array.isArray(arr[i].children)) {
@@ -175,6 +175,10 @@ class ProjectTaskList extends React.Component {
    * @param e  {Event} DOM事件对象
    */
   onRowClick = (record, index, e) => {
+    e.stopPropagation();
+    if (e.target.tagName === 'INPUT') {
+      return;
+    }
     const r = record.selected ? {id: -1} : record;
     const {mockData} = this.state;
     this.forEachRow(mockData, r);
@@ -212,8 +216,7 @@ class ProjectTaskList extends React.Component {
         return arr;
       } else {
         if (arr[i].children && Array.isArray(arr[i].children)) {
-          const children = this.checkArr(arr[i].children, record);
-          arr[i].children = children;
+          arr[i].children = this.checkArr(arr[i].children, record);
           return arr;
         }
       }
@@ -233,6 +236,24 @@ class ProjectTaskList extends React.Component {
     this.setState({
       mockData: data
     })
+  };
+
+  /**
+   * 选中输入
+   * @param record 显示的数据
+   * @param properties 管理的属性
+   * @param event 事件
+   * @param value 输入的返回值
+   */
+  selectRowInput = (record, properties, event, value) => {
+    event.stopPropagation();
+    if (event.target === event.currentTarget && record.selected) {
+      if (record[properties + '_selected']) {
+        console.log(value);
+      }
+      record[properties + '_selected'] = !record[properties + '_selected'];
+      this.setState({});
+    }
   };
 
 
@@ -284,17 +305,20 @@ class ProjectTaskList extends React.Component {
               >
                 <Table.Column title="任务" dataIndex="taskName" cell={
                   (value, index, record) => {
-                    if (record['taskName_selected']) {
+                    const pro = "taskName";
+                    if (record[pro + '_selected']) {
                       return (
-                        <Input trim placeholder="输入任务名称" aria-label="不能输入空"/>
+                        <Input
+                          defaultValue={record[pro]}
+                          onBlur={(e) => {
+                            this.selectRowInput(record, pro, e, e.target.value)
+                          }} trim placeholder="输入任务名称" aria-label="不能输入空"/>
                       )
                     } else {
                       return (
                         <span onClick={(e) => {
-                          console.log(e);
-                          e.stopPropagation();
-                          record['taskName__selected'] = true
-                        }}>{record.taskName + record["_key"]}</span>
+                          this.selectRowInput(record, pro, e)
+                        }}>{record[pro]}</span>
                       )
                     }
                   }
