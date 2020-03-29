@@ -277,19 +277,25 @@ class ProjectTaskList extends React.Component {
       });
       return arr;
     }
+
     for (let i = 0; i < arr.length; i++) {
       if (parent.id === arr[i].id) {
-        arr.push({
+        let children = arr[i].children;
+        if (children === undefined){
+          children = [];
+        }
+        children.push({
           sequence: arr.length,
           assignedTime: data.assignedTime,
           id: data.id,
           children: [],
           _id: new Date().getTime()
         });
+        arr[i].children = children;
         return arr;
       } else {
         if (arr[i].children && Array.isArray(arr[i].children)) {
-          arr[i].children = this.checkArr(arr[i].children, record, arr[i]);
+          this.insertIntoDataList(arr[i].children, arr[i] , data );
           return arr;
         }
       }
@@ -339,8 +345,7 @@ class ProjectTaskList extends React.Component {
         this.insertProjectTask(parent);
       } else {
         if (arr[i].children && Array.isArray(arr[i].children)) {
-          arr[i].children = this.checkArr(arr[i].children, record, arr[i]);
-          return arr;
+          this.checkArr(arr[i].children, record, arr[i]);
         }
       }
     }
@@ -355,10 +360,7 @@ class ProjectTaskList extends React.Component {
       return;
     }
     const {selectRow, mockData} = this.state;
-    const data = this.checkArr(mockData, selectRow, {});
-    this.setState({
-      mockData: data
-    })
+    this.checkArr(mockData, selectRow, {});
   };
 
   /**
