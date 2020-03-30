@@ -281,7 +281,7 @@ class ProjectTaskList extends React.Component {
     for (let i = 0; i < arr.length; i++) {
       if (parent.id === arr[i].id) {
         let children = arr[i].children;
-        if (children === undefined){
+        if (children === undefined) {
           children = [];
         }
         children.push({
@@ -295,7 +295,7 @@ class ProjectTaskList extends React.Component {
         return arr;
       } else {
         if (arr[i].children && Array.isArray(arr[i].children)) {
-          this.insertIntoDataList(arr[i].children, arr[i] , data );
+          this.insertIntoDataList(arr[i].children, arr[i], data);
           return arr;
         }
       }
@@ -429,6 +429,51 @@ class ProjectTaskList extends React.Component {
       })
   };
 
+  /**
+   * 向上移动一位
+   * @param arr
+   * @param record
+   */
+  moveUpItem(arr, record) {
+    let index = -1;
+    for (let i = 0; i < arr.length; i++) {
+      if (record.id === arr[i].id) {
+        index = i;
+        break;
+      } else {
+        if (arr[i].children && Array.isArray(arr[i].children)) {
+          arr[i].children = this.moveUpItem(arr[i].children, record);
+        }
+      }
+    }
+    if (index !== 0 && index - 1 >= 0) {
+      let sequence = arr[index - 1];
+      arr[index - 1] = arr[index];
+      arr[index] = sequence;
+    }
+    return arr;
+  }
+
+  /**
+   * 向上移动一个
+   */
+  moveUp = () => {
+    const h = this.checkSelect();
+    if (!h) {
+      return;
+    }
+    const _this =this;
+    const {selectRow, mockData} = this.state;
+    const _mockData = this.moveUpItem(mockData, selectRow);
+    _this.setState({
+      mockData: _mockData
+    });
+  };
+
+  /**
+   * 返回视图
+   * @returns {*}
+   */
   render() {
     const {mockData} = this.state;
     return (
@@ -461,7 +506,7 @@ class ProjectTaskList extends React.Component {
               </Button.Group>
               &nbsp;&nbsp;
               <Button.Group>
-                <Button size={'small'}><Icon type="arrow-up"/>上移</Button>
+                <Button size={'small'} onClick={this.moveUp.bind(this)}><Icon type="arrow-up"/>上移</Button>
                 <Button size={'small'}>下移<Icon type="arrow-down"/></Button>
               </Button.Group>
             </div>
