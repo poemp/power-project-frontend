@@ -462,9 +462,50 @@ class ProjectTaskList extends React.Component {
     if (!h) {
       return;
     }
-    const _this =this;
+    const _this = this;
     const {selectRow, mockData} = this.state;
     const _mockData = this.moveUpItem(mockData, selectRow);
+    _this.setState({
+      mockData: _mockData
+    });
+  };
+
+  /**
+   * 向上移动一位
+   * @param arr
+   * @param record
+   */
+  moveDownItem(arr, record) {
+    let index = 99999999;
+    for (let i = 0; i < arr.length; i++) {
+      if (record.id === arr[i].id) {
+        index = i;
+        break;
+      } else {
+        if (arr[i].children && Array.isArray(arr[i].children)) {
+          arr[i].children = this.moveDownItem(arr[i].children, record);
+        }
+      }
+    }
+    if (index !== arr.length - 1 && index + 1 <= arr.length) {
+      let sequence = arr[index + 1];
+      arr[index + 1] = arr[index];
+      arr[index] = sequence;
+    }
+    return arr;
+  }
+
+  /**
+   * 向上移动一个
+   */
+  moveDown = () => {
+    const h = this.checkSelect();
+    if (!h) {
+      return;
+    }
+    const _this = this;
+    const {selectRow, mockData} = this.state;
+    const _mockData = this.moveDownItem(mockData, selectRow);
     _this.setState({
       mockData: _mockData
     });
@@ -507,7 +548,7 @@ class ProjectTaskList extends React.Component {
               &nbsp;&nbsp;
               <Button.Group>
                 <Button size={'small'} onClick={this.moveUp.bind(this)}><Icon type="arrow-up"/>上移</Button>
-                <Button size={'small'}>下移<Icon type="arrow-down"/></Button>
+                <Button size={'small'} onClick={this.moveDown.bind(this)}>下移<Icon type="arrow-down"/></Button>
               </Button.Group>
             </div>
             <div className='container-table'>
