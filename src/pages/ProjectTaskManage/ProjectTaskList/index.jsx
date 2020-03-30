@@ -199,7 +199,9 @@ class ProjectTaskList extends React.Component {
    */
   propertiesChecked(row, selected) {
     for (let r in row) {
-      row[r + '_selected'] = selected;
+
+        row[r + '_selected'] = selected;
+
     }
   }
 
@@ -471,7 +473,7 @@ class ProjectTaskList extends React.Component {
   };
 
   /**
-   * 向上移动一位
+   * 向下移动一位
    * @param arr
    * @param record
    */
@@ -512,6 +514,59 @@ class ProjectTaskList extends React.Component {
   };
 
   /**
+   * 向上移动一位
+   * @param arr
+   * @param record
+   */
+  drawBackItem(arr, record) {
+    let index = -1;
+    for (let i = 0; i < arr.length; i++) {
+      if (record.id === arr[i].id) {
+        index = i;
+        break;
+      } else {
+        if (arr[i].children && Array.isArray(arr[i].children)) {
+          arr[i].children = this.moveUpItem(arr[i].children, record);
+        }
+      }
+    }
+    if (index !== 0 && index - 1 >= 0) {
+      const thisItem = arr.splice(index, 1);
+      if (arr[index - 1].children === null || arr[index - 1].children === undefined) {
+        arr[index - 1].children = [];
+      }
+      console.log(thisItem[0]);
+      arr[index - 1].children.push(thisItem[0]);
+      for (let i = 0; i < arr.length; i++) {
+        arr[i].sequence = i + 1;
+        arr[i]['_key'] = arr[i].id + '_' + (i + 1);
+      }
+      for (let i = 0; i < arr[index - 1].children.length; i++) {
+        arr[index - 1].children.sequence = i + 1;
+        arr[index - 1]['_key'] = arr[index - 1].id + '_' + (i + 1);
+      }
+    }
+    console.log(arr);
+    return arr;
+  }
+
+  /**
+   * 向后移动一位
+   */
+  drawBack = () => {
+    const h = this.checkSelect();
+    if (!h) {
+      return;
+    }
+    const _this = this;
+    const {selectRow, mockData} = this.state;
+    const _mockData = this.drawBackItem(mockData, selectRow);
+    _this.setState({
+      mockData: _mockData
+    });
+  };
+
+  /**
    * 返回视图
    * @returns {*}
    */
@@ -530,7 +585,7 @@ class ProjectTaskList extends React.Component {
                 name: '计划列表',
               },
             ]}
-            description="表格列表描述表格列表描述表格列表描述表格列表描述表格列表描述表格列表描述表格列表描述"
+            description="项目计划列表"
           />
         </Cell>
         <Cell colSpan={12}>
@@ -543,7 +598,7 @@ class ProjectTaskList extends React.Component {
               &nbsp;&nbsp;
               <Button.Group>
                 <Button size={'small'}><Icon type="arrow-double-left"/>前进</Button>
-                <Button size={'small'}>后退<Icon type="arrow-double-right"/></Button>
+                <Button size={'small'} onClick={this.drawBack.bind(this)}>后退<Icon type="arrow-double-right"/></Button>
               </Button.Group>
               &nbsp;&nbsp;
               <Button.Group>
