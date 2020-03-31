@@ -20,6 +20,7 @@ class ProjectTaskList extends React.Component {
     this.state = {
       id: '1',
       current: 0,
+      loading: true,
       selectRow: {},
       mockData: [],
       visible: false,
@@ -45,10 +46,32 @@ class ProjectTaskList extends React.Component {
   };
 
   /**
+   * 加载
+   */
+  loadingFun = () => {
+    this.setState(
+      {
+        loading: true
+      }
+    )
+  };
+
+  /**
+   * 不显示加载
+   */
+  disLoadingFun = () => {
+    this.setState(
+      {
+        loading: false
+      }
+    )
+  };
+  /**
    * 获取数据
    */
   getProviderClassifyList = (pageNum) => {
     const that = this;
+    this.loadingFun();
     that.pageNum = typeof (pageNum) == 'number' ? pageNum : that.pageNum;
     let address = url.url + '/v1/projectTask/queryByProjectId/' + this.state.id + '/' + that.pageSize + '/' + that.pageNum;
     this.$http.get(address)
@@ -67,10 +90,13 @@ class ProjectTaskList extends React.Component {
           mockData: mockData,
           visible: false,
           current: data.data.current
+        },()=>{
+          that.disLoadingFun();
         });
       })
       .catch(function (error) {
         Message.error(error.message);
+        that.disLoadingFun();
       })
 
   };
@@ -132,6 +158,7 @@ class ProjectTaskList extends React.Component {
    */
   onOkDialog = () => {
     const _this = this;
+    this.loadingFun();
     const {selectRow} = this.state;
     this.$http.post(url.url + '/v1/projectTask/deleteProjectTaskById?projectTaskId=' + selectRow.id, {})
       .then(function (response) {
@@ -145,11 +172,14 @@ class ProjectTaskList extends React.Component {
           _this.setState({
             visible: false,
             mockData: _mockData
+          },()=>{
+            _this.disLoadingFun();
           });
         }
       })
       .catch(function (error) {
         Message.error(error.message);
+        _this.disLoadingFun();
       })
   };
 
@@ -199,9 +229,7 @@ class ProjectTaskList extends React.Component {
    */
   propertiesChecked(row, selected) {
     for (let r in row) {
-
-        row[r + '_selected'] = selected;
-
+      row[r + '_selected'] = selected;
     }
   }
 
@@ -311,6 +339,7 @@ class ProjectTaskList extends React.Component {
    */
   insertProjectTask = (parent) => {
     const _this = this;
+    this.loadingFun();
     this.$http.post(url.url + '/v1/projectTask/insertProjectTask', {
       projectId: this.state.id,
       parentId: parent.id
@@ -326,11 +355,14 @@ class ProjectTaskList extends React.Component {
           const _mockData = _this.insertIntoDataList(mockData, parent, d);
           _this.setState({
             mockData: _mockData
+          },()=>{
+            _this.disLoadingFun();
           });
         }
       })
       .catch(function (error) {
         Message.error(error.message);
+        _this.disLoadingFun();
       })
   };
 
@@ -357,8 +389,10 @@ class ProjectTaskList extends React.Component {
    * 添加任务
    */
   addProjectTask = () => {
+    this.loadingFun();
     const h = this.checkSelect();
     if (!h) {
+      this.disLoadingFun();
       return;
     }
     const {selectRow, mockData} = this.state;
@@ -412,8 +446,10 @@ class ProjectTaskList extends React.Component {
    * @param call 回调函数
    */
   changePostChangeDate = (record, properties, value, call) => {
+    this.loadingFun();
     const obj2 = JSON.parse(JSON.stringify(record));
     obj2[properties] = value;
+    const _this = this;
     this.$http.post(url.url + '/v1/projectTask/updateProjectTask', obj2)
       .then(function (response) {
         const {data} = response;
@@ -424,10 +460,12 @@ class ProjectTaskList extends React.Component {
           if (call && typeof call === 'function') {
             call();
           }
+          _this.disLoadingFun();
         }
       })
       .catch(function (error) {
         Message.error(error.message);
+        _this.disLoadingFun();
       })
   };
 
@@ -526,7 +564,7 @@ class ProjectTaskList extends React.Component {
         break;
       } else {
         if (arr[i].children && Array.isArray(arr[i].children)) {
-          arr[i].children = this.moveUpItem(arr[i].children, record);
+          arr[i].children = this.drawBackItem(arr[i].children, record);
         }
       }
     }
@@ -535,7 +573,6 @@ class ProjectTaskList extends React.Component {
       if (arr[index - 1].children === null || arr[index - 1].children === undefined) {
         arr[index - 1].children = [];
       }
-      console.log(thisItem[0]);
       arr[index - 1].children.push(thisItem[0]);
       for (let i = 0; i < arr.length; i++) {
         arr[i].sequence = i + 1;
@@ -546,7 +583,6 @@ class ProjectTaskList extends React.Component {
         arr[index - 1]['_key'] = arr[index - 1].id + '_' + (i + 1);
       }
     }
-    console.log(arr);
     return arr;
   }
 
@@ -614,6 +650,7 @@ class ProjectTaskList extends React.Component {
                      primaryKey="_key"
                      cellProps={this.cellProps}
                      isTree={true}
+                     loading={this.state.loading}
                      rowProps={this.rowProps.bind(this)}
               >
                 <Table.Column title="任务" dataIndex="taskName" cell={
