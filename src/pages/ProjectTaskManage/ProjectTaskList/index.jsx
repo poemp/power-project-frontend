@@ -698,12 +698,6 @@ class ProjectTaskList extends React.Component {
    */
   drawForwardItem(arr, record, parents) {
     let index = -1, obj = null;
-    //最外面那一层，不需要做任务的处理
-    if (parents.some((item, index, array) => {
-      return item.id = record.id;
-    })) {
-      return arr;
-    }
     for (let i = 0; i < arr.length; i++) {
       if (record.id === arr[i].id) {
         index = i;
