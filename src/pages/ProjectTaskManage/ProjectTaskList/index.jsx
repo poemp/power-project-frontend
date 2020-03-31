@@ -533,7 +533,7 @@ class ProjectTaskList extends React.Component {
     }
     const _this = this;
     const {selectRow, mockData} = this.state;
-    this.postChangeMoveUp(selectRow, ()=>{
+    this.postChangeMoveUp(selectRow, () => {
       const _mockData = this.moveUpItem(mockData, selectRow);
       _this.setState({
         mockData: _mockData
@@ -604,7 +604,7 @@ class ProjectTaskList extends React.Component {
     }
     const _this = this;
     const {selectRow, mockData} = this.state;
-    this.postChangeMoveDown(selectRow,()=>{
+    this.postChangeMoveDown(selectRow, () => {
       const _mockData = this.moveDownItem(mockData, selectRow);
       _this.setState({
         mockData: _mockData
@@ -646,7 +646,32 @@ class ProjectTaskList extends React.Component {
     }
     return arr;
   }
-
+  /**
+   * 发送数据到后台
+   * @param record
+   * @param call
+   */
+  drawBackTaskProject = (record, call) => {
+    this.loadingFun();
+    const _this = this;
+    this.$http.post(url.url + '/v1/projectTask/drawBackTaskProject?projectTaskId=' + record.id)
+      .then(function (response) {
+        const {data} = response;
+        if (data.code === 1) {
+          Message.warning(data.message ? data.message : data.data);
+        } else {
+          Message.success('操作成功.');
+          if (call && typeof call === 'function') {
+            call();
+          }
+          _this.disLoadingFun();
+        }
+      })
+      .catch(function (error) {
+        Message.error(error.message);
+        _this.disLoadingFun();
+      })
+  };
   /**
    * 向后移动一位
    */
@@ -657,10 +682,13 @@ class ProjectTaskList extends React.Component {
     }
     const _this = this;
     const {selectRow, mockData} = this.state;
-    const _mockData = this.drawBackItem(mockData, selectRow);
-    _this.setState({
-      mockData: _mockData
-    });
+    this.drawBackTaskProject(selectRow, ()=>{
+      const _mockData = this.drawBackItem(mockData, selectRow);
+      _this.setState({
+        mockData: _mockData
+      });
+    })
+
   };
 
   /**
@@ -698,7 +726,33 @@ class ProjectTaskList extends React.Component {
   }
 
   /**
-   * 向前移动一位
+   * 发送数据到后台
+   * @param record
+   * @param call
+   */
+  drawForwardTaskProject = (record, call) => {
+    this.loadingFun();
+    const _this = this;
+    this.$http.post(url.url + '/v1/projectTask/forwardProjectTask?projectTaskId=' + record.id)
+      .then(function (response) {
+        const {data} = response;
+        if (data.code === 1) {
+          Message.warning(data.message ? data.message : data.data);
+        } else {
+          Message.success('操作成功.');
+          if (call && typeof call === 'function') {
+            call();
+          }
+          _this.disLoadingFun();
+        }
+      })
+      .catch(function (error) {
+        Message.error(error.message);
+        _this.disLoadingFun();
+      })
+  };
+  /**
+   * 向后一步
    */
   drawForward = () => {
     const h = this.checkSelect();
@@ -707,10 +761,13 @@ class ProjectTaskList extends React.Component {
     }
     const _this = this;
     const {selectRow, mockData} = this.state;
-    const _mockData = this.drawForwardItem(mockData, selectRow, mockData);
-    _this.setState({
-      mockData: _mockData
+    this.drawForwardTaskProject(selectRow, () => {
+      const _mockData = this.drawForwardItem(mockData, selectRow, mockData);
+      _this.setState({
+        mockData: _mockData
+      });
     });
+
   };
 
   /**
