@@ -5,6 +5,7 @@ import url from '@/request';
 import styles from './index.module.scss';
 import PageHeader from '@/components/PageHeader';
 import moment from 'moment';
+import {string} from 'prop-types';
 
 const Tooltip = Balloon.Tooltip;
 const {Cell} = ResponsiveGrid;
@@ -90,7 +91,7 @@ class ProjectTaskList extends React.Component {
           mockData: mockData,
           visible: false,
           current: data.data.current
-        },()=>{
+        }, () => {
           that.disLoadingFun();
         });
       })
@@ -172,7 +173,7 @@ class ProjectTaskList extends React.Component {
           _this.setState({
             visible: false,
             mockData: _mockData
-          },()=>{
+          }, () => {
             _this.disLoadingFun();
           });
         }
@@ -229,7 +230,9 @@ class ProjectTaskList extends React.Component {
    */
   propertiesChecked(row, selected) {
     for (let r in row) {
-      row[r + '_selected'] = selected;
+      if (r.indexOf("_selected") === -1){
+        row[r + '_selected'] = selected;
+      }
     }
   }
 
@@ -355,7 +358,7 @@ class ProjectTaskList extends React.Component {
           const _mockData = _this.insertIntoDataList(mockData, parent, d);
           _this.setState({
             mockData: _mockData
-          },()=>{
+          }, () => {
             _this.disLoadingFun();
           });
         }
@@ -603,6 +606,56 @@ class ProjectTaskList extends React.Component {
   };
 
   /**
+   * 向上移动一位
+   * @param arr
+   * @param record
+   */
+  drawForwardItem(arr, record, parents) {
+    let index = -1, obj = null;
+    //最外面那一层，不需要做任务的处理
+    if (parents.some((item, index, array )=>{
+      return item.id = record.id;
+    })){
+      return arr;
+    }
+    for (let i = 0; i < arr.length; i++) {
+      if (record.id === arr[i].id) {
+        index = i;
+        obj = arr.splice(i, 1)[0];
+        for (let i = 0; i < arr.length; i++) {
+          arr[i].sequence = i + 1;
+          arr[i]['_key'] = arr[i].id + '_' + (i + 1);
+        }
+        break;
+      } else {
+        if (arr[i].children && Array.isArray(arr[i].children)) {
+          arr[i].children = this.drawForwardItem(arr[i].children, record, arr);
+        }
+      }
+    }
+    if (obj !== null && index !== -1) {
+      parents.push(obj);
+    }
+    return arr;
+  }
+
+  /**
+   * 向前移动一位
+   */
+  drawForward = () => {
+    const h = this.checkSelect();
+    if (!h) {
+      return;
+    }
+    const _this = this;
+    const {selectRow, mockData} = this.state;
+    const _mockData = this.drawForwardItem(mockData, selectRow, mockData);
+    _this.setState({
+      mockData: _mockData
+    });
+  };
+
+  /**
    * 返回视图
    * @returns {*}
    */
@@ -633,7 +686,7 @@ class ProjectTaskList extends React.Component {
               </Button.Group>
               &nbsp;&nbsp;
               <Button.Group>
-                <Button size={'small'}><Icon type="arrow-double-left"/>前进</Button>
+                <Button size={'small'} onClick={this.drawForward.bind(this)}><Icon type="arrow-double-left"/>前进</Button>
                 <Button size={'small'} onClick={this.drawBack.bind(this)}>后退<Icon type="arrow-double-right"/></Button>
               </Button.Group>
               &nbsp;&nbsp;
