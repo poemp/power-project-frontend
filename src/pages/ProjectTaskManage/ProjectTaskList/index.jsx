@@ -230,7 +230,7 @@ class ProjectTaskList extends React.Component {
    */
   propertiesChecked(row, selected) {
     for (let r in row) {
-      if (r.indexOf("_selected") === -1){
+      if (r.indexOf('_selected') === -1) {
         row[r + '_selected'] = selected;
       }
     }
@@ -498,6 +498,32 @@ class ProjectTaskList extends React.Component {
   }
 
   /**
+   * 发送数据到后台
+   * @param record
+   * @param call
+   */
+  postChangeMoveUp = (record, call) => {
+    this.loadingFun();
+    const _this = this;
+    this.$http.post(url.url + '/v1/projectTask/moveUpProjectTask?projectTaskId=' + record.id)
+      .then(function (response) {
+        const {data} = response;
+        if (data.code === 1) {
+          Message.warning(data.message ? data.message : data.data);
+        } else {
+          Message.success('操作成功.');
+          if (call && typeof call === 'function') {
+            call();
+          }
+          _this.disLoadingFun();
+        }
+      })
+      .catch(function (error) {
+        Message.error(error.message);
+        _this.disLoadingFun();
+      })
+  };
+  /**
    * 向上移动一个
    */
   moveUp = () => {
@@ -507,10 +533,40 @@ class ProjectTaskList extends React.Component {
     }
     const _this = this;
     const {selectRow, mockData} = this.state;
-    const _mockData = this.moveUpItem(mockData, selectRow);
-    _this.setState({
-      mockData: _mockData
-    });
+    this.postChangeMoveUp(selectRow, ()=>{
+      const _mockData = this.moveUpItem(mockData, selectRow);
+      _this.setState({
+        mockData: _mockData
+      });
+    })
+
+  };
+
+  /**
+   * 发送数据到后台
+   * @param record
+   * @param call
+   */
+  postChangeMoveDown = (record, call) => {
+    this.loadingFun();
+    const _this = this;
+    this.$http.post(url.url + '/v1/projectTask/moveDownProjectTask?projectTaskId=' + record.id)
+      .then(function (response) {
+        const {data} = response;
+        if (data.code === 1) {
+          Message.warning(data.message ? data.message : data.data);
+        } else {
+          Message.success('操作成功.');
+          if (call && typeof call === 'function') {
+            call();
+          }
+          _this.disLoadingFun();
+        }
+      })
+      .catch(function (error) {
+        Message.error(error.message);
+        _this.disLoadingFun();
+      })
   };
 
   /**
@@ -548,9 +604,11 @@ class ProjectTaskList extends React.Component {
     }
     const _this = this;
     const {selectRow, mockData} = this.state;
-    const _mockData = this.moveDownItem(mockData, selectRow);
-    _this.setState({
-      mockData: _mockData
+    this.postChangeMoveDown(selectRow,()=>{
+      const _mockData = this.moveDownItem(mockData, selectRow);
+      _this.setState({
+        mockData: _mockData
+      });
     });
   };
 
@@ -613,9 +671,9 @@ class ProjectTaskList extends React.Component {
   drawForwardItem(arr, record, parents) {
     let index = -1, obj = null;
     //最外面那一层，不需要做任务的处理
-    if (parents.some((item, index, array )=>{
+    if (parents.some((item, index, array) => {
       return item.id = record.id;
-    })){
+    })) {
       return arr;
     }
     for (let i = 0; i < arr.length; i++) {
