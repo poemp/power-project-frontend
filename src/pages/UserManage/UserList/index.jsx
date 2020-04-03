@@ -9,7 +9,7 @@ import url from '@/request';
 const {Group: TagGroup, Selectable: SelectableTag} = Tag;
 const {Cell} = ResponsiveGrid;
 
-class ProjectListPage extends React.Component {
+class UserList extends React.Component {
 
 
   // eslint-disable-next-line no-useless-constructor
@@ -226,4 +226,4 @@ class ProjectListPage extends React.Component {
   }
 }
 
-export default ProjectListPage;
+export default UserList;
