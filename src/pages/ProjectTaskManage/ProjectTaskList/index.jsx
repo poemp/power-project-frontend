@@ -393,13 +393,19 @@ class ProjectTaskList extends React.Component {
    */
   addProjectTask = () => {
     this.loadingFun();
-    const h = this.checkSelect();
-    if (!h) {
-      this.disLoadingFun();
-      return;
-    }
     const {selectRow, mockData} = this.state;
-    this.checkArr(mockData, selectRow, {});
+    if (mockData && mockData.length > 0) {
+      const h = this.checkSelect();
+      if (!h) {
+        this.disLoadingFun();
+        return;
+      }
+      this.disLoadingFun();
+      this.checkArr(mockData, selectRow, {});
+    }else {
+      this.disLoadingFun();
+      this.insertProjectTask({});
+    }
   };
 
   /**
@@ -646,6 +652,7 @@ class ProjectTaskList extends React.Component {
     }
     return arr;
   }
+
   /**
    * 发送数据到后台
    * @param record
@@ -682,7 +689,7 @@ class ProjectTaskList extends React.Component {
     }
     const _this = this;
     const {selectRow, mockData} = this.state;
-    this.drawBackTaskProject(selectRow, ()=>{
+    this.drawBackTaskProject(selectRow, () => {
       const _mockData = this.drawBackItem(mockData, selectRow);
       _this.setState({
         mockData: _mockData
