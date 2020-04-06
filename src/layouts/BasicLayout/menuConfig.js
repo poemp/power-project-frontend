@@ -42,6 +42,21 @@ const asideMenuConfig = [
     ],
   },
   {
+    name: '用户与权限',
+    path: '/',
+    icon: 'chart-bar',
+    children: [
+      {
+        name: '用户管理',
+        path: '/list/user',
+      },
+      {
+        name: '权限管理',
+        path: '/list/auth',
+      },
+    ],
+  },
+  {
     name: '设置页面',
     path: '/',
     icon: 'set',

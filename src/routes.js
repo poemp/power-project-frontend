@@ -9,6 +9,7 @@ import Workplace from '@/pages/Workplace';
 import TableListPage from '@/pages/ProjectManage/ProjectList';
 import ProjectTaskList from '@/pages/ProjectTaskManage/ProjectTaskList';
 import ProjectAdd from '@/pages/ProjectManage/ProjectAdd';
+import UserList from '@/pages/UserManage/UserList';
 
 const routerConfig = [
   {
@@ -52,15 +53,23 @@ const routerConfig = [
       {
         path: '/list/table',
         component: TableListPage,
-      } ,
+      },
       {
         path: '/list/project-add-update',
         component: ProjectAdd,
-      } ,
+      },
       {
         path: '/list/task',
         component: ProjectTaskList,
-      } ,
+      },
+      {
+        path: '/list/user',
+        component: UserList,
+      },
+      {
+        path: '/list/auth',
+        component: ProjectTaskList,
+      },
       {
         path: '/',
         redirect: '/dashboard/analysis',

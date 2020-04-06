@@ -33,17 +33,16 @@ class UserList extends React.Component {
 
 // eslint-disable-next-line react/no-deprecated
   componentWillMount = () => {
-    this.getProviderClassifyList();
+    this.getUserList();
   };
 
   /**
    * 获取数据
    */
-  getProviderClassifyList = (pageNum) => {
-    const _this = this;
+  getUserList = (pageNum) => {
     const that = this;
     that.pageNum = typeof (pageNum) == 'number' ? pageNum : that.pageNum;
-    let address = url.url + '/v1/project/queryProject/' + that.pageSize + '/' + that.pageNum;
+    let address = url.url + '/v1/user/queryUserList/' + that.pageSize + '/' + that.pageNum;
     this.$http.get(address)
       .then(function (response) {
         const {data} = response;
@@ -95,14 +94,14 @@ class UserList extends React.Component {
       visible: false
     });
     const _this = this;
-    this.$http.post(url.url + '/v1/project/deleteProject?id=' + this.state.value.id, {})
+    this.$http.post(url.url + '/v1/user/deleteUser?id=' + this.state.value.id, {})
       .then(function (response) {
         const {data} = response;
         if (data.code === 1) {
           Message.warning(data.message ? data.message : data.data);
         } else {
           Message.success('操作成功.');
-          _this.getProviderClassifyList();
+          _this.getUserList();
         }
       })
       .catch(function (error) {
@@ -135,16 +134,16 @@ class UserList extends React.Component {
       <ResponsiveGrid gap={20}>
         <Cell colSpan={12}>
           <PageHeader
-            title="项目管理"
+            title="权限与用户"
             breadcrumbs={[
               {
-                name: '项目管理',
+                name: '权限与用户',
               },
               {
-                name: '项目列表',
+                name: '用户列表',
               },
             ]}
-            description="表格列表描述表格列表描述表格列表描述表格列表描述表格列表描述表格列表描述表格列表描述"
+            description="用户管理"
           />
         </Cell>
 
@@ -154,22 +153,12 @@ class UserList extends React.Component {
             <div className='container-table'>
               <Table  size={'small'} dataSource={mockData} primaryKey="id" className={styles.table}>
                 <Table.Column align="center" title="序号" dataIndex="number"/>
-                <Table.Column align="center" title="项目名称" dataIndex="name"/>
-                <Table.Column align="center" title="开始时间" dataIndex="startTime"/>
-                <Table.Column align="center" title="结束时间" dataIndex="endTime"/>
-                <Table.Column align="center" title="状态" dataIndex="status" cell={
-                  (value, index, record) => {
-                    if (record.status == 0) {
-                      return (
-                        <span>不可用</span>
-                      )
-                    } else {
-                      return (
-                        <span>可用</span>
-                      )
-                    }
-                  }
-                }/>
+                <Table.Column align="center" title="用户名" dataIndex="name"/>
+                <Table.Column align="center" title="邮箱" dataIndex="startTime"/>
+                <Table.Column align="center" title="电话" dataIndex="endTime"/>
+                <Table.Column align="center" title="最后登录时间" dataIndex="endTime"/>
+                <Table.Column align="center" title="访问次数" dataIndex="endTime"/>
+                <Table.Column align="center" title="状态" dataIndex="statusName"/>
                 <Table.Column align="center" title="操作" cell={
                   (value, index, record) => {
                     return (
@@ -181,7 +170,7 @@ class UserList extends React.Component {
                         &nbsp;&nbsp;
                         <Button  size={"small"} disabled={record.status === 0} onClick={this.bindUser.bind(this, record)}>
                           <a onClick={() => {
-                          }}>绑定用户 </a>
+                          }}>授权 </a>
                         </Button>
                         &nbsp;&nbsp;
                         <Button type="normal" size={"small"} onClick={this.deleteTenantRole.bind(this, record)} warning>
