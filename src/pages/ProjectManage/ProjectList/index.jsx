@@ -70,7 +70,7 @@ class ProjectListPage extends React.Component {
   /**
    * 删除
    */
-  deleteTenantRole = (value) => {
+  deleteProject = (value) => {
     this.setState({
       visible: true,
       value: value
@@ -184,7 +184,7 @@ class ProjectListPage extends React.Component {
                           }}>绑定用户 </a>
                         </Button>
                         &nbsp;&nbsp;
-                        <Button type="normal" size={"small"} onClick={this.deleteTenantRole.bind(this, record)} warning>
+                        <Button type="normal" size={"small"} onClick={this.deleteProject.bind(this, record)} warning>
                           <a onClick={() => {
                           }}>删除 </a>
                         </Button>

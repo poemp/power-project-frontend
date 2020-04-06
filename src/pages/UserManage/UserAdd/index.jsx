@@ -24,7 +24,7 @@ class UserAdd extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value:{}
+      value: {}
     };
 
     this.$http = $http;
@@ -33,10 +33,10 @@ class UserAdd extends React.Component {
 // eslint-disable-next-line react/no-deprecated
   componentWillMount = () => {
     const params = new URLSearchParams(this.props.location.search);
-    const id = params.get("id");
+    const id = params.get('id');
     this.setState({
       id: id
-    },()=>{
+    }, () => {
       this.getProjectById();
     });
   };
@@ -47,7 +47,7 @@ class UserAdd extends React.Component {
   getProjectById = () => {
     if (this.state.id) {
       const that = this;
-      this.$http.get(url.url + '/v1/project/getProjectById/' + this.state.id)
+      this.$http.get(url.url + '/v1/user/getUserDetailById/' + this.state.id)
         .then(function (response) {
           const {data} = response;
           if (data.code === 1) {
@@ -58,8 +58,8 @@ class UserAdd extends React.Component {
             let end = data.data.endTime;
             rangeDate.push(moment(start));
             rangeDate.push(moment(end));
-            data.data["rangeDate"] = rangeDate;
-            data.data["status1"] = data.data["status"] ==1 ;
+            data.data['rangeDate'] = rangeDate;
+            data.data['status1'] = data.data['status'] == 1;
             that.setState({
               value: data.data
             });
@@ -102,32 +102,25 @@ class UserAdd extends React.Component {
    */
   validateAllFormField = (value, errors, field) => {
     let er = [];
-    if (errors){
+    if (errors) {
       let i = 1;
-      for (let v in errors){
-        if (errors[v]){
-          er.push((i++) +  "、"+ errors[v].errors[0]) ;
+      for (let v in errors) {
+        if (errors[v]) {
+          er.push((i++) + '、' + errors[v].errors[0]);
         }
       }
-      Message.warning(er.join("\n"));
+      Message.warning(er.join('\n'));
       return;
     }
-    let startTime = value.rangeDate[0];
-    let endTime = value.rangeDate[2];
-    const startValueFormat = moment(startTime).format('YYYY-MM-DD');
-    const endTimeFormat = moment(endTime).format('YYYY-MM-DD');
-    value["startTime"] = startValueFormat;
-    value["endTime"] = endTimeFormat;
-    value["status"] = value["status1"] ?1:0;
     const that = this;
-    this.$http.post(url.url + '/v1/project/saveOrUpdateProject', value)
+    this.$http.post(url.url + '/v1/user/addOrUpdateUser', value)
       .then(function (response) {
         const {data} = response;
         if (data.code === 1) {
-          Message.warning(data.message ? data.message : data.data);
+          Message.warning(data.data ? data.data : data.message);
         } else {
-          Message.success("操作成功.");
-          that.props.history.push("/list/table")
+          Message.success('操作成功.');
+          that.props.history.push('/list/user')
         }
       })
       .catch(function (error) {
@@ -140,16 +133,16 @@ class UserAdd extends React.Component {
       <ResponsiveGrid gap={20}>
         <Cell colSpan={12}>
           <PageHeader
-            title="项目管理"
+            title="权限与用户"
             breadcrumbs={[
               {
-                name: '项目管理',
+                name: '权限与用户',
               },
               {
-                name: '项目列表',
+                name: this.state.id ? '修改用户' : '添加用户',
               },
             ]}
-            description="表格列表描述表格列表描述表格列表描述表格列表描述表格列表描述表格列表描述表格列表描述"
+            description="添加修改用户"
           />
           <Button type="normal" size="small"
                   style={{float: 'right'}}>
@@ -163,23 +156,53 @@ class UserAdd extends React.Component {
           <Form className={styles.groupItem}
                 value={this.state.value}
                 onChange={this.formChange}
-                ref={formRef => form = formRef}  style={{maxWidth: '800px'}}  {...formItemLayout} field={this.field}>
-            <FormItem required label="项目名称:">
-              <Input placeholder="请输入项目名称" id="name" name="name" aria-required="true"   />
+                ref={formRef => form = formRef} style={{maxWidth: '800px'}}  {...formItemLayout} field={this.field}>
+            <FormItem required label="用户名字:">
+              <Input placeholder="请输入用户名字" id="name" name="name" aria-required="true"/>
             </FormItem>
-            <FormItem
-              label="项目时间:"
-              labelCol={{span: 6}}
-              required>
-              <RangePicker name="rangeDate"/>
+            <FormItem required label="登录名:">
+              <Input placeholder="请输入登录名" id="loginName" name="loginName" aria-required="true"/>
             </FormItem>
-            <FormItem label="状态:">
-              <Switch checkedChildren="开启" size={"medium"} unCheckedChildren="关闭" name="status1" aria-label="Accessible Switch" defaultChecked/>
+            {
+              [0].map(
+                o => {
+                  if (this.state.id) {
+                    return null;
+                  } else {
+                    return (
+                      <FormItem required label="密码:">
+                        <Input placeholder="请输入密码" id="password" name="password" aria-required="true"/>
+                      </FormItem>
+                    )
+                  }
+                }
+            )
+            }
+            {
+              [0].map(
+                o => {
+                  if (this.state.id) {
+                    return null;
+                  } else {
+                    return (
+                      <FormItem required label="重复密码:">
+                        <Input placeholder="请输入重复密码" id="rePassword" name="rePassword" aria-required="true"/>
+                      </FormItem>
+                    )
+                  }
+                }
+              )
+            }
+            <FormItem label="邮箱:">
+              <Input placeholder="请输入邮箱" id="email" name="email" aria-required="true"/>
+            </FormItem>
+            <FormItem label="手机号:">
+              <Input placeholder="请输入手机号" id="phone" name="phone" aria-required="true"/>
             </FormItem>
             <Row style={{marginTop: 24}}>
               <Col offset="6">
-                <Form.Submit validate type="primary" onClick={this.validateAllFormField} style={{marginRight: 7}}>提交</Form.Submit>
-                <Form.Reset style={{marginLeft: 130}}>取消/重置</Form.Reset>
+                <Form.Submit validate type="primary" onClick={this.validateAllFormField}
+                             style={{marginRight: 7}}>提交</Form.Submit>
               </Col>
             </Row>
           </Form>

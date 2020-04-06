@@ -10,6 +10,7 @@ import TableListPage from '@/pages/ProjectManage/ProjectList';
 import ProjectTaskList from '@/pages/ProjectTaskManage/ProjectTaskList';
 import ProjectAdd from '@/pages/ProjectManage/ProjectAdd';
 import UserList from '@/pages/UserManage/UserList';
+import UserAdd from '@/pages/UserManage/UserAdd';
 
 const routerConfig = [
   {
@@ -65,6 +66,10 @@ const routerConfig = [
       {
         path: '/list/user',
         component: UserList,
+      },
+      {
+        path: '/list/addUser',
+        component: UserAdd,
       },
       {
         path: '/list/auth',

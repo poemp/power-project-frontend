@@ -69,7 +69,7 @@ class UserList extends React.Component {
   /**
    * 删除
    */
-  deleteTenantRole = (value) => {
+  deleteUser = (value) => {
     this.setState({
       visible: true,
       value: value
@@ -148,32 +148,32 @@ class UserList extends React.Component {
         </Cell>
 
         <Cell colSpan={12}>
-          <Button style={{marginBottom: 10}}> <Link to={'/list/project-add-update?id='}>添加</Link></Button>
+          <Button style={{marginBottom: 10}}> <Link to={'/list/addUser?id='}>添加</Link></Button>
           <div>
             <div className='container-table'>
               <Table  size={'small'} dataSource={mockData} primaryKey="id" className={styles.table}>
                 <Table.Column align="center" title="序号" dataIndex="number"/>
                 <Table.Column align="center" title="用户名" dataIndex="name"/>
-                <Table.Column align="center" title="邮箱" dataIndex="startTime"/>
-                <Table.Column align="center" title="电话" dataIndex="endTime"/>
-                <Table.Column align="center" title="最后登录时间" dataIndex="endTime"/>
-                <Table.Column align="center" title="访问次数" dataIndex="endTime"/>
+                <Table.Column align="center" title="邮箱" dataIndex="email"/>
+                <Table.Column align="center" title="电话" dataIndex="phone"/>
                 <Table.Column align="center" title="状态" dataIndex="statusName"/>
+                <Table.Column align="center" title="访问次数" dataIndex="loginCount"/>
+                <Table.Column align="center" title="最后登录时间" dataIndex="lastLoginTime"/>
                 <Table.Column align="center" title="操作" cell={
                   (value, index, record) => {
                     return (
                       <div>
                         <Button size={"small"}  style={{marginRight: 10}}>
                           <Link
-                            to={'/list/project-add-update?id=' + record.id}>编辑</Link>
+                            to={'/list/addUser?id=' + record.id}>编辑</Link>
                         </Button>
                         &nbsp;&nbsp;
-                        <Button  size={"small"} disabled={record.status === 0} onClick={this.bindUser.bind(this, record)}>
+                        <Button  size={"small"}  onClick={this.bindUser.bind(this, record)}>
                           <a onClick={() => {
                           }}>授权 </a>
                         </Button>
                         &nbsp;&nbsp;
-                        <Button type="normal" size={"small"} onClick={this.deleteTenantRole.bind(this, record)} warning>
+                        <Button type="normal" size={"small"} onClick={this.deleteUser.bind(this, record)} warning>
                           <a onClick={() => {
                           }}>删除 </a>
                         </Button>
