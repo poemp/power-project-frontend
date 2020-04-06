@@ -1,10 +1,11 @@
 import React from 'react';
-import {Button, Dialog, Message, ResponsiveGrid, Table, Tag,Transfer } from '@alifd/next';
+import {Button, Dialog, Message, ResponsiveGrid, Table, Tag, Transfer} from '@alifd/next';
 import styles from './index.module.scss';
 import PageHeader from '@/components/PageHeader';
 import {Link} from 'react-router-dom';
 import $http from '@/service/Services';
 import url from '@/request';
+import moment from 'moment';
 
 const {Group: TagGroup, Selectable: SelectableTag} = Tag;
 const {Cell} = ResponsiveGrid;
@@ -18,9 +19,11 @@ class ProjectListPage extends React.Component {
     this.state = {
       current: 0,
       mockData: [],
-      dataSource:[],
+      dataSource: [],
+      defaultLeftChecked: [],
+      selectUserIds: [],
       visible: false,
-      bindUserDialog:false,
+      bindUserDialog: false,
     };
     this.pageNum = 0;
     // 分页每页显示数据条数
@@ -33,14 +36,13 @@ class ProjectListPage extends React.Component {
 
 // eslint-disable-next-line react/no-deprecated
   componentWillMount = () => {
-    this.getProviderClassifyList();
+    this.getProjectList();
   };
 
   /**
    * 获取数据
    */
-  getProviderClassifyList = (pageNum) => {
-    const _this = this;
+  getProjectList = (pageNum) => {
     const that = this;
     that.pageNum = typeof (pageNum) == 'number' ? pageNum : that.pageNum;
     let address = url.url + '/v1/project/queryProject/' + that.pageSize + '/' + that.pageNum;
@@ -82,7 +84,7 @@ class ProjectListPage extends React.Component {
   onCloseDialog = reason => {
     this.setState({
       visible: false,
-      bindUserDialog:false
+      bindUserDialog: false
     });
   };
 
@@ -102,7 +104,7 @@ class ProjectListPage extends React.Component {
           Message.warning(data.message ? data.message : data.data);
         } else {
           Message.success('操作成功.');
-          _this.getProviderClassifyList();
+          _this.getProjectList();
         }
       })
       .catch(function (error) {
@@ -112,14 +114,105 @@ class ProjectListPage extends React.Component {
 
   /****************************** y用户绑定 ******************************************/
 
+  onBindDialog = () => {
+    if (this.state.selectUserIds.length === 0) {
+      Message.warning('请选择需要绑定的用户.');
+      return;
+    }
+    const that = this;
+    this.$http.post(url.url + '/v1/projectUser/bindUser', {
+      projectId: this.state.row.id,
+      userIds: this.state.selectUserIds
+    })
+      .then(function (response) {
+        const {data} = response;
+        if (data.code === 1) {
+          Message.warning(data.message ? data.message : data.data);
+        } else {
+          Message.success('操作成功.');
+          that.getProjectList();
+        }
+      })
+      .catch(function (error) {
+        Message.error(error.message);
+      })
+  };
+  /**
+   * 获取用户的列表
+   */
+  getUserList = (row, fun) => {
+    const that = this;
+    this.$http.get(url.url + '/v1/user/getUserList')
+      .then(function (response) {
+        const {data} = response;
+        if (data.code === 1) {
+          Message.warning(data.message ? data.message : data.data);
+        } else {
+          const datasource = data.data.map(
+            o => {
+              return {
+                label: o.name,
+                value: o.id,
+              }
+            }
+          );
+          that.setState({
+            dataSource: datasource
+          }, () => {
+            that.getProjectUser(row, fun);
+          });
+        }
+      })
+      .catch(function (error) {
+        Message.error(error.message);
+      })
+  };
+
+
+  /**
+   * 获取用户的列表
+   */
+  getProjectUser = (row, fun) => {
+    const that = this;
+    this.$http.get(url.url + '/v1/projectUser/getProjectUser/' + row.id)
+      .then(function (response) {
+        const {data} = response;
+        if (data.code === 1) {
+          Message.warning(data.message ? data.message : data.data);
+        } else {
+          const defaultLeftChecked = data.data.map(
+            o => {
+              return o.id
+            }
+          );
+          that.setState({
+            defaultLeftChecked: defaultLeftChecked
+          }, () => {
+            if (fun && typeof fun === 'function') {
+              fun();
+            }
+          });
+        }
+      })
+      .catch(function (error) {
+        Message.error(error.message);
+      })
+  };
+
   /**
    *
    */
-  bindUser = (row)=>{
-    this.setState({
-      bindUserDialog:true
-    })
+  bindUser = (row) => {
+    this.getUserList(row, () => {
+      this.setState({
+        bindUserDialog: true,
+        row: row,
+        selectUserIds: [],
+      })
+    });
+
   };
+
   /**
    * 绑定用户弹框
    * @param value
@@ -127,10 +220,14 @@ class ProjectListPage extends React.Component {
    * @param extra
    */
   handleChange(value, data, extra) {
-    console.log(value, data, extra);
+    this.setState({
+      selectUserIds: value
+    })
   }
+
+
   render() {
-    const {mockData,dataSource} = this.state;
+    const {mockData, dataSource} = this.state;
     return (
       <ResponsiveGrid gap={20}>
         <Cell colSpan={12}>
@@ -144,7 +241,7 @@ class ProjectListPage extends React.Component {
                 name: '项目列表',
               },
             ]}
-            description="表格列表描述表格列表描述表格列表描述表格列表描述表格列表描述表格列表描述表格列表描述"
+            description="项目列表"
           />
         </Cell>
 
@@ -152,7 +249,7 @@ class ProjectListPage extends React.Component {
           <Button style={{marginBottom: 10}}> <Link to={'/list/project-add-update?id='}>添加</Link></Button>
           <div>
             <div className='container-table'>
-              <Table  size={'small'} dataSource={mockData} primaryKey="id" className={styles.table}>
+              <Table size={'small'} dataSource={mockData} primaryKey="id" className={styles.table}>
                 <Table.Column align="center" title="序号" dataIndex="number"/>
                 <Table.Column align="center" title="项目名称" dataIndex="name"/>
                 <Table.Column align="center" title="开始时间" dataIndex="startTime"/>
@@ -174,17 +271,18 @@ class ProjectListPage extends React.Component {
                   (value, index, record) => {
                     return (
                       <div>
-                        <Button size={"small"}  style={{marginRight: 10}}>
+                        <Button size={'small'} style={{marginRight: 10}}>
                           <Link
                             to={'/list/project-add-update?id=' + record.id}>编辑</Link>
                         </Button>
                         &nbsp;&nbsp;
-                        <Button  size={"small"} disabled={record.status === 0} onClick={this.bindUser.bind(this, record)}>
+                        <Button size={'small'} disabled={record.status === 0}
+                                onClick={this.bindUser.bind(this, record)}>
                           <a onClick={() => {
                           }}>绑定用户 </a>
                         </Button>
                         &nbsp;&nbsp;
-                        <Button type="normal" size={"small"} onClick={this.deleteProject.bind(this, record)} warning>
+                        <Button type="normal" size={'small'} onClick={this.deleteProject.bind(this, record)} warning>
                           <a onClick={() => {
                           }}>删除 </a>
                         </Button>
@@ -197,7 +295,6 @@ class ProjectListPage extends React.Component {
           </div>
         </Cell>
         <Dialog
-          className='zgph-dialog'
           title="提示信息"
           visible={this.state.visible}
           onOk={this.onOkDialog}
@@ -208,17 +305,16 @@ class ProjectListPage extends React.Component {
 
         {/*  添加用户弹框  */}
         <Dialog
-          className='zgph-dialog'
-          title="提示信息"
+          title="绑定用户"
           visible={this.state.bindUserDialog}
-          onOk={this.onOkDialog}
+          onOk={this.onBindDialog}
           onCancel={this.onCloseDialog.bind(this, 'cancelClick')}
           onClose={this.onCloseDialog}>
           <Transfer showSearch defaultValue={['3']}
                     dataSource={dataSource}
-                    defaultLeftChecked={['1']}
+                    defaultLeftChecked={this.state.defaultLeftChecked}
                     onChange={this.handleChange}
-                    titles={['候选', '已选']} />;
+                    titles={['候选', '已选']}/>;
         </Dialog>
       </ResponsiveGrid>
     );
