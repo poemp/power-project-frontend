@@ -1,14 +1,15 @@
 import React from 'react';
-import {Balloon, Button, DatePicker, Dialog, Icon, Input, Message, ResponsiveGrid, Table} from '@alifd/next';
+import {Balloon, Button, DatePicker, Dialog, Icon, Input, Message, ResponsiveGrid, Table, Select} from '@alifd/next';
 import $http from '@/service/Services';
 import url from '@/request';
 import styles from './index.module.scss';
 import PageHeader from '@/components/PageHeader';
 import moment from 'moment';
-import {string} from 'prop-types';
 
 const Tooltip = Balloon.Tooltip;
 const {Cell} = ResponsiveGrid;
+
+const Option = Select.Option;
 
 moment.locale('zh-cn');
 
@@ -23,6 +24,7 @@ class ProjectTaskList extends React.Component {
       current: 0,
       loading: true,
       selectRow: {},
+      userList: [],
       mockData: [],
       visible: false,
     };
@@ -38,14 +40,37 @@ class ProjectTaskList extends React.Component {
   componentWillMount = () => {
     const params = new URLSearchParams(this.props.location.search);
     // const id = params.get('id');
-    const id = 1;
+    const id = "443530419212783616";
     this.setState({
       id: id
     }, () => {
+      this.getProjectUserById();
       this.getProviderClassifyList();
     });
   };
 
+
+  /**
+   * 获取数据
+   */
+  getProjectUserById = () => {
+    const that = this;
+    this.$http.get(url.url + '/v1/projectUser/getProjectUser/' + this.state.id)
+      .then(function (response) {
+        const {data} = response;
+        if (data.code === 1) {
+          Message.warning(data.message ? data.message : data.data);
+        } else {
+          that.setState({
+            userList: data.data
+          });
+          that.forceUpdate();
+        }
+      })
+      .catch(function (error) {
+        Message.error(error.message);
+      })
+  };
   /**
    * 加载
    */
@@ -266,6 +291,9 @@ class ProjectTaskList extends React.Component {
       const parentId = e.target.parentNode.id;
       let ids = parentId.split('@');
       let pro = ids[ids.length - 1];
+      if (pro === "userName"){
+        pro = "userId";
+      }
       this.selectRowInput(record, pro, e)
     }
     if (e.target.tagName === 'INPUT') {
@@ -402,7 +430,7 @@ class ProjectTaskList extends React.Component {
       }
       this.disLoadingFun();
       this.checkArr(mockData, selectRow, {});
-    }else {
+    } else {
       this.disLoadingFun();
       this.insertProjectTask({});
     }
@@ -430,7 +458,18 @@ class ProjectTaskList extends React.Component {
         if (record[properties + '_selected']) {
           this.changePostChangeDate(record, properties, value, () => {
             record[properties + '_selected'] = false;
-            record[properties] = value;
+            if (properties === "userId"){
+              const userList = this.state.userList;
+              userList.forEach(
+                (v,index)=>{
+                  if (v.id === value){
+                    record["userName"] = v.name;
+                  }
+                }
+              )
+            }else{
+              record[properties] = value;
+            }
             this.setState({});
           })
         }
@@ -441,7 +480,18 @@ class ProjectTaskList extends React.Component {
       //时间控件
       this.changePostChangeDate(record, properties, value, () => {
         record[properties + '_selected'] = !record[properties + '_selected'];
-        record[properties] = value;
+        if (properties === "userId"){
+          const userList = this.state.userList;
+          userList.forEach(
+            (v,index)=>{
+              if (v.id === value){
+                record["userName"] = v.name;
+              }
+            }
+          )
+        }else{
+          record[properties] = value;
+        }
         this.setState({});
       })
     }
@@ -776,7 +826,7 @@ class ProjectTaskList extends React.Component {
    * @returns {*}
    */
   render() {
-    const {mockData} = this.state;
+    const {mockData, userList} = this.state;
     return (
       <ResponsiveGrid gap={20}>
         <Cell colSpan={12}>
@@ -842,7 +892,36 @@ class ProjectTaskList extends React.Component {
                     }
                   }
                 }/>
-                <Table.Column title="执行人" dataIndex="userName" align={'center'}/>
+                <Table.Column title="执行人" dataIndex="userName" align={'center'} cell={
+                  (value, index, record) => {
+                    const pro = 'userId';
+                    if (record[pro + '_selected']) {
+                      return (
+                        <Select placeholder={"请选择"} showSearch hasClear onChange={(value) => {
+                          this.selectRowInput(record, pro, null, value)
+                        }}>
+                          {
+                            Array.isArray(userList) &&
+                            userList.length > 0 &&
+                            userList.map(
+                              u => {
+                                return (
+                                  <Option value={u.id}>{u.name}</Option>
+                                )
+                              }
+                            )
+                          }
+                        </Select>
+                      )
+                    } else {
+                      return (
+                        <span onClick={(e) => {
+                          this.selectRowInput(record, pro, e)
+                        }}>{record["userName"]   }</span>
+                      )
+                    }
+                  }
+                }/>
                 <Table.Column title="交办时间" dataIndex="assignedTime" align={'center'} cell={
                   (value, index, record) => {
                     const pro = 'assignedTime';

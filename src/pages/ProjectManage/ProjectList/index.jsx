@@ -59,6 +59,7 @@ class ProjectListPage extends React.Component {
         that.setState({
           mockData: mockData,
           visible: false,
+          bindUserDialog:false,
           current: data.data.current
         });
       })
