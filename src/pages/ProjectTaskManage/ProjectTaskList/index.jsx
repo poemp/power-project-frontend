@@ -1,17 +1,42 @@
 import React from 'react';
-import {Balloon, Button, DatePicker, Dialog, Icon, Input, Message, ResponsiveGrid, Table, Select} from '@alifd/next';
+import {
+  Balloon,
+  Button,
+  DatePicker,
+  Dialog,
+  Icon,
+  Input,
+  Message,
+  ResponsiveGrid,
+  Table,
+  Search,
+  Tree,
+  Select, Grid
+} from '@alifd/next';
 import $http from '@/service/Services';
 import url from '@/request';
 import styles from './index.module.scss';
 import PageHeader from '@/components/PageHeader';
 import moment from 'moment';
+import FoundationSymbol from '@icedesign/foundation-symbol';
 
 const Tooltip = Balloon.Tooltip;
 const {Cell} = ResponsiveGrid;
-
+const {Row, Col} = Grid;
 const Option = Select.Option;
 
 moment.locale('zh-cn');
+
+const data = [{
+  label: 'Component',
+  key: '1'
+}, {
+  label: 'Component',
+  key: '1'
+}, {
+  label: 'Component',
+  key: '1'
+}];
 
 class ProjectTaskList extends React.Component {
 
@@ -26,7 +51,12 @@ class ProjectTaskList extends React.Component {
       selectRow: {},
       userList: [],
       mockData: [],
+      data: [],
+      name: '',
       visible: false,
+      expandedKeys: ['2'],
+      autoExpandParent: true,
+      props: ['taskName', 'userId', 'assignedTime', 'planStartTime', 'planEndTime', 'realityStartTime', 'realityEndTime']
     };
     this.pageNum = 0;
     // 分页每页显示数据条数
@@ -34,24 +64,25 @@ class ProjectTaskList extends React.Component {
     // 数据总条数
     this.totalNum = 0;
     this.$http = $http;
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
 // eslint-disable-next-line react/no-deprecated
   componentWillMount = () => {
     const params = new URLSearchParams(this.props.location.search);
     // const id = params.get('id');
-    const id = "443530419212783616";
+    const id = '443530419212783616';
     this.setState({
       id: id
     }, () => {
+      this.getProjectTree();
       this.getProjectUserById();
       this.getProviderClassifyList();
     });
   };
 
-
   /**
-   * 获取数据
+   * 获取当前项目人员的下拉列表
    */
   getProjectUserById = () => {
     const that = this;
@@ -63,6 +94,27 @@ class ProjectTaskList extends React.Component {
         } else {
           that.setState({
             userList: data.data
+          });
+          that.forceUpdate();
+        }
+      })
+      .catch(function (error) {
+        Message.error(error.message);
+      })
+  };
+  /**
+   * 获取数据
+   */
+  getProjectTree = () => {
+    const that = this;
+    this.$http.get(url.url + '/v1/project/getProjectTree?name=' + this.state.name)
+      .then(function (response) {
+        const {data} = response;
+        if (data.code === 1) {
+          Message.warning(data.message ? data.message : data.data);
+        } else {
+          that.setState({
+            data: data.data
           });
           that.forceUpdate();
         }
@@ -92,6 +144,7 @@ class ProjectTaskList extends React.Component {
       }
     )
   };
+
   /**
    * 获取数据
    */
@@ -127,7 +180,6 @@ class ProjectTaskList extends React.Component {
 
   };
 
-
   /**
    * 删除
    */
@@ -141,6 +193,7 @@ class ProjectTaskList extends React.Component {
       value: value
     });
   };
+
   /**
    * 取消提示弹框
    */
@@ -291,8 +344,8 @@ class ProjectTaskList extends React.Component {
       const parentId = e.target.parentNode.id;
       let ids = parentId.split('@');
       let pro = ids[ids.length - 1];
-      if (pro === "userName"){
-        pro = "userId";
+      if (pro === 'userName') {
+        pro = 'userId';
       }
       this.selectRowInput(record, pro, e)
     }
@@ -444,10 +497,10 @@ class ProjectTaskList extends React.Component {
    * @param value 输入的返回值
    */
   selectRowInput = (record, properties, event, value) => {
-    for (let p in record) {
-      if (p !== properties) {
-        record[p + '_selected'] = false;
-      }
+    const {props} = this.state;
+    for(let i =0 ; i< props.length;i++){
+      const p = props[i];
+      record[p + '_selected'] = false;
     }
     if (event) {
       //如果没有选中，则向上传输事件
@@ -458,16 +511,16 @@ class ProjectTaskList extends React.Component {
         if (record[properties + '_selected']) {
           this.changePostChangeDate(record, properties, value, () => {
             record[properties + '_selected'] = false;
-            if (properties === "userId"){
+            if (properties === 'userId') {
               const userList = this.state.userList;
               userList.forEach(
-                (v,index)=>{
-                  if (v.id === value){
-                    record["userName"] = v.name;
+                (v, index) => {
+                  if (v.id === value) {
+                    record['userName'] = v.name;
                   }
                 }
               )
-            }else{
+            } else {
               record[properties] = value;
             }
             this.setState({});
@@ -480,16 +533,16 @@ class ProjectTaskList extends React.Component {
       //时间控件
       this.changePostChangeDate(record, properties, value, () => {
         record[properties + '_selected'] = !record[properties + '_selected'];
-        if (properties === "userId"){
+        if (properties === 'userId') {
           const userList = this.state.userList;
           userList.forEach(
-            (v,index)=>{
-              if (v.id === value){
-                record["userName"] = v.name;
+            (v, index) => {
+              if (v.id === value) {
+                record['userName'] = v.name;
               }
             }
           )
-        }else{
+        } else {
           record[properties] = value;
         }
         this.setState({});
@@ -729,6 +782,7 @@ class ProjectTaskList extends React.Component {
         _this.disLoadingFun();
       })
   };
+
   /**
    * 向后移动一位
    */
@@ -802,6 +856,7 @@ class ProjectTaskList extends React.Component {
         _this.disLoadingFun();
       })
   };
+
   /**
    * 向后一步
    */
@@ -822,11 +877,46 @@ class ProjectTaskList extends React.Component {
   };
 
   /**
+   * 过滤器
+   * @param value
+   */
+  handleSearch(value) {
+    value = value.trim();
+    this.setState(
+      {
+        name: value
+      }, () => {
+        this.getProjectTree();
+      }
+    )
+  }
+
+  /**
+   * checkedKeys: {Array} 勾选复选框节点key的数组
+   * extra: {Object} 额外参数
+   * extra.checkedNodes: {Array} 勾选复选框节点的数组
+   * extra.checkedNodesPositions: {Array} 包含有勾选复选框节点和其位置的对象的数组
+   * extra.indeterminateKeys: {Array} 半选复选框节点 key 的数组
+   * extra.node: {Object} 当前操作的节点
+   * extra.checked: {Boolean} 当前操作是否是勾选
+   */
+  onCheckProject = (checkedKeys, extra) => {
+    if (Array.isArray(checkedKeys) && checkedKeys.length > 0) {
+      this.setState({
+        id: checkedKeys[0]
+      }, () => {
+        this.getProjectUserById();
+        this.getProviderClassifyList();
+      });
+    }
+  };
+
+  /**
    * 返回视图
    * @returns {*}
    */
   render() {
-    const {mockData, userList} = this.state;
+    const {mockData, userList, data} = this.state;
     return (
       <ResponsiveGrid gap={20}>
         <Cell colSpan={12}>
@@ -844,196 +934,213 @@ class ProjectTaskList extends React.Component {
           />
         </Cell>
         <Cell colSpan={12}>
-          <div>
-            <div style={{marginTop: 5, marginBottom: 5}}>
-              <Button.Group>
-                <Button size={'small'} onClick={this.addProjectTask.bind(this)}><Icon type="add"/>新建</Button>
-                <Button size={'small'} onClick={this.deleteProjectTask.bind(this)}><Icon type="close"/>删除</Button>
-              </Button.Group>
-              &nbsp;&nbsp;
-              <Button.Group>
-                <Button size={'small'} onClick={this.drawForward.bind(this)}><Icon type="arrow-double-left"/>前进</Button>
-                <Button size={'small'} onClick={this.drawBack.bind(this)}>后退<Icon type="arrow-double-right"/></Button>
-              </Button.Group>
-              &nbsp;&nbsp;
-              <Button.Group>
-                <Button size={'small'} onClick={this.moveUp.bind(this)}><Icon type="arrow-up"/>上移</Button>
-                <Button size={'small'} onClick={this.moveDown.bind(this)}>下移<Icon type="arrow-down"/></Button>
-              </Button.Group>
-            </div>
-            <div className='container-table'>
-              <Table dataSource={mockData}
-                     size={'small'}
-                     isZebra={true}
-                     onRowClick={this.onRowClick}
-                     primaryKey="_key"
-                     cellProps={this.cellProps}
-                     isTree={true}
-                     loading={this.state.loading}
-                     rowProps={this.rowProps.bind(this)}
-              >
-                <Table.Column title="任务" dataIndex="taskName" cell={
-                  (value, index, record) => {
-                    const pro = 'taskName';
-                    if (record[pro + '_selected']) {
-                      return (
-                        <Input
-                          defaultValue={record[pro]}
-                          onBlur={(e) => {
-                            this.selectRowInput(record, pro, e, e.target.value)
-                          }} trim placeholder="输入任务名称" aria-label="不能输入空"/>
-                      )
-                    } else {
-                      return (
-                        <span onClick={(e) => {
-                          this.selectRowInput(record, pro, e)
-                        }}>{record[pro]}</span>
-                      )
-                    }
-                  }
-                }/>
-                <Table.Column title="执行人" dataIndex="userName" align={'center'} cell={
-                  (value, index, record) => {
-                    const pro = 'userId';
-                    if (record[pro + '_selected']) {
-                      return (
-                        <Select placeholder={"请选择"} showSearch hasClear onChange={(value) => {
-                          this.selectRowInput(record, pro, null, value)
-                        }}>
-                          {
-                            Array.isArray(userList) &&
-                            userList.length > 0 &&
-                            userList.map(
-                              u => {
-                                return (
-                                  <Option value={u.id}>{u.name}</Option>
+          <Row>
+            <Col span="3" className={styles.projectList}>
+              <Search shape="simple" size="medium" hasClear style={{width: '200px', marginBottom: '10px'}}
+                      onChange={this.handleSearch}/>
+              <Tree onSelect={this.onCheckProject.bind(this)} dataSource={data}/>
+            </Col>
+            <Col span="1">
+              <br/>
+            </Col>
+            <Col span="20">
+              <div>
+                <div style={{marginTop: 5, marginBottom: 5}}>
+                  <Button.Group>
+                    <Button size={'small'} onClick={this.addProjectTask.bind(this)}><Icon type="add"/>新建</Button>
+                    <Button size={'small'} onClick={this.deleteProjectTask.bind(this)}><Icon type="close"/>删除</Button>
+                  </Button.Group>
+                  &nbsp;&nbsp;
+                  <Button.Group>
+                    <Button size={'small'} onClick={this.drawForward.bind(this)}><Icon
+                      type="arrow-double-left"/>前进</Button>
+                    <Button size={'small'} onClick={this.drawBack.bind(this)}>后退<Icon
+                      type="arrow-double-right"/></Button>
+                  </Button.Group>
+                  &nbsp;&nbsp;
+                  <Button.Group>
+                    <Button size={'small'} onClick={this.moveUp.bind(this)}><Icon type="arrow-up"/>上移</Button>
+                    <Button size={'small'} onClick={this.moveDown.bind(this)}>下移<Icon type="arrow-down"/></Button>
+                  </Button.Group>
+                </div>
+                <div className='container-table'>
+                  <Table dataSource={mockData}
+                         size={'small'}
+                         isZebra={true}
+                         onRowClick={this.onRowClick}
+                         primaryKey="_key"
+                         cellProps={this.cellProps}
+                         isTree={true}
+                         loading={this.state.loading}
+                         rowProps={this.rowProps.bind(this)}
+                  >
+                    <Table.Column title="任务" dataIndex="taskName" cell={
+                      (value, index, record) => {
+                        const pro = 'taskName';
+                        console.log(record);
+                        if (record[pro + '_selected']) {
+                          return (
+                            <Input
+                              defaultValue={record[pro]}
+                              onBlur={(e) => {
+                                this.selectRowInput(record, pro, e, e.target.value)
+                              }} trim placeholder="输入任务名称" aria-label="不能输入空"/>
+                          )
+                        } else {
+                          return (
+                            <span onClick={(e) => {
+                              this.selectRowInput(record, pro, e)
+                            }}>
+                             {record[pro]} <FoundationSymbol size="small" type={'content'}/>
+                            </span>
+                          )
+                        }
+                      }
+                    }/>
+                    <Table.Column title="执行人" dataIndex="userName" align={'center'} cell={
+                      (value, index, record) => {
+                        const pro = 'userId';
+                        if (record[pro + '_selected']) {
+                          return (
+                            <Select placeholder={'请选择'} showSearch hasClear onChange={(value) => {
+                              this.selectRowInput(record, pro, null, value)
+                            }}>
+                              {
+                                Array.isArray(userList) &&
+                                userList.length > 0 &&
+                                userList.map(
+                                  u => {
+                                    return (
+                                      <Option value={u.id}>{u.name}</Option>
+                                    )
+                                  }
                                 )
                               }
+                            </Select>
+                          )
+                        } else {
+                          return (
+                            <span onClick={(e) => {
+                              this.selectRowInput(record, pro, e)
+                            }}>{record['userName']}</span>
+                          )
+                        }
+                      }
+                    }/>
+                    <Table.Column title="交办时间" dataIndex="assignedTime" align={'center'} cell={
+                      (value, index, record) => {
+                        const pro = 'assignedTime';
+                        if (record[pro + '_selected']) {
+                          return (
+                            <DatePicker size={'small'}
+                                        value={record[pro]}
+                                        onChange={(val) => {
+                                          const v = moment(val).format('YYYY-MM-DD');
+                                          this.selectRowInput(record, pro, null, v)
+                                        }}/>
+                          )
+                        } else {
+                          return (
+                            <span onClick={(e) => {
+                              this.selectRowInput(record, pro, e)
+                            }}>{record[pro]}</span>
+                          )
+                        }
+                      }
+                    }/>
+                    <Table.ColumnGroup title="计划" align={'center'}>
+                      <Table.Column title="计划开始时间" dataIndex="planStartTime" align={'center'} cell={
+                        (value, index, record) => {
+                          const pro = 'planStartTime';
+                          if (record[pro + '_selected']) {
+                            return (
+                              <DatePicker size={'small'}
+                                          value={record[pro]}
+                                          onChange={(val) => {
+                                            const v = moment(val).format('YYYY-MM-DD');
+                                            this.selectRowInput(record, pro, null, v)
+                                          }}/>
+                            )
+                          } else {
+                            return (
+                              <span onClick={(e) => {
+                                this.selectRowInput(record, pro, e)
+                              }}>{record[pro]}</span>
                             )
                           }
-                        </Select>
-                      )
-                    } else {
-                      return (
-                        <span onClick={(e) => {
-                          this.selectRowInput(record, pro, e)
-                        }}>{record["userName"]   }</span>
-                      )
-                    }
-                  }
-                }/>
-                <Table.Column title="交办时间" dataIndex="assignedTime" align={'center'} cell={
-                  (value, index, record) => {
-                    const pro = 'assignedTime';
-                    if (record[pro + '_selected']) {
-                      return (
-                        <DatePicker size={'small'}
-                                    value={record[pro]}
-                                    onChange={(val) => {
-                                      const v = moment(val).format('YYYY-MM-DD');
-                                      this.selectRowInput(record, pro, null, v)
-                                    }}/>
-                      )
-                    } else {
-                      return (
-                        <span onClick={(e) => {
-                          this.selectRowInput(record, pro, e)
-                        }}>{record[pro]}</span>
-                      )
-                    }
-                  }
-                }/>
-                <Table.ColumnGroup title="计划" align={'center'}>
-                  <Table.Column title="计划开始时间" dataIndex="planStartTime" align={'center'} cell={
-                    (value, index, record) => {
-                      const pro = 'planStartTime';
-                      if (record[pro + '_selected']) {
-                        return (
-                          <DatePicker size={'small'}
-                                      value={record[pro]}
-                                      onChange={(val) => {
-                                        const v = moment(val).format('YYYY-MM-DD');
-                                        this.selectRowInput(record, pro, null, v)
-                                      }}/>
-                        )
-                      } else {
-                        return (
-                          <span onClick={(e) => {
-                            this.selectRowInput(record, pro, e)
-                          }}>{record[pro]}</span>
-                        )
-                      }
-                    }
-                  }/>
-                  <Table.Column title="计划结束时间" dataIndex="planEndTime" align={'center'} cell={
-                    (value, index, record) => {
-                      const pro = 'planEndTime';
-                      if (record[pro + '_selected']) {
-                        return (
-                          <DatePicker size={'small'}
-                                      value={record[pro]}
-                                      onChange={(val) => {
-                                        const v = moment(val).format('YYYY-MM-DD');
-                                        this.selectRowInput(record, pro, null, v)
-                                      }}/>
-                        )
-                      } else {
-                        return (
-                          <span onClick={(e) => {
-                            this.selectRowInput(record, pro, e)
-                          }}>{record[pro]}</span>
-                        )
-                      }
-                    }
-                  }/>
-                </Table.ColumnGroup>
-                <Table.ColumnGroup title="实际" align={'center'}>
-                  <Table.Column title="实际开始时间" dataIndex="realityStartTime" align={'center'} cell={
-                    (value, index, record) => {
-                      const pro = 'realityStartTime';
-                      if (record[pro + '_selected']) {
-                        return (
-                          <DatePicker size={'small'}
-                                      value={record[pro]}
-                                      onChange={(val) => {
-                                        const v = moment(val).format('YYYY-MM-DD');
-                                        this.selectRowInput(record, pro, null, v)
-                                      }}/>
-                        )
-                      } else {
-                        return (
-                          <span onClick={(e) => {
-                            this.selectRowInput(record, pro, e)
-                          }}>{record[pro]}</span>
-                        )
-                      }
-                    }
-                  }/>
-                  <Table.Column title="实际结束时间" dataIndex="realityEndTime" align={'center'} cell={
-                    (value, index, record) => {
-                      const pro = 'realityEndTime';
-                      if (record[pro + '_selected']) {
-                        return (
-                          <DatePicker size={'small'}
-                                      value={record[pro]}
-                                      onChange={(val) => {
-                                        const v = moment(val).format('YYYY-MM-DD');
-                                        this.selectRowInput(record, pro, null, v)
-                                      }}/>
-                        )
-                      } else {
-                        return (
-                          <span onClick={(e) => {
-                            this.selectRowInput(record, pro, e)
-                          }}>{record[pro]}</span>
-                        )
-                      }
-                    }
-                  }/>
-                </Table.ColumnGroup>
-              </Table>
-            </div>
-          </div>
+                        }
+                      }/>
+                      <Table.Column title="计划结束时间" dataIndex="planEndTime" align={'center'} cell={
+                        (value, index, record) => {
+                          const pro = 'planEndTime';
+                          if (record[pro + '_selected']) {
+                            return (
+                              <DatePicker size={'small'}
+                                          value={record[pro]}
+                                          onChange={(val) => {
+                                            const v = moment(val).format('YYYY-MM-DD');
+                                            this.selectRowInput(record, pro, null, v)
+                                          }}/>
+                            )
+                          } else {
+                            return (
+                              <span onClick={(e) => {
+                                this.selectRowInput(record, pro, e)
+                              }}>{record[pro]}</span>
+                            )
+                          }
+                        }
+                      }/>
+                    </Table.ColumnGroup>
+                    <Table.ColumnGroup title="实际" align={'center'}>
+                      <Table.Column title="实际开始时间" dataIndex="realityStartTime" align={'center'} cell={
+                        (value, index, record) => {
+                          const pro = 'realityStartTime';
+                          if (record[pro + '_selected']) {
+                            return (
+                              <DatePicker size={'small'}
+                                          value={record[pro]}
+                                          onChange={(val) => {
+                                            const v = moment(val).format('YYYY-MM-DD');
+                                            this.selectRowInput(record, pro, null, v)
+                                          }}/>
+                            )
+                          } else {
+                            return (
+                              <span onClick={(e) => {
+                                this.selectRowInput(record, pro, e)
+                              }}>{record[pro]}</span>
+                            )
+                          }
+                        }
+                      }/>
+                      <Table.Column title="实际结束时间" dataIndex="realityEndTime" align={'center'} cell={
+                        (value, index, record) => {
+                          const pro = 'realityEndTime';
+                          if (record[pro + '_selected']) {
+                            return (
+                              <DatePicker size={'small'}
+                                          value={record[pro]}
+                                          onChange={(val) => {
+                                            const v = moment(val).format('YYYY-MM-DD');
+                                            this.selectRowInput(record, pro, null, v)
+                                          }}/>
+                            )
+                          } else {
+                            return (
+                              <span onClick={(e) => {
+                                this.selectRowInput(record, pro, e)
+                              }}>{record[pro]}</span>
+                            )
+                          }
+                        }
+                      }/>
+                    </Table.ColumnGroup>
+                  </Table>
+                </div>
+              </div>
+            </Col>
+          </Row>
         </Cell>
         <Dialog
           className='zgph-dialog'

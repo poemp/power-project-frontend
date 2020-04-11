@@ -87,3 +87,17 @@
   font-weight:800;
   border: #F00 solid 1px !important;
 }
+
+.projectList{
+  padding: 8px 8px;
+  border-radius: 2px;
+  height: auto;
+  transition: all 100ms linear;
+  color: #333333;
+  font-size: 14px;
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  background: #FFFFFF;
+  border: 1px solid #E6E6E6;
+}
