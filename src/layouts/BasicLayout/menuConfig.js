@@ -42,6 +42,17 @@ const asideMenuConfig = [
     ],
   },
   {
+    name: '文档管理',
+    path: '/',
+    icon: 'copy',
+    children: [
+      {
+        name: '文档库',
+        path: '/list/document',
+      },
+    ],
+  },
+  {
     name: '用户与权限',
     path: '/',
     icon: 'chart-bar',

@@ -307,10 +307,10 @@ class ProjectTaskList extends React.Component {
    * @param selected true 选中 falese 没有选中
    */
   propertiesChecked(row, selected) {
-    for (let r in row) {
-      if (r.indexOf('_selected') === -1) {
-        row[r + '_selected'] = selected;
-      }
+    const {props} = this.state;
+    for(let i =0 ; i< props.length;i++){
+      const p = props[i];
+      row[p + '_selected'] = selected;
     }
   }
 
@@ -500,7 +500,9 @@ class ProjectTaskList extends React.Component {
     const {props} = this.state;
     for(let i =0 ; i< props.length;i++){
       const p = props[i];
-      record[p + '_selected'] = false;
+      if (properties !== p){
+        record[p + '_selected'] = false;
+      }
     }
     if (event) {
       //如果没有选中，则向上传输事件
@@ -523,7 +525,7 @@ class ProjectTaskList extends React.Component {
             } else {
               record[properties] = value;
             }
-            this.setState({});
+            this.forceUpdate();
           })
         }
         record[properties + '_selected'] = !record[properties + '_selected'];

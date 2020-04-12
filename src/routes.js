@@ -11,6 +11,8 @@ import ProjectTaskList from '@/pages/ProjectTaskManage/ProjectTaskList';
 import ProjectAdd from '@/pages/ProjectManage/ProjectAdd';
 import UserList from '@/pages/UserManage/UserList';
 import UserAdd from '@/pages/UserManage/UserAdd';
+import DocumentList from '@/pages/Document/DocumentList';
+import DocumentAdd from '@/pages/Document/DocumentAdd';
 
 const routerConfig = [
   {
@@ -74,6 +76,14 @@ const routerConfig = [
       {
         path: '/list/auth',
         component: ProjectTaskList,
+      },
+      {
+        path: '/list/document',
+        component: DocumentList,
+      },
+      {
+        path: '/list/addDocument',
+        component: DocumentAdd,
       },
       {
         path: '/',
