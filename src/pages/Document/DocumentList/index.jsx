@@ -160,12 +160,6 @@ class DocumentList extends React.Component {
                             to={'/list/addDocument?id=' + record.id}>编辑</Link>
                         </Button>
                         &nbsp;&nbsp;
-                        <Button size={'small'} disabled={record.status === 0}
-                                onClick={this.bindUser.bind(this, record)}>
-                          <a onClick={() => {
-                          }}>绑定用户 </a>
-                        </Button>
-                        &nbsp;&nbsp;
                         <Button type="normal" size={'small'} onClick={this.deleteDocument.bind(this, record)} warning>
                           <a onClick={() => {
                           }}>删除 </a>

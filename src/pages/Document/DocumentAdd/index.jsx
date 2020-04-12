@@ -4,7 +4,6 @@ import styles from './index.module.scss';
 import PageHeader from '@/components/PageHeader';
 import $http from '@/service/Services';
 import url from '@/request';
-import moment from 'moment';
 import 'braft-editor/dist/index.css'
 import BraftEditor from 'braft-editor'
 
@@ -60,7 +59,7 @@ class DocumentAdd extends React.Component {
           if (data.code === 1) {
             Message.warning(data.message ? data.message : data.data);
           } else {
-            data.data["content"] = BraftEditor.createEditorState(data.data["content"]);
+            data.data['content1'] = BraftEditor.createEditorState(data.data['content']);
             that.setState({
               value: data.data
             });
@@ -109,7 +108,7 @@ class DocumentAdd extends React.Component {
           Message.warning(data.message ? data.message : data.data);
         } else {
           Message.success('操作成功.');
-          that.props.history.push('/list/table')
+          that.props.history.push('/list/document')
         }
       })
       .catch(function (error) {
@@ -119,6 +118,35 @@ class DocumentAdd extends React.Component {
 
 
   render() {
+    let controls = ['blockquote',
+      'bold',
+      'code',
+      'clear',
+      'emoji',
+      'font-family',
+      'font-size',
+      'fullscreen',
+      'headings',
+      'hr',
+      'italic',
+      'letter-spacing',
+      'line-height',
+      'link',
+      'list-ol',
+      'list-ul',
+      'media',
+      'redo',
+      'remove-styles',
+      'separator',
+      'strike-through',
+      'superscript',
+      'subscript',
+      'text-align',
+      'text-color',
+      'text-indent',
+      'underline',
+      'undo',
+      'table'];
     return (
       <ResponsiveGrid gap={20}>
         <Cell colSpan={12}>
@@ -156,8 +184,8 @@ class DocumentAdd extends React.Component {
             </FormItem>
             <FormItem required label="文档类型:">
               <RadioGroup name="type">
-                <Radio defaultChecked={true} value="1">文档</Radio>
-                <Radio value="2">链接</Radio>
+                <Radio value={1}>文档</Radio>
+                <Radio value={2}>链接</Radio>
               </RadioGroup>
             </FormItem>
             {
@@ -166,7 +194,7 @@ class DocumentAdd extends React.Component {
                   if (this.state.value.type === '2') {
                     return (
                       <FormItem required label="文档URL:">
-                        <Input className={styles.inputStyle} placeholder="请输入文档URL" id="content" name="content"
+                        <Input className={styles.inputStyle} placeholder="请输入文档URL" id="urlAddr" name="urlAddr"
                                aria-required="true"/>
                       </FormItem>
                     )
@@ -174,6 +202,8 @@ class DocumentAdd extends React.Component {
                     return (
                       <FormItem {...formItemLayout} label="文档正文">
                         <BraftEditor
+                          controls={controls}
+                          value={this.state.value.content1}
                           contentStyle={{height: 200}}
                           className={styles.braftEditor}
                           excludeControls={this.excludeControls}
@@ -187,9 +217,9 @@ class DocumentAdd extends React.Component {
 
             <FormItem required label="访问控制:">
               <RadioGroup name="authController">
-                <Radio value="1">公开</Radio>
-                <Radio value="2">自定义</Radio>
-                <Radio value="3">私有</Radio>
+                <Radio value={1}>公开</Radio>
+                <Radio value={2}>自定义</Radio>
+                <Radio value={3}>私有</Radio>
               </RadioGroup>
             </FormItem>
             {
