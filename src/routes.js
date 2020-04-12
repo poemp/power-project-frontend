@@ -13,6 +13,9 @@ import UserList from '@/pages/UserManage/UserList';
 import UserAdd from '@/pages/UserManage/UserAdd';
 import DocumentList from '@/pages/Document/DocumentList';
 import DocumentAdd from '@/pages/Document/DocumentAdd';
+import DocumentPreview from '@/pages/Document/DocumentPreview';
+import PreviewLayout from '@/layouts/PreviewLayout';
+
 
 const routerConfig = [
   {
@@ -30,6 +33,16 @@ const routerConfig = [
       {
         path: '/',
         redirect: '/user/login',
+      },
+    ],
+  },
+  {
+    path: '/preview',
+    component: PreviewLayout,
+    children: [
+      {
+        path: '/list/detailDocument',
+        component: DocumentPreview,
       },
     ],
   },

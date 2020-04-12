@@ -5,7 +5,13 @@ import PageHeader from '@/components/PageHeader';
 import $http from '@/service/Services';
 import url from '@/request';
 import 'braft-editor/dist/index.css'
+import 'braft-extensions/dist/table.css'
+import 'braft-extensions/dist/code-highlighter.css'
 import BraftEditor from 'braft-editor'
+import Table from 'braft-extensions/dist/table'
+import Markdown from 'braft-extensions/dist/markdown'
+import CodeHighlighter from 'braft-extensions/dist/code-highlighter'
+
 
 const {Cell} = ResponsiveGrid;
 let form;
@@ -20,6 +26,35 @@ const formItemLayout = {
   wrapperCol: {
     span: 14
   }
+};
+
+const options = {
+  defaultColumns: 3, // 默认列数
+  defaultRows: 3, // 默认行数
+  withDropdown: false, // 插入表格前是否弹出下拉菜单
+  columnResizable: false, // 是否允许拖动调整列宽，默认false
+  exportAttrString: '', // 指定输出HTML时附加到table标签上的属性字符串
+};
+const markdownOptions = {};
+const codeHighlighterOptions = {
+  syntaxs: [
+    {
+      name: 'JavaScript',
+      syntax: 'javascript'
+    }, {
+      name: 'HTML',
+      syntax: 'html'
+    }, {
+      name: 'CSS',
+      syntax: 'css'
+    }, {
+      name: 'Java',
+      syntax: 'java',
+    }, {
+      name: 'PHP',
+      syntax: 'php'
+    }
+  ],
 };
 
 class DocumentAdd extends React.Component {
@@ -118,35 +153,7 @@ class DocumentAdd extends React.Component {
 
 
   render() {
-    let controls = ['blockquote',
-      'bold',
-      'code',
-      'clear',
-      'emoji',
-      'font-family',
-      'font-size',
-      'fullscreen',
-      'headings',
-      'hr',
-      'italic',
-      'letter-spacing',
-      'line-height',
-      'link',
-      'list-ol',
-      'list-ul',
-      'media',
-      'redo',
-      'remove-styles',
-      'separator',
-      'strike-through',
-      'superscript',
-      'subscript',
-      'text-align',
-      'text-color',
-      'text-indent',
-      'underline',
-      'undo',
-      'table'];
+    BraftEditor.use([Table(options), Markdown(markdownOptions), CodeHighlighter(codeHighlighterOptions)]);
     return (
       <ResponsiveGrid gap={20}>
         <Cell colSpan={12}>
@@ -202,7 +209,6 @@ class DocumentAdd extends React.Component {
                     return (
                       <FormItem {...formItemLayout} label="文档正文">
                         <BraftEditor
-                          controls={controls}
                           value={this.state.value.content1}
                           contentStyle={{height: 200}}
                           className={styles.braftEditor}

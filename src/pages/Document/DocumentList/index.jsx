@@ -160,6 +160,11 @@ class DocumentList extends React.Component {
                             to={'/list/addDocument?id=' + record.id}>编辑</Link>
                         </Button>
                         &nbsp;&nbsp;
+                        <Button size={'small'} style={{marginRight: 10}}>
+                          <Link target={"_blank"}
+                            to={'/preview/list/detailDocument?id=' + record.id}>查看</Link>
+                        </Button>
+                        &nbsp;&nbsp;
                         <Button type="normal" size={'small'} onClick={this.deleteDocument.bind(this, record)} warning>
                           <a onClick={() => {
                           }}>删除 </a>
