@@ -177,7 +177,6 @@ const WorkTable = props => {
                       <Avatar src="https://img.alicdn.com/tfs/TB1QwMzvHr1gK0jSZR0XXbP8XXa-200-200.png"/>
                     }
                   />
-                  {/* <List.Item title="Alibaba Piecework" media={<Avatar src="https://img.alicdn.com/tfs/TB1.7cxvUz1gK0jSZLeXXb9kVXa-200-200.png"/>}></List.Item> */}
                   <List.Item
                     title="Retcode 前端监控"
                     media={

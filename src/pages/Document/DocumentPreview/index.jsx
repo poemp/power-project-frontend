@@ -51,7 +51,7 @@ class DocumentPreview extends React.Component {
   getDocumentById = () => {
     if (this.state.id) {
       const that = this;
-      this.$http.get(url.url + '/v1/document/getDocumentById/' + this.state.id)
+      this.$http.get(url.url + '/v1/document/getDocumentPreview/' + this.state.id)
         .then(function (response) {
           const {data} = response;
           if (data.code === 1) {
