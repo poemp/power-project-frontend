@@ -136,6 +136,8 @@ class DocumentAdd extends React.Component {
       return;
     }
     const that = this;
+    const {editorState} = this.state;
+    value['content'] = editorState.toHTML();
     this.$http.post(url.url + '/v1/document/saveOrUpdateDocument', value)
       .then(function (response) {
         const {data} = response;
@@ -151,6 +153,11 @@ class DocumentAdd extends React.Component {
       })
   };
 
+  handleChange = (editorState) => {
+    this.setState({
+      editorState: editorState
+    })
+  };
 
   render() {
     BraftEditor.use([Table(options), Markdown(markdownOptions), CodeHighlighter(codeHighlighterOptions)]);
@@ -212,6 +219,7 @@ class DocumentAdd extends React.Component {
                           value={this.state.value.content1}
                           contentStyle={{height: 200}}
                           className={styles.braftEditor}
+                          onBlur={this.handleChange}
                           excludeControls={this.excludeControls}
                         />
                       </FormItem>
