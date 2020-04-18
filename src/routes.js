@@ -15,6 +15,7 @@ import DocumentList from '@/pages/Document/DocumentList';
 import DocumentAdd from '@/pages/Document/DocumentAdd';
 import DocumentPreview from '@/pages/Document/DocumentPreview';
 import PreviewLayout from '@/layouts/PreviewLayout';
+import ProjectTaskNotice from '@/pages/ProjectTaskNotice';
 
 
 const routerConfig = [
@@ -97,6 +98,10 @@ const routerConfig = [
       {
         path: '/list/addDocument',
         component: DocumentAdd,
+      },
+      {
+        path: '/list/calendar',
+        component: ProjectTaskNotice,
       },
       {
         path: '/',

@@ -3,22 +3,12 @@ import {Divider , Form, Input, Message, Radio, ResponsiveGrid} from '@alifd/next
 import styles from './index.module.scss';
 import $http from '@/service/Services';
 import url from '@/request';
-
+import 'braft-editor/dist/index.css'
+import 'braft-extensions/dist/table.css'
+import 'braft-extensions/dist/code-highlighter.css'
 
 const {Cell} = ResponsiveGrid;
-let form;
 const FormItem = Form.Item;
-const RadioGroup = Radio.Group;
-
-const formItemLayout = {
-  labelCol: {
-    span: 6
-  },
-  wrapperCol: {
-    span: 14
-  }
-};
-
 
 class DocumentPreview extends React.Component {
   // eslint-disable-next-line no-useless-constructor

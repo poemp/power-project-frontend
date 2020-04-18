@@ -38,6 +38,9 @@ const asideMenuConfig = [
       {
         name: '项目计划',
         path: '/list/task',
+      },{
+        name: '提醒',
+        path: '/list/calendar',
       },
     ],
   },

@@ -56,6 +56,7 @@ class ProjectTaskList extends React.Component {
       visible: false,
       expandedKeys: ['2'],
       autoExpandParent: true,
+      defaultExpandedKeys: [],
       props: ['taskName', 'userId', 'assignedTime', 'planStartTime', 'planEndTime', 'realityStartTime', 'realityEndTime']
     };
     this.pageNum = 0;
@@ -69,15 +70,9 @@ class ProjectTaskList extends React.Component {
 
 // eslint-disable-next-line react/no-deprecated
   componentWillMount = () => {
-    const params = new URLSearchParams(this.props.location.search);
-    // const id = params.get('id');
-    const id = '443530419212783616';
-    this.setState({
-      id: id
-    }, () => {
-      this.getProjectTree();
+    this.getProjectTree(() => {
       this.getProjectUserById();
-      this.getProviderClassifyList();
+      this.getProviderClassifyList()
     });
   };
 
@@ -105,7 +100,7 @@ class ProjectTaskList extends React.Component {
   /**
    * 获取数据
    */
-  getProjectTree = () => {
+  getProjectTree = (fun) => {
     const that = this;
     this.$http.get(url.url + '/v1/project/getProjectTree?name=' + this.state.name)
       .then(function (response) {
@@ -113,10 +108,19 @@ class ProjectTaskList extends React.Component {
         if (data.code === 1) {
           Message.warning(data.message ? data.message : data.data);
         } else {
+          let defaultExpandedKeys = [];
+          if (data.data.length > 0) {
+            defaultExpandedKeys = data.data[0].key
+          }
           that.setState({
-            data: data.data
+            data: data.data,
+            id: defaultExpandedKeys
+          }, () => {
+            if (fun && typeof fun === "function"){
+              fun();
+            }
+            that.forceUpdate();
           });
-          that.forceUpdate();
         }
       })
       .catch(function (error) {
@@ -146,7 +150,8 @@ class ProjectTaskList extends React.Component {
   };
 
   /**
-   * 获取数据
+   *
+   * 获取任务的列表详情
    */
   getProviderClassifyList = (pageNum) => {
     const that = this;
@@ -308,7 +313,7 @@ class ProjectTaskList extends React.Component {
    */
   propertiesChecked(row, selected) {
     const {props} = this.state;
-    for(let i =0 ; i< props.length;i++){
+    for (let i = 0; i < props.length; i++) {
       const p = props[i];
       row[p + '_selected'] = selected;
     }
@@ -498,9 +503,9 @@ class ProjectTaskList extends React.Component {
    */
   selectRowInput = (record, properties, event, value) => {
     const {props} = this.state;
-    for(let i =0 ; i< props.length;i++){
+    for (let i = 0; i < props.length; i++) {
       const p = props[i];
-      if (properties !== p){
+      if (properties !== p) {
         record[p + '_selected'] = false;
       }
     }
@@ -570,7 +575,6 @@ class ProjectTaskList extends React.Component {
         if (data.code === 1) {
           Message.warning(data.message ? data.message : data.data);
         } else {
-          Message.success('操作成功.');
           if (call && typeof call === 'function') {
             call();
           }
@@ -940,7 +944,9 @@ class ProjectTaskList extends React.Component {
             <Col span="3" className={styles.projectList}>
               <Search shape="simple" size="medium" hasClear style={{width: '200px', marginBottom: '10px'}}
                       onChange={this.handleSearch}/>
-              <Tree onSelect={this.onCheckProject.bind(this)} dataSource={data}/>
+              <Tree onSelect={this.onCheckProject.bind(this)}
+                    defaultSelectedKeys={[this.state.id]}
+                    dataSource={data}/>
             </Col>
             <Col span="1">
               <br/>
