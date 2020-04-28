@@ -50,6 +50,7 @@ const LoginBlock = props => {
 
     console.log('values:', values);
     Message.success('登录成功');
+    props.history.push("/dashboard/workplace");
   };
 
   const phoneForm = (
