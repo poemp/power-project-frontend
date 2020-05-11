@@ -344,6 +344,16 @@ class ProjectTaskList extends React.Component {
    */
   onRowClick = (record, index, e) => {
     e.stopPropagation();
+    //点击的单元格
+    if (e.target.tagName === 'DIV') {
+      const parentId = e.target.parentNode.id;
+      let ids = parentId.split('@');
+      let pro = ids[ids.length - 1];
+      if (pro === 'userName') {
+        pro = 'userId';
+      }
+      this.selectRowInput(record, pro, e)
+    }
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'SPAN') {
       return;
     }
@@ -988,11 +998,11 @@ class ProjectTaskList extends React.Component {
                           )
                         } else {
                           return (
-                            <span onClick={(e) => {
-                              e.stopPropagation();
-                              this.selectRowInput(record, pro, e)
-                            }}>
-                             {record[pro]} <FoundationSymbol size="small" type={'content'}/>
+                            <span style={{height:"20px", backgroundColor: "#00ADD8"}} onClick={(e) => {
+                            e.stopPropagation();
+                            this.selectRowInput(record, pro, e)
+                          }}>{record[pro] && record[pro].length >0 ? record[pro] :""}
+                          {/*<FoundationSymbol size="small" type={'content'}/>*/}
                             </span>
                           )
                         }
@@ -1021,11 +1031,10 @@ class ProjectTaskList extends React.Component {
                           )
                         } else {
                           return (
-                            <span onClick={(e) => {
+                            <div style={{height:"20px", backgroundColor: "#00ADD8"}} onClick={(e) => {
                               e.stopPropagation();
-                              console.log(123456);
                               this.selectRowInput(record, pro, e);
-                            }}>{record['userName'] && record['userName'].length >0 ? record['userName'] : " \n  "}</span>
+                            }}>{record['userName'] && record['userName'].length >0 ? record['userName'] :""}</div>
                           )
                         }
                       }
@@ -1044,10 +1053,10 @@ class ProjectTaskList extends React.Component {
                           )
                         } else {
                           return (
-                            <span onClick={(e) => {
+                            <div style={{height:"20px", backgroundColor: "#00ADD8"}} onClick={(e) => {
                               e.stopPropagation();
                               this.selectRowInput(record, pro, e)
-                            }}>{record[pro]}</span>
+                            }}>{record[pro] && record[pro].length >0 ? record[pro] :""}</div>
                           )
                         }
                       }
@@ -1067,10 +1076,10 @@ class ProjectTaskList extends React.Component {
                             )
                           } else {
                             return (
-                              <span onClick={(e) => {
+                              <div style={{height:"20px", backgroundColor: "#00ADD8"}} onClick={(e) => {
                                 e.stopPropagation();
                                 this.selectRowInput(record, pro, e)
-                              }}>{record[pro]}</span>
+                              }}>{record[pro] && record[pro].length >0 ? record[pro] :""}</div>
                             )
                           }
                         }
@@ -1089,9 +1098,10 @@ class ProjectTaskList extends React.Component {
                             )
                           } else {
                             return (
-                              <span onClick={(e) => {
+                              <div style={{height:"20px", backgroundColor: "#00ADD8"}} onClick={(e) => {
+                                e.stopPropagation();
                                 this.selectRowInput(record, pro, e)
-                              }}>{record[pro]}</span>
+                              }}>{record[pro] && record[pro].length >0 ? record[pro] :""}</div>
                             )
                           }
                         }
@@ -1112,10 +1122,10 @@ class ProjectTaskList extends React.Component {
                             )
                           } else {
                             return (
-                              <span onClick={(e) => {
+                              <div style={{height:"20px", backgroundColor: "#00ADD8"}} onClick={(e) => {
                                 e.stopPropagation();
                                 this.selectRowInput(record, pro, e)
-                              }}>{record[pro]}</span>
+                              }}>{record[pro] && record[pro].length >0 ? record[pro] :""}</div>
                             )
                           }
                         }
@@ -1134,10 +1144,10 @@ class ProjectTaskList extends React.Component {
                             )
                           } else {
                             return (
-                              <span onClick={(e) => {
+                              <div style={{height:"20px", backgroundColor: "#00ADD8"}} onClick={(e) => {
                                 e.stopPropagation();
                                 this.selectRowInput(record, pro, e)
-                              }}>{record[pro]}</span>
+                              }}>{record[pro] && record[pro].length >0 ? record[pro] :""}</div>
                             )
                           }
                         }
