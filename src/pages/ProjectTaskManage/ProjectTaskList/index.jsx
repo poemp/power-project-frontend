@@ -998,10 +998,12 @@ class ProjectTaskList extends React.Component {
                           )
                         } else {
                           return (
-                            <span style={{height:"20px", backgroundColor: "#00ADD8"}} onClick={(e) => {
-                            e.stopPropagation();
+                            <span  onClick={(e) => {
+                            if (record[pro+ "_selected"]){
+                              e.stopPropagation();
+                            }
                             this.selectRowInput(record, pro, e)
-                          }}>{record[pro] && record[pro].length >0 ? record[pro] :""}
+                          }}>{record[pro] && record[pro].length >0 ? record[pro] :" ---- "}
                           {/*<FoundationSymbol size="small" type={'content'}/>*/}
                             </span>
                           )
@@ -1031,10 +1033,12 @@ class ProjectTaskList extends React.Component {
                           )
                         } else {
                           return (
-                            <div style={{height:"20px", backgroundColor: "#00ADD8"}} onClick={(e) => {
-                              e.stopPropagation();
+                            <span  onClick={(e) => {
+                              if (!record["userId_selected"]){
+                                e.stopPropagation();
+                              }
                               this.selectRowInput(record, pro, e);
-                            }}>{record['userName'] && record['userName'].length >0 ? record['userName'] :""}</div>
+                            }}>{record['userName'] && record['userName'].length >0 ? record['userName'] :" ---- "}</span>
                           )
                         }
                       }
@@ -1053,10 +1057,12 @@ class ProjectTaskList extends React.Component {
                           )
                         } else {
                           return (
-                            <div style={{height:"20px", backgroundColor: "#00ADD8"}} onClick={(e) => {
-                              e.stopPropagation();
+                            <span  onClick={(e) => {
+                              if (record[pro + "_selected"]){
+                                e.stopPropagation();
+                              }
                               this.selectRowInput(record, pro, e)
-                            }}>{record[pro] && record[pro].length >0 ? record[pro] :""}</div>
+                            }}>{record[pro] && record[pro].length >0 ? record[pro] :" ---- "}</span>
                           )
                         }
                       }
@@ -1076,10 +1082,12 @@ class ProjectTaskList extends React.Component {
                             )
                           } else {
                             return (
-                              <div style={{height:"20px", backgroundColor: "#00ADD8"}} onClick={(e) => {
-                                e.stopPropagation();
+                              <span  onClick={(e) => {
+                                if (record[pro + "_selected"]){
+                                  e.stopPropagation();
+                                }
                                 this.selectRowInput(record, pro, e)
-                              }}>{record[pro] && record[pro].length >0 ? record[pro] :""}</div>
+                              }}>{record[pro] && record[pro].length >0 ? record[pro] :" ---- "}</span>
                             )
                           }
                         }
@@ -1098,10 +1106,12 @@ class ProjectTaskList extends React.Component {
                             )
                           } else {
                             return (
-                              <div style={{height:"20px", backgroundColor: "#00ADD8"}} onClick={(e) => {
-                                e.stopPropagation();
+                              <span  onClick={(e) => {
+                                if (record[pro + "_selected"]){
+                                  e.stopPropagation();
+                                }
                                 this.selectRowInput(record, pro, e)
-                              }}>{record[pro] && record[pro].length >0 ? record[pro] :""}</div>
+                              }}>{record[pro] && record[pro].length >0 ? record[pro] :" ---- "}</span>
                             )
                           }
                         }
@@ -1122,10 +1132,12 @@ class ProjectTaskList extends React.Component {
                             )
                           } else {
                             return (
-                              <div style={{height:"20px", backgroundColor: "#00ADD8"}} onClick={(e) => {
-                                e.stopPropagation();
+                              <span  onClick={(e) => {
+                                if (record[pro + "_selected"]){
+                                  e.stopPropagation();
+                                }
                                 this.selectRowInput(record, pro, e)
-                              }}>{record[pro] && record[pro].length >0 ? record[pro] :""}</div>
+                              }}>{record[pro] && record[pro].length >0 ? record[pro] :" ---- "}</span>
                             )
                           }
                         }
@@ -1144,10 +1156,12 @@ class ProjectTaskList extends React.Component {
                             )
                           } else {
                             return (
-                              <div style={{height:"20px", backgroundColor: "#00ADD8"}} onClick={(e) => {
-                                e.stopPropagation();
+                              <span  onClick={(e) => {
+                                if (record[pro + "_selected"]){
+                                  e.stopPropagation();
+                                }
                                 this.selectRowInput(record, pro, e)
-                              }}>{record[pro] && record[pro].length >0 ? record[pro] :""}</div>
+                              }}>{record[pro] && record[pro].length >0 ? record[pro] :" ---- "}</span>
                             )
                           }
                         }
