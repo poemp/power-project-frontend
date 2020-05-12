@@ -1,42 +1,63 @@
 import React from 'react';
 import {
-  Balloon,
   Button,
   DatePicker,
   Dialog,
+  Form,
+  Grid,
   Icon,
   Input,
   Message,
   ResponsiveGrid,
-  Table,
   Search,
-  Tree,
-  Select, Grid
+  Select,
+  Table,
+  Tree
 } from '@alifd/next';
 import $http from '@/service/Services';
 import url from '@/request';
 import styles from './index.module.scss';
 import PageHeader from '@/components/PageHeader';
 import moment from 'moment';
+import BraftEditor from "braft-editor";
+import Markdown from "braft-extensions/dist/markdown";
 import FoundationSymbol from '@icedesign/foundation-symbol';
+import CodeHighlighter from "braft-extensions/dist/code-highlighter";
+import 'braft-editor/dist/index.css'
+import 'braft-extensions/dist/table.css'
+import 'braft-extensions/dist/code-highlighter.css'
 
-const Tooltip = Balloon.Tooltip;
+const FormItem = Form.Item;
+
+
 const {Cell} = ResponsiveGrid;
 const {Row, Col} = Grid;
 const Option = Select.Option;
 
 moment.locale('zh-cn');
 
-const data = [{
-  label: 'Component',
-  key: '1'
-}, {
-  label: 'Component',
-  key: '1'
-}, {
-  label: 'Component',
-  key: '1'
-}];
+const markdownOptions = {};
+const codeHighlighterOptions = {
+  syntaxs: [
+    {
+      name: 'JavaScript',
+      syntax: 'javascript'
+    }, {
+      name: 'HTML',
+      syntax: 'html'
+    }, {
+      name: 'CSS',
+      syntax: 'css'
+    }, {
+      name: 'Java',
+      syntax: 'java',
+    }, {
+      name: 'PHP',
+      syntax: 'php'
+    }
+  ],
+};
+
 
 class ProjectTaskList extends React.Component {
 
@@ -53,7 +74,11 @@ class ProjectTaskList extends React.Component {
       mockData: [],
       data: [],
       name: '',
+      content1: "",
+      taskVisible: false,
       visible: false,
+      taskDetailVisible:false,
+      taskDetail:"",
       expandedKeys: ['2'],
       autoExpandParent: true,
       defaultExpandedKeys: [],
@@ -116,7 +141,7 @@ class ProjectTaskList extends React.Component {
             data: data.data,
             id: defaultExpandedKeys
           }, () => {
-            if (fun && typeof fun === "function"){
+            if (fun && typeof fun === "function") {
               fun();
             }
             that.forceUpdate();
@@ -199,6 +224,22 @@ class ProjectTaskList extends React.Component {
     });
   };
 
+
+  /**
+   * 任务的详情
+   * @param value
+   */
+  taskContext = (value) => {
+    const h = this.checkSelect();
+    if (!h) {
+      return;
+    }
+    const {selectRow} = this.state;
+    this.setState({
+      content1: BraftEditor.createEditorState(selectRow.taskDetail),
+      taskVisible: true,
+    });
+  };
   /**
    * 取消提示弹框
    */
@@ -509,7 +550,7 @@ class ProjectTaskList extends React.Component {
         record[p + '_selected'] = false;
       }
     }
-    console.log("event.target.tagName",event.target.tagName, "======",properties, ">>>>>>>",record[properties + '_selected'])
+    console.log("event.target.tagName", event.target.tagName, "======", properties, ">>>>>>>", record[properties + '_selected'])
     if (event) {
       //如果没有选中，则向上传输事件
       if (true === record['selected']) {
@@ -533,7 +574,7 @@ class ProjectTaskList extends React.Component {
             }
             this.forceUpdate();
           })
-        }else{
+        } else {
           record[properties + '_selected'] = !record[properties + '_selected'];
           this.forceUpdate();
         }
@@ -918,6 +959,64 @@ class ProjectTaskList extends React.Component {
       });
     }
   };
+  /**
+   * 取消提示弹框
+   */
+  onTaskContextClose = reason => {
+    this.setState({
+      taskVisible: false
+    });
+  };
+
+  /**
+   * 关闭显示
+   * @param reason
+   */
+  onCloseTaskDetailVisible = reason =>{
+    this.setState({
+      taskDetailVisible: false
+    });
+  };
+  /**
+   * 删除
+   */
+  onTaskContextOkDialog = () => {
+    const {editorState} = this.state;
+    this.loadingFun();
+    const _this = this;
+    const {selectRow} = this.state;
+    this.$http.post(url.url + '/v1/projectTask/updateProjectTaskContext', {
+      id: selectRow.id,
+      context: editorState.toHTML()
+    })
+      .then(function (response) {
+        const {data} = response;
+        if (data.code === 1) {
+          Message.warning(data.message ? data.message : data.data);
+        } else {
+          Message.success('操作成功.');
+          _this.setState({
+            taskVisible: false,
+          }, () => {
+            _this.disLoadingFun();
+          });
+        }
+      })
+      .catch(function (error) {
+        Message.error(error.message);
+        _this.disLoadingFun();
+      })
+  };
+
+  /**
+   * 改变值
+   * @param editorState
+   */
+  handleChange = (editorState) => {
+    this.setState({
+      editorState: editorState
+    })
+  };
 
   /**
    * 返回视图
@@ -925,6 +1024,7 @@ class ProjectTaskList extends React.Component {
    */
   render() {
     const {mockData, userList, data} = this.state;
+    BraftEditor.use([Markdown(markdownOptions), CodeHighlighter(codeHighlighterOptions)]);
     return (
       <ResponsiveGrid gap={20}>
         <Cell colSpan={12}>
@@ -959,6 +1059,10 @@ class ProjectTaskList extends React.Component {
                   <Button.Group>
                     <Button size={'small'} onClick={this.addProjectTask.bind(this)}><Icon type="add"/>新建</Button>
                     <Button size={'small'} onClick={this.deleteProjectTask.bind(this)}><Icon type="close"/>删除</Button>
+                  </Button.Group>
+                  &nbsp;&nbsp;
+                  <Button.Group>
+                    <Button size={'small'} onClick={this.taskContext.bind(this)}><Icon type="form"/>详情</Button>
                   </Button.Group>
                   &nbsp;&nbsp;
                   <Button.Group>
@@ -998,13 +1102,29 @@ class ProjectTaskList extends React.Component {
                           )
                         } else {
                           return (
-                            <span  onClick={(e) => {
-                            if (record[pro+ "_selected"]){
-                              e.stopPropagation();
-                            }
-                            this.selectRowInput(record, pro, e)
-                          }}>{record[pro] && record[pro].length >0 ? record[pro] :" ---- "}
-                          {/*<FoundationSymbol size="small" type={'content'}/>*/}
+                            <span onClick={(e) => {
+                              if (record[pro + "_selected"]) {
+                                e.stopPropagation();
+                              }
+                              this.selectRowInput(record, pro, e)
+                            }}>{record[pro] && record[pro].length > 0 ? record[pro] : " ---- "}
+                              {
+                                [0].map(ooooo => {
+                                  if (record.taskDetail && record.taskDetail.length > 0) {
+                                    return (
+                                      <a onClick={(e)=>{
+                                        e.stopPropagation();
+                                        this.setState({
+                                          taskDetailVisible:true,
+                                          taskDetail: record.taskDetail
+                                        })
+                                      }}>
+                                        <FoundationSymbol  size="small" type={'content'}/>
+                                      </a>
+                                    )
+                                  }
+                                })
+                              }
                             </span>
                           )
                         }
@@ -1033,12 +1153,12 @@ class ProjectTaskList extends React.Component {
                           )
                         } else {
                           return (
-                            <span  onClick={(e) => {
-                              if (!record["userId_selected"]){
+                            <span onClick={(e) => {
+                              if (!record["userId_selected"]) {
                                 e.stopPropagation();
                               }
                               this.selectRowInput(record, pro, e);
-                            }}>{record['userName'] && record['userName'].length >0 ? record['userName'] :" ---- "}</span>
+                            }}>{record['userName'] && record['userName'].length > 0 ? record['userName'] : " ---- "}</span>
                           )
                         }
                       }
@@ -1057,12 +1177,12 @@ class ProjectTaskList extends React.Component {
                           )
                         } else {
                           return (
-                            <span  onClick={(e) => {
-                              if (record[pro + "_selected"]){
+                            <span onClick={(e) => {
+                              if (record[pro + "_selected"]) {
                                 e.stopPropagation();
                               }
                               this.selectRowInput(record, pro, e)
-                            }}>{record[pro] && record[pro].length >0 ? record[pro] :" ---- "}</span>
+                            }}>{record[pro] && record[pro].length > 0 ? record[pro] : " ---- "}</span>
                           )
                         }
                       }
@@ -1082,12 +1202,12 @@ class ProjectTaskList extends React.Component {
                             )
                           } else {
                             return (
-                              <span  onClick={(e) => {
-                                if (record[pro + "_selected"]){
+                              <span onClick={(e) => {
+                                if (record[pro + "_selected"]) {
                                   e.stopPropagation();
                                 }
                                 this.selectRowInput(record, pro, e)
-                              }}>{record[pro] && record[pro].length >0 ? record[pro] :" ---- "}</span>
+                              }}>{record[pro] && record[pro].length > 0 ? record[pro] : " ---- "}</span>
                             )
                           }
                         }
@@ -1106,12 +1226,12 @@ class ProjectTaskList extends React.Component {
                             )
                           } else {
                             return (
-                              <span  onClick={(e) => {
-                                if (record[pro + "_selected"]){
+                              <span onClick={(e) => {
+                                if (record[pro + "_selected"]) {
                                   e.stopPropagation();
                                 }
                                 this.selectRowInput(record, pro, e)
-                              }}>{record[pro] && record[pro].length >0 ? record[pro] :" ---- "}</span>
+                              }}>{record[pro] && record[pro].length > 0 ? record[pro] : " ---- "}</span>
                             )
                           }
                         }
@@ -1132,12 +1252,12 @@ class ProjectTaskList extends React.Component {
                             )
                           } else {
                             return (
-                              <span  onClick={(e) => {
-                                if (record[pro + "_selected"]){
+                              <span onClick={(e) => {
+                                if (record[pro + "_selected"]) {
                                   e.stopPropagation();
                                 }
                                 this.selectRowInput(record, pro, e)
-                              }}>{record[pro] && record[pro].length >0 ? record[pro] :" ---- "}</span>
+                              }}>{record[pro] && record[pro].length > 0 ? record[pro] : " ---- "}</span>
                             )
                           }
                         }
@@ -1156,12 +1276,12 @@ class ProjectTaskList extends React.Component {
                             )
                           } else {
                             return (
-                              <span  onClick={(e) => {
-                                if (record[pro + "_selected"]){
+                              <span onClick={(e) => {
+                                if (record[pro + "_selected"]) {
                                   e.stopPropagation();
                                 }
                                 this.selectRowInput(record, pro, e)
-                              }}>{record[pro] && record[pro].length >0 ? record[pro] :" ---- "}</span>
+                              }}>{record[pro] && record[pro].length > 0 ? record[pro] : " ---- "}</span>
                             )
                           }
                         }
@@ -1174,7 +1294,7 @@ class ProjectTaskList extends React.Component {
           </Row>
         </Cell>
         <Dialog
-          className='zgph-dialog'
+          className='dialog'
           title="提示信息"
           visible={this.state.visible}
           onOk={this.onOkDialog}
@@ -1182,6 +1302,47 @@ class ProjectTaskList extends React.Component {
           onClose={this.onCloseDialog}>
           删除后不能恢复，确认要删除？
         </Dialog>
+
+        <Dialog title="任务备注"
+                visible={this.state.taskVisible}
+                onOk={this.onTaskContextOkDialog}
+                onCancel={this.onTaskContextClose}
+                onClose={this.onTaskContextClose}
+        >
+          <BraftEditor
+            value={this.state.content1}
+            className={styles.braftEditor}
+            onBlur={this.handleChange}
+            excludeControls={this.excludeControls}
+          />
+        </Dialog>
+
+        <Dialog title="任务备注详情"
+                closeable='close,esc,mask'
+                onOk={this.onCloseTaskDetailVisible}
+                onCancel={this.onCloseTaskDetailVisible}
+                onClose={this.onCloseTaskDetailVisible}
+                footerActions={[]}
+                visible={this.state.taskDetailVisible}
+        >
+          <Form className={styles.groupItem}
+                inline>
+            <FormItem>
+              {
+                [0].map(
+                  o => {
+                    return (
+                      <p dangerouslySetInnerHTML={{__html: this.state.taskDetail}}/>
+                    )
+                  }
+                )
+              }
+            </FormItem>
+          </Form>
+
+
+        </Dialog>
+
       </ResponsiveGrid>
     );
 

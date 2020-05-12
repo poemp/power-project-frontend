@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { IAppRouterProps } from './types/router';
 import { ILogger } from './logger/types';
 import { IRequest } from './request/types';

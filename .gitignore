@@ -16,3 +16,5 @@ yarn-error.log*
 .scannerwork
 package-lock.json
 yarn.lock
+.ice
+/.ice/
