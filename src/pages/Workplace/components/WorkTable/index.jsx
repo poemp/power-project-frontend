@@ -46,7 +46,8 @@ class WorkTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      myProjects: []
+      myProjects: [],
+      tab: 1,
     };
     this.$http = $http;
   }
@@ -92,12 +93,26 @@ class WorkTable extends React.Component {
     </span>
   );
 
-  render() {
-    const {dataSource = DEFAULT_DATA} = props;
-    const {person, orderList, projectList, timeLineList, updateList, entranceList} = dataSource;
-    const [tab, setTab] = useState('1');
+  /**
+   *
+   * @param index
+   */
+  changeTab = (index) => {
+    this.setState(
+      {
+        tab: index
+      }
+    )
+  };
 
-    const changeTab = val => setTab(val);
+  render() {
+    const {dataSource = DEFAULT_DATA} = this.props;
+    const {person, orderList, projectList, timeLineList, updateList, entranceList} = dataSource;
+
+    console.log(person, orderList, projectList, timeLineList, updateList, entranceList);
+    const {tab} = this.state;
+
+
     return (
       <div className={styles.WorkTable}>
         <div className={styles.workerContainor}>
@@ -112,7 +127,7 @@ class WorkTable extends React.Component {
                 <Typography.Text className={styles.TitleInfo}>{person.email}</Typography.Text>
               </Box>
             </Box>
-            <Tab activeKey={tab} className={styles.tab} onChange={changeTab}>
+            <Tab activeKey={tab} className={styles.tab} onChange={this.changeTab}>
               <Tab.Item title="选项卡一" key="1"/>
               <Tab.Item title="选项卡二" key="2"/>
               <Tab.Item title="选项卡三" key="3"/>
@@ -217,7 +232,7 @@ class WorkTable extends React.Component {
                         myProject => {
                           return (
                             <List.Item
-                              title={myProject.name}
+                              title={myProject.name + "("+  myProject.startTime + "-" + myProject.endTime + ")"}
                               media={
                                 <Avatar src="https://img.alicdn.com/tfs/TB1SFZAvQL0gK0jSZFAXXcA9pXa-200-200.png"/>
                               }
