@@ -17,4 +17,4 @@ yarn-error.log*
 package-lock.json
 yarn.lock
 .ice
-/.ice/
+.ice/

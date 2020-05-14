@@ -11,7 +11,7 @@ const Workplace = () => (
       <PageHeader
         breadcrumbs={[
           {
-            name: 'Dashboard',
+            name: '面板',
           },
           {
             name: '工作台页面',

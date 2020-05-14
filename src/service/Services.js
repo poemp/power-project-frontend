@@ -27,7 +27,7 @@ Axios.interceptors.request.use(
     (config) => {
         const xtoken = sessionStorage.getItem("Authorization");
         if (!xtoken){
-            console.error("token 为空. 没有登录 .");
+            console.warn("token 为空. 没有登录 .");
         }
         if (xtoken){
             config.headers['Authorization'] = xtoken;

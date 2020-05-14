@@ -52,7 +52,7 @@ class WorkTable extends React.Component{
 
 // eslint-disable-next-line react/no-deprecated
   componentWillMount = () => {
-
+    this.getMyTaskList();
   };
 
 

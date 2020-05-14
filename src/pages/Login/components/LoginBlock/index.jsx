@@ -1,7 +1,10 @@
 import React, {useState} from 'react';
-import {Input, Message, Form, Divider, Checkbox, Icon} from '@alifd/next';
+import {Input, Message, Form, Divider, Checkbox, Icon,Notification} from '@alifd/next';
 import {useInterval} from './utils';
 import styles from './index.module.scss';
+import $http from '@/service/Services';
+import url from '@/request';
+import server from '@/server'
 
 const {Item} = Form;
 const DEFAULT_DATA = {
@@ -42,15 +45,42 @@ const LoginBlock = props => {
     checkRunning(true);
   };
 
+  /**
+   * 登录
+   * @param values
+   * @param errors
+   */
   const handleSubmit = (values, errors) => {
     if (errors) {
       console.log('errors', errors);
       return;
     }
+    $http.post(url.url + '/v1/auth/login', {
+      userName:values.name,
+      password:values.password
+    })
+      .then(function (response) {
+        const {data} = response;
+        if (data.code !== 0) {
+          Notification.open({
+            title: '登录提示',
+            duration: 3000,
+            content: data.message ? data.message : data.data,
+            type: 'warning'
+          });
+        } else {
+          server.updateToken(data.data.token);
+          const userVo = data.data.accountVO;
+          sessionStorage.setItem('userInfoVO', JSON.stringify(userVo));
+          Message.success('登录成功');
+          props.history.push('/dashboard/workplace');
+        }
 
-    console.log('values:', values);
-    Message.success('登录成功');
-    props.history.push("/dashboard/workplace");
+      })
+      .catch(function (error) {
+        Message.error(error.message);
+      });
+
   };
 
   const phoneForm = (

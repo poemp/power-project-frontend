@@ -550,7 +550,6 @@ class ProjectTaskList extends React.Component {
         record[p + '_selected'] = false;
       }
     }
-    console.log("event.target.tagName", event.target.tagName, "======", properties, ">>>>>>>", record[properties + '_selected'])
     if (event) {
       //如果没有选中，则向上传输事件
       if (true === record['selected']) {
@@ -995,8 +994,11 @@ class ProjectTaskList extends React.Component {
           Message.warning(data.message ? data.message : data.data);
         } else {
           Message.success('操作成功.');
+          const {selectRow, mockData} = _this.state;
+          selectRow.taskDetail = editorState.toHTML();
           _this.setState({
             taskVisible: false,
+            mockData: mockData
           }, () => {
             _this.disLoadingFun();
           });

@@ -55,9 +55,10 @@ const HeaderAvatar = props => {
     </Popup>
   );
 };
-
+const voStr = sessionStorage.getItem("userInfoVO");
+const userInfoVO = JSON.parse(voStr);
 HeaderAvatar.defaultProps = {
-  name: 'MyName',
+  name: userInfoVO && userInfoVO.name ? userInfoVO.name :"",
   mail: 'name@gmail.com',
   avatar: 'https://img.alicdn.com/tfs/TB1.ZBecq67gK0jSZFHXXa9jVXa-904-826.png',
 };
