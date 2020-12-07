@@ -46,8 +46,9 @@ class WorkTable extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-
+      id:"-1"
     };
+    this.$http = $http;
   }
 
 // eslint-disable-next-line react/no-deprecated
