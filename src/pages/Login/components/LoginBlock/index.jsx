@@ -170,10 +170,10 @@ const LoginBlock = props => {
           <span onClick={byAccount} className={isPhone || styles.active}>
             账户密码登录
           </span>
-          <Divider direction="ver"/>
-          <span onClick={byForm} className={isPhone && styles.active}>
-            手机号登录
-          </span>
+          {/*<Divider direction="ver"/>*/}
+          {/*<span onClick={byForm} className={isPhone && styles.active}>*/}
+          {/*  手机号登录*/}
+          {/*</span>*/}
         </p>
 
         <Form value={postData} onChange={formChange} size="large">
@@ -210,15 +210,15 @@ const LoginBlock = props => {
               登录
             </Form.Submit>
           </Item>
-          <p className={styles.infoLine}>
-            <div className={styles.infoLeft}>
-              其他登录方式 <Icon type="atm" size="s"/> <Icon type="atm" size="s"/>{' '}
-              <Icon type="atm" size="s"/>
-            </div>
-            <a href="/" className={styles.link}>
-              注册账号
-            </a>
-          </p>
+          {/*<p className={styles.infoLine}>*/}
+          {/*  <div className={styles.infoLeft}>*/}
+          {/*    其他登录方式 <Icon type="atm" size="s"/> <Icon type="atm" size="s"/>{' '}*/}
+          {/*    <Icon type="atm" size="s"/>*/}
+          {/*  </div>*/}
+          {/*  <a href="/" className={styles.link}>*/}
+          {/*    注册账号*/}
+          {/*  </a>*/}
+          {/*</p>*/}
         </Form>
       </div>
     </div>
